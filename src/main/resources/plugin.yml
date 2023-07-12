@@ -1,0 +1,11 @@
+name: MitchPrisonsCore
+version: '${project.version}'
+main: me.reklessmitch.mitchprisonscore.MitchPrisonsCore
+api-version: '1.19'
+author: ReklessMitch
+description: MitchPrisonsCore
+depend:
+  - MassiveCore
+  - ItemsAdder
+
+
