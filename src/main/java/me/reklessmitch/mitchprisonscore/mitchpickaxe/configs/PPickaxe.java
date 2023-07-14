@@ -2,10 +2,12 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.battlepass.events.UpgradeBattlePassEvent;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 public class PPickaxe extends SenderEntity<PPickaxe> {
 
     DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "§bPickaxe", List.of("§eEnchants"), 0, 4);
+    long rawBlocksBroken = 0;
+    long blocksBroken = 0;
     Map<EnchantType, Integer> enchants = setEnchants();
     Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
 
@@ -25,6 +29,17 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         Map<EnchantType, Boolean> enchantTogglesList = new EnumMap<>(EnchantType.class);
         PickaxeConf.get().enchants.keySet().forEach(enchant -> enchantTogglesList.put(enchant, true));
         return enchantTogglesList;
+    }
+
+    public void addRawBlockBroken(){
+        rawBlocksBroken++;
+    }
+
+    public void addBlockBroken(long amount){
+        blocksBroken += amount;
+        UpgradeBattlePassEvent e = new UpgradeBattlePassEvent(getPlayer(), blocksBroken);
+        Bukkit.getPluginManager().callEvent(e);
+
     }
 
     public static PPickaxe get(Object oid) {

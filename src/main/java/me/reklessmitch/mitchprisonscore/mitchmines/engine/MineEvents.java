@@ -5,6 +5,7 @@ import com.sk89q.worldedit.math.BlockVector3;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;

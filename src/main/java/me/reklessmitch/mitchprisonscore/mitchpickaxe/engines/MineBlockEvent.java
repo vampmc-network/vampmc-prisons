@@ -47,6 +47,7 @@ public class MineBlockEvent extends Engine {
         PPickaxe pickaxe = PPickaxe.get(e.getPlayer().getUniqueId());
         Pet pet = pPlayer.getPet(pPlayer.getActivePet());
         ProfilePlayer currency = ProfilePlayer.get(e.getPlayer().getUniqueId());
+        pickaxe.addRawBlockBroken();
         if(e.getBlock().getType().equals(Material.BEACON)) {currency.getCurrency("beacon").add(1);}
 
         pickaxe.getEnchants().forEach((type, level) -> {
@@ -109,6 +110,7 @@ public class MineBlockEvent extends Engine {
         tokensToAdd *= e.getPlayerMine().getBooster();
         currency.getCurrency("token").add(tokensToAdd);
         Bukkit.broadcastMessage("Tokens made from Jackhammer: " + tokensToAdd);
+        PPickaxe.get(e.getPlayer().getUniqueId()).addBlockBroken(blocks);
         BlockToBackpackEvent bpEvent = new BlockToBackpackEvent(e.getPlayer(), blocks);
         Bukkit.getPluginManager().callEvent(bpEvent);
     }
