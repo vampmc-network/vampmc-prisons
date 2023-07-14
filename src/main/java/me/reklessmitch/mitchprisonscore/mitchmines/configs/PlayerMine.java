@@ -17,11 +17,14 @@ import com.sk89q.worldedit.world.block.BlockState;
 import com.sk89q.worldedit.world.block.BlockStateHolder;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import lombok.Getter;
+import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
-import me.reklessmitch.mitchprisonscore.mitchmines.colls.PlayerMineColl;
+import me.reklessmitch.mitchprisonscore.colls.PlayerMineColl;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
@@ -41,6 +44,8 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
     private SerLoc max = new SerLoc(size, 0, size).addS(middleLocation);
     private long volume = (long) (size + 1) * (size + 1) * 100; // 50 * 2 for size radius
     private long volumeMined = 0;
+    @Setter private Material block = Material.STONE;
+    private int booster = 1;
 
     public void createMine(){
         Bukkit.broadcastMessage("Mine created at " + spawnPoint.toBlockVector3().getBlockX());
@@ -62,7 +67,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         int maxY = maxV.getBlockY();
         int maxZ = maxV.getBlockZ();
 
-        BlockStateHolder<BlockState> blockType = BlockTypes.STONE.getDefaultState(); // Desired block type
+        BlockStateHolder<BlockState> blockType = BlockTypes.get(block.name()).getDefaultState();    // Desired block type
         for (int x = minX; x <= maxX; x++) {
             for (int y = minY; y <= maxY; y++) {
                 for (int z = minZ; z <= maxZ; z++) {
@@ -80,6 +85,10 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
 
     }
 
+    public void addBooster(int amount){
+        booster += amount;
+        getPlayer().sendMessage("Booster added");
+    }
 
     private void generateSchematic(){
         File file = new File(WorldEdit.getInstance().getSchematicsFolderPath() + File.separator + "1.schematic");
@@ -138,9 +147,13 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         int maxZ = maxV.getBlockZ();
 
         List<BlockVector3> blocks = new ArrayList<>();
+        int beacons = 0;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
                 BlockVector3 location = BlockVector3.at(x, y, z);
+                if(world.getBlock(location) == BlockTypes.BEACON.getDefaultState()){
+                    beacons++;
+                }
                 blocks.add(location);
                 editSession.setBlock(x, y, z, BlockTypes.AIR.getDefaultState());
             }
@@ -148,6 +161,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         editSession.flushQueue();
         editSession.close();
         volumeMined += blocks.size();
+        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
         volumeMinedCheck();
         return blocks.size();
     }
@@ -164,5 +178,11 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         max = new SerLoc(size, 0, size).addS(middleLocation);
         reset();
         changed();
+    }
+
+    public void teleport() {
+        Location l = spawnPoint.toLocation();
+        l.setPitch(90);
+        getPlayer().teleport(l);
     }
 }

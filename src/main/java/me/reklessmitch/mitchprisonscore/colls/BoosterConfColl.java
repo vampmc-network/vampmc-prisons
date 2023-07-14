@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.mitchboosters.colls;
+package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.Coll;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterConf;

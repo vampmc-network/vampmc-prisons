@@ -2,28 +2,21 @@ package me.reklessmitch.mitchprisonscore;
 
 import com.massivecraft.massivecore.MassivePlugin;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.colls.*;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.cmds.base.CmdSell;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.colls.BackPackPlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.colls.BackpackConfColl;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.BlocksToBackpack;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.PlayerInteract;
+import me.reklessmitch.mitchprisonscore.mitchbazaar.cmd.CmdBazaar;
 import me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster.CmdBooster;
-import me.reklessmitch.mitchprisonscore.mitchboosters.colls.BoosterConfColl;
-import me.reklessmitch.mitchprisonscore.mitchboosters.colls.BoosterPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchboosters.engines.BoosterInteract;
-import me.reklessmitch.mitchprisonscore.mitchmines.cmds.def.CmdMine;
-import me.reklessmitch.mitchprisonscore.mitchmines.colls.MineConfColl;
-import me.reklessmitch.mitchprisonscore.mitchmines.colls.PlayerMineColl;
+import me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds.CmdCell;
+import me.reklessmitch.mitchprisonscore.mitchmines.cmds.def.CmdMineGO;
 import me.reklessmitch.mitchprisonscore.mitchmines.engine.MineEvents;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.PMineWorldGen;
 import me.reklessmitch.mitchprisonscore.mitchpets.cmd.CmdPet;
-import me.reklessmitch.mitchprisonscore.mitchpets.colls.PPlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchpets.colls.PetConfColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.placeholders.PetPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdToggles;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdUpgradeGUI;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.colls.PPickaxeColl;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.colls.PickaxeConfColl;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.MineBlockEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.PickaxeMovement;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChangeJoinMessage;
@@ -53,7 +46,10 @@ public final class MitchPrisonsCore extends MassivePlugin {
 
 
     @Getter NamespacedKey key = new NamespacedKey(this, "mitchbooster");
+    @Getter NamespacedKey noDropKey = new NamespacedKey(this, "mitchnodrop");
+
     @Getter private final Random random = new SecureRandom();
+
 
     @Override
     public void onEnableInner() {
@@ -65,7 +61,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Boosters
                 BoosterConfColl.class, BoosterPlayerColl.class,
                 // Cells
-                //CellColls.class,
+                CellColls.class,
                 // Mines
                 MineConfColl.class, PlayerMineColl.class,
                 // Pets
@@ -74,20 +70,27 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 PickaxeConfColl.class, PPickaxeColl.class,
                 // Profiles
                 ProfilesConfColl.class, ProfilePlayerColl.class,
+                // Bazaar
+                BazaarConfColl.class,
+
                 // --- Commands ---
                 // Backpack
                 CmdSell.class,
                 // Boosters
                 CmdBooster.class,
                 // Cells
+                CmdCell.class,
                 // Mines
-                CmdMine.class,
+                CmdMineGO.class,
                 // Pets
                 CmdPet.class,
                 // Pickaxe
                 CmdUpgradeGUI.class, CmdToggles.class,
                 // Profiles
                 CmdChangeJoinMessage.class,
+                // Bazaar
+                CmdBazaar.class,
+
                 // --- Listeners ---
                 // Backpack
                 BlocksToBackpack.class, PlayerInteract.class,
@@ -101,6 +104,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 MineBlockEvent.class, PickaxeMovement.class,
                 // Profiles
                 PlayerEvents.class
+
 
 
         );

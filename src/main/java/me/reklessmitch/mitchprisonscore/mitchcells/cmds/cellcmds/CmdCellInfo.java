@@ -6,10 +6,10 @@ import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 
-public class CmdInfo extends CellCommands {
+public class CmdCellInfo extends CellCommands {
 
-    public CmdInfo(){
-        this.addRequirements(RequirementIsPlayer.get());
+    public CmdCellInfo(){
+        this.addAliases("info");
     }
 
     @Override

@@ -7,11 +7,10 @@ import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 
-public class CmdCreate extends CellCommands {
+public class CmdCellCreate extends CellCommands {
 
-    public CmdCreate(){
+    public CmdCellCreate(){
         this.addParameter(TypeString.get(), "cellname");
-        this.addRequirements(RequirementIsPlayer.get());
     }
 
     @Override
@@ -22,7 +21,7 @@ public class CmdCreate extends CellCommands {
             msg("<b>Cell already exists");
             return;
         }
-        if(conf.getAllMembers().contains(me.getUniqueId())){
+        if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
             msg("<b>You are already in a cell");
             return;
         }

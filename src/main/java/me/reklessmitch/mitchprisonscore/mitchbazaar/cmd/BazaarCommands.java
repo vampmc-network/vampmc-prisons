@@ -1,12 +1,12 @@
-package me.reklessmitch.mitchprisonscore.mitchcells.cmds;
+package me.reklessmitch.mitchprisonscore.mitchbazaar.cmd;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.Visibility;
 
-public class CellCommands extends MassiveCommand {
+public class BazaarCommands extends MassiveCommand {
 
-    public CellCommands(){
+    public BazaarCommands(){
+        this.addAliases("bazaar");
         this.setVisibility(Visibility.VISIBLE);
     }
-
 }

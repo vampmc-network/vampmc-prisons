@@ -6,25 +6,18 @@ import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 
 import java.util.*;
 
+@Getter
 public class CellConf extends Entity<CellConf> {
 
     public static CellConf i = new CellConf();
     public static CellConf get() { return i; }
 
     int maxCellSize = 10;
-    @Getter Map<String, Cell> cells = new HashMap<>();
+    String prefix = "§7[§6Cells§7] ";
+    Map<String, Cell> cells = new HashMap<>();
 
     public List<String> getCellNames(){
         return new ArrayList<>(cells.keySet());
-    }
-
-    public List<UUID> getAllMembers(){
-        List<UUID> members = new ArrayList<>();
-        for(Cell cell : cells.values()){
-            members.addAll(cell.getMembers());
-            members.add(cell.getOwner());
-        }
-        return members;
     }
 
     public Cell getCellByMember(UUID playerID){
@@ -34,5 +27,11 @@ public class CellConf extends Entity<CellConf> {
             }
         }
         return null;
+    }
+
+    public Set<UUID> getAllPlayersInCells(){
+        Set<UUID> players = new HashSet<>();
+        cells.values().forEach(cell -> players.addAll(cell.getAllMembers()));
+        return players;
     }
 }

@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.mitchpickaxe.colls;
+package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.SenderColl;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;

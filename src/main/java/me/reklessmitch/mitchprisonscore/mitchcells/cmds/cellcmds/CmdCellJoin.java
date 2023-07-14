@@ -6,12 +6,10 @@ import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 
-public class CmdJoin extends CellCommands {
+public class CmdCellJoin extends CellCommands {
 
-    private static final CmdJoin i = new CmdJoin();
-    public static CmdJoin get() { return i; }
 
-    public CmdJoin(){
+    public CmdCellJoin(){
         this.addAliases("join");
         this.addParameter(TypeString.get(), "cellname");
     }
@@ -20,7 +18,7 @@ public class CmdJoin extends CellCommands {
     public void perform() throws MassiveException {
         String cellName = this.readArg();
         CellConf conf = CellConf.get();
-        if(conf.getAllMembers().contains(me.getUniqueId())){
+        if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
             msg("<b>You are already in a cell");
             return;
         }
@@ -29,8 +27,18 @@ public class CmdJoin extends CellCommands {
             msg("<b>Cell does not exist");
             return;
         }
-        cell.getMembers().add(me.getUniqueId());
-        msg("<g>Joined cell " + cellName);
+        if(cell.getMembers().size() >= conf.getMaxCellSize()){
+            msg("<b>Cell is full");
+            return;
+        }
+        if(cell.getInvites().contains(me.getUniqueId())){
+            cell.getMembers().add(me.getUniqueId());
+            msg("<g>Joined cell " + cellName);
+            cell.getInvites().remove(me.getUniqueId());
+        }else{
+            msg("<b>You are not invited to this cell");
+        }
+
 
     }
 

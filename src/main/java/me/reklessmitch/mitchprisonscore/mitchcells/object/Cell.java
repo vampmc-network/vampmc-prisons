@@ -1,23 +1,67 @@
 package me.reklessmitch.mitchprisonscore.mitchcells.object;
 
+import com.massivecraft.massivecore.util.IdUtil;
 import lombok.Getter;
+import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
+import org.bukkit.OfflinePlayer;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Getter
 public class Cell {
 
     String name;
     UUID owner;
-    List<UUID> members;
+    Set<UUID> officers;
+    Set<UUID> members;
     long beacons;
+    Set<UUID> invites;
 
     public Cell(String name, UUID owner){
         this.name = name;
         this.owner = owner;
-        beacons = 0;
-        members = new ArrayList<>();
+        this.beacons = 0;
+        this.members = new HashSet<>();
+        this.officers = new HashSet<>();
+    }
+
+    public void addBeacons(long amount) {
+        beacons += amount;
+        getAllMembers().forEach(uuid -> {
+            OfflinePlayer player = IdUtil.getOfflinePlayer(uuid);
+            if(player.isOnline() && player.getPlayer() != null){
+                player.getPlayer().sendMessage("§6" + amount + " §7beacons deposited into cell from §6" + player.getName());
+            }
+        });
+    }
+
+    public void disband() {
+        getAllMembers().forEach(uuid -> {
+            OfflinePlayer player = IdUtil.getOfflinePlayer(uuid);
+            if(player.isOnline() && player.getPlayer() != null){
+                player.getPlayer().sendMessage("§7Your cell has been disbanded");
+            }
+        });
+        CellConf.get().getCells().remove(name);
+    }
+
+    public Set<UUID> getAllMembers(){
+        Set<UUID> m = new HashSet<>();
+        m.addAll(officers);
+        m.addAll(members);
+        m.add(owner);
+        return m;
+    }
+
+    public Set<UUID> getAllHigherUps(){
+        Set<UUID> m = new HashSet<>(officers);
+        m.add(owner);
+        return m;
+    }
+
+    public void removePlayer(UUID uniqueId) {
+        members.remove(uniqueId);
+        officers.remove(uniqueId);
+        invites.remove(uniqueId);
     }
 }

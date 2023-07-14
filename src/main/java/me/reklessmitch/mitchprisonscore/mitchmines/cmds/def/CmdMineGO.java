@@ -8,20 +8,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-public class CmdMine extends MineCommands {
+public class CmdMineGO extends MineCommands {
 
-    private static final CmdMine i = new CmdMine();
-    public static CmdMine get() { return i; }
+    private static final CmdMineGO i = new CmdMineGO();
+    public static CmdMineGO get() { return i; }
 
-    public CmdMine(){
-        this.addAliases("mine");
+    public CmdMineGO(){
+        this.addAliases("go");
         this.addRequirements(RequirementIsPlayer.get());
     }
 
     @Override
     public void perform() {
-        Player player = (Player) sender;
-        BlockVector3 vector3 = PlayerMine.get(player.getUniqueId()).getSpawnPoint().toBlockVector3();
-        player.teleport(new Location(Bukkit.getWorld("privatemines"), vector3.getX(), vector3.getY(), vector3.getZ()));
+        PlayerMine.get(me.getUniqueId()).teleport();
     }
 }

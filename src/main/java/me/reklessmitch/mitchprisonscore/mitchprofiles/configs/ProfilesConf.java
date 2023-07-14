@@ -12,7 +12,7 @@ public class ProfilesConf extends Entity<ProfilesConf> {
     protected static transient ProfilesConf i;
     public static ProfilesConf get() { return i; }
 
-    private List<String> currencyList = List.of("token", "beacon", "money");
+    private List<String> currencyList = List.of("token", "beacon", "money", "credits");
     private List<String> joinMessages = List.of("%player% joined", "%player% is here");
 
 }

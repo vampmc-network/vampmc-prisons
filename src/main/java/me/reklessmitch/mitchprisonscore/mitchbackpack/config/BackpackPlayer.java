@@ -3,9 +3,10 @@ package me.reklessmitch.mitchprisonscore.mitchbackpack.config;
 import com.massivecraft.massivecore.mixin.MixinActionbar;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.colls.BackPackPlayerColl;
+import me.reklessmitch.mitchprisonscore.colls.BackPackPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
@@ -14,11 +15,9 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 
 import java.security.SecureRandom;
-import java.util.List;
 
 @Getter
 @Setter
@@ -43,13 +42,10 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     public ItemStack getBackpackItem() {
-        ItemStack backpack = new ItemStack(Material.DRAGON_EGG);
-        ItemMeta meta = backpack.getItemMeta();
-        meta.setDisplayName("§6Backpack");
-        meta.setLore(List.of("§7Size: §e" + capacity, "§7Autosell: " + (autoSell ? "§aEnabled" : "§cDisabled")));
-        backpack.setItemMeta(meta);
-        backpack.setItemMeta(meta);
-        return backpack;
+        return new ItemBuilder(Material.DRAGON_EGG)
+                .displayname("§6Backpack")
+                .lore("§7Size: §e" + capacity, "§7Autosell: " + (autoSell ? "§aEnabled" : "§cDisabled"))
+                .build();
     }
 
     public void add(int amount) {

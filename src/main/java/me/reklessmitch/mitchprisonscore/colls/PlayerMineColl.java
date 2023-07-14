@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.mitchmines.colls;
+package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.SenderColl;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;

@@ -1,5 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants;
 
+import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
@@ -47,17 +48,17 @@ public class Enchant {
     }
 
     public ItemStack getEnchantGuiItem(PPickaxe pickaxe) {
-        ItemStack i = new ItemStack(displayItem.getMaterial());
-        ItemMeta meta = i.getItemMeta();
-        meta.setDisplayName(displayItem.getItemName());
-        meta.setLore(displayItem.getItemLore().stream().map(s -> {
-            if (s == null) return "";
-            s = s.replace("{level}", String.valueOf(pickaxe.getEnchants().get(type)));
-            s = s.replace("{maxlevel}", String.valueOf(maxLevel));
-            s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1)));
-            return s;
-        }).toList());
+        ItemStack i = new ItemBuilder(displayItem.getMaterial())
+                .displayname(displayItem.getItemName())
+                .lore(displayItem.getItemLore().stream().map(s -> {
+                    if (s == null) return "";
+                    s = s.replace("{level}", String.valueOf(pickaxe.getEnchants().get(type)));
+                    s = s.replace("{maxlevel}", String.valueOf(maxLevel));
+                    s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1)));
+                    return s;
+                }).toList()).build();
 
+        ItemMeta meta = i.getItemMeta();
         meta.setCustomModelData(displayItem.getCustomModelData());
         meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
         i.setItemMeta(meta);

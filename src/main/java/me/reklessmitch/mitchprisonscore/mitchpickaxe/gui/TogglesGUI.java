@@ -17,6 +17,7 @@ public class TogglesGUI extends ChestGui {
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());
         refresh();
+        add();
     }
 
     public void refresh(){

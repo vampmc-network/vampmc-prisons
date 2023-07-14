@@ -2,7 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchpets.gui;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 
-import me.reklessmitch.mitchprisonscore.mitchpets.colls.PPlayerColl;
+import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
 import org.bukkit.Bukkit;

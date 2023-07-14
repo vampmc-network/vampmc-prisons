@@ -3,7 +3,7 @@ package me.reklessmitch.mitchprisonscore.mitchpets.entity;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
-import me.reklessmitch.mitchprisonscore.mitchpets.colls.PPlayerColl;
+import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Set;
