@@ -2,7 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
-import me.reklessmitch.mitchprisonscore.battlepass.events.UpgradeBattlePassEvent;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.UpgradeBattlePassEvent;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;

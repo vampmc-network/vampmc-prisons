@@ -11,6 +11,8 @@ import com.sk89q.worldedit.extent.clipboard.io.ClipboardReader;
 import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
+import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.regions.EllipsoidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
 import com.sk89q.worldedit.world.block.BlockState;
@@ -32,6 +34,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Vector;
 
 @Getter
 public class PlayerMine extends SenderEntity<PlayerMine> {
@@ -114,6 +117,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
                     .createPaste(editSession)
                     .to(spawnPoint.toBlockVector3())
                     .copyBiomes(false)
+                    .copyEntities(false)
                     .ignoreAirBlocks(true)
                     .build();
             Operations.complete(operation);
@@ -146,7 +150,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         int maxX = maxV.getBlockX();
         int maxZ = maxV.getBlockZ();
 
-        List<BlockVector3> blocks = new ArrayList<>();
+        int blocks = 0;
         int beacons = 0;
         for (int x = minX; x <= maxX; x++) {
             for (int z = minZ; z <= maxZ; z++) {
@@ -154,16 +158,48 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
                 if(world.getBlock(location) == BlockTypes.BEACON.getDefaultState()){
                     beacons++;
                 }
-                blocks.add(location);
+                if(world.getBlock(location) != BlockTypes.AIR.getDefaultState()){
+                    blocks++;
+                }
                 editSession.setBlock(x, y, z, BlockTypes.AIR.getDefaultState());
             }
         }
         editSession.flushQueue();
         editSession.close();
-        volumeMined += blocks.size();
+        volumeMined += blocks;
         ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
         volumeMinedCheck();
-        return blocks.size();
+        return blocks;
+    }
+
+    public int getExplosiveBlocks(Location location, int radius){
+        World world = FaweAPI.getWorld("privatemines");
+        EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
+
+        int blocks = 0;
+        int beacons = 0;
+
+        BlockVector3 center = BlockVector3.at(location.getX(), location.getY(), location.getZ());
+        EllipsoidRegion ellipsoidRegion = new EllipsoidRegion(world, center, Vector3.at(radius, radius, radius));
+
+        // Get all the block positions within the ellipsoid region
+        for(BlockVector3 vector : ellipsoidRegion){
+            BlockStateHolder<BlockState> blockState = editSession.getBlock(vector);
+            if(!isInMine(vector)) continue;
+            if(blockState.getBlockType().equals(BlockTypes.BEACON)){
+                beacons++;
+            }
+            if(!blockState.getBlockType().equals(BlockTypes.AIR)){
+                editSession.setBlock(vector, BlockTypes.AIR.getDefaultState());
+                blocks++;
+            }
+        }
+        editSession.flushQueue();
+        editSession.close();
+        volumeMined += blocks;
+        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
+        volumeMinedCheck();
+        return blocks;
     }
 
     private void volumeMinedCheck(){

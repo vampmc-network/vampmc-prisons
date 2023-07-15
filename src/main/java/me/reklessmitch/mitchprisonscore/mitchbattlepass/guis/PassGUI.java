@@ -1,9 +1,9 @@
-package me.reklessmitch.mitchprisonscore.battlepass.guis;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
-import me.reklessmitch.mitchprisonscore.battlepass.configs.PassConf;
-import me.reklessmitch.mitchprisonscore.battlepass.configs.PassPlayer;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassConf;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;

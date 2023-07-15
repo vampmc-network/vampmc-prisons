@@ -6,6 +6,7 @@ import me.reklessmitch.mitchprisonscore.colls.*;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.cmds.base.CmdSell;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.BlocksToBackpack;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.PlayerInteract;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.cmds.CmdPass;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.cmd.CmdBazaar;
 import me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster.CmdBooster;
 import me.reklessmitch.mitchprisonscore.mitchboosters.engines.BoosterInteract;
@@ -15,6 +16,7 @@ import me.reklessmitch.mitchprisonscore.mitchmines.engine.MineEvents;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.PMineWorldGen;
 import me.reklessmitch.mitchprisonscore.mitchpets.cmd.CmdPet;
 import me.reklessmitch.mitchprisonscore.mitchpets.placeholders.PetPlaceholders;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdBlocks;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdToggles;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdUpgradeGUI;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.MineBlockEvent;
@@ -58,6 +60,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // --- Colls ---
                 // Backpack
                 BackpackConfColl.class, BackPackPlayerColl.class,
+                // BattlePass
+                PassPlayerColl.class, PassConfColl.class,
                 // Boosters
                 BoosterConfColl.class, BoosterPlayerColl.class,
                 // Cells
@@ -76,6 +80,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // --- Commands ---
                 // Backpack
                 CmdSell.class,
+                // BattlePass
+                CmdPass.class,
                 // Boosters
                 CmdBooster.class,
                 // Cells
@@ -85,7 +91,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Pets
                 CmdPet.class,
                 // Pickaxe
-                CmdUpgradeGUI.class, CmdToggles.class,
+                CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class,
                 // Profiles
                 CmdChangeJoinMessage.class,
                 // Bazaar

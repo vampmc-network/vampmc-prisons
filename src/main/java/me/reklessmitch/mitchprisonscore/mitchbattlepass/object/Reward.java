@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.battlepass.object;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.object;
 
 import lombok.Getter;
 

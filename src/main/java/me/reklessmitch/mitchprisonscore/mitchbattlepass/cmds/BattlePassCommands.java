@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.battlepass.cmds;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.cmds;
 
 import com.massivecraft.massivecore.command.MassiveCommand;
 import com.massivecraft.massivecore.command.Visibility;

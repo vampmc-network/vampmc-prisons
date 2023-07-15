@@ -1,10 +1,9 @@
-package me.reklessmitch.mitchprisonscore.battlepass.engines;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.engines;
 
 import com.massivecraft.massivecore.Engine;
-import me.reklessmitch.mitchprisonscore.battlepass.configs.PassConf;
-import me.reklessmitch.mitchprisonscore.battlepass.configs.PassPlayer;
-import me.reklessmitch.mitchprisonscore.battlepass.events.UpgradeBattlePassEvent;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.BlocksToBackpack;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassConf;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.UpgradeBattlePassEvent;
 import org.bukkit.event.EventHandler;
 
 public class UpgradeEvent extends Engine {

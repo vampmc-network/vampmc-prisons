@@ -24,6 +24,8 @@ public class PickaxeConf extends Entity<PickaxeConf> {
     Map<EnchantType, Enchant> enchants = setUpEnchants();
     private int tokenPouchBaseAmount = 100;
     private int tokenPouchIncreasePerLevel = 100;
+    private int explosiveStartRadius = 2;
+    private int explosiveLevelsPerIncrease = 50;
 
     private Map<EnchantType, Enchant> setUpEnchants(){
         Bukkit.broadcastMessage("Setting up enchants");
@@ -42,6 +44,8 @@ public class PickaxeConf extends Entity<PickaxeConf> {
         enchantList.put(EnchantType.SPEED, new Enchant(EnchantType.SPEED, Material.SUGAR, "Speed", List.of("SPEED"), 0, 12, 1, 1, 1, 0, 0, 0));
         enchantList.put(EnchantType.SUPPLY_DROP, new Enchant(EnchantType.SUPPLY_DROP, Material.CHEST, "Supply Drop", List.of("Get more stuff"), 0, 16, 1, 1, 0.1, 0, 0, 0));
         enchantList.put(EnchantType.TOKEN_POUCH, new Enchant(EnchantType.TOKEN_POUCH, Material.MAGMA_CREAM, "Token Pouch", List.of("Gives tokens"), 0, 19, 1, 1, 0.1, 0, 0, 0));
+        enchantList.put(EnchantType.NUKE, new Enchant(EnchantType.NUKE, Material.TNT, "Nuke", List.of("Nuke"), 0, 23, 1, 1, 0.1, 0, 0, 0));
+        enchantList.put(EnchantType.EXPLOSIVE, new Enchant(EnchantType.EXPLOSIVE, Material.FIREWORK_STAR, "Explosive", List.of("Explosive"), 0, 24, 1, 1, 0.1, 0, 0, 0));
         enchantList.forEach((enchantType, enchant) -> Bukkit.broadcastMessage(enchant.getClass().toString()));
         return enchantList;
     }

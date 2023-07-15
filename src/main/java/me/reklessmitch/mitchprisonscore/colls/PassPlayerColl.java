@@ -1,7 +1,7 @@
 package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.SenderColl;
-import me.reklessmitch.mitchprisonscore.battlepass.configs.PassPlayer;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
 
 public class PassPlayerColl extends SenderColl<PassPlayer> {
 

@@ -1,11 +1,9 @@
-package me.reklessmitch.mitchprisonscore.battlepass.configs;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.configs;
 
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
-import me.reklessmitch.mitchprisonscore.battlepass.object.Reward;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackConf;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.object.Reward;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 

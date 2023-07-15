@@ -14,5 +14,7 @@ public enum EnchantType {
     TOKEN_POUCH,
     SCAVENGER,
     BOOST,
-    HASTE
+    HASTE,
+    NUKE,
+    EXPLOSIVE
 }

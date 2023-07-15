@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.battlepass.events;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.events;
 
 import lombok.Getter;
 import org.bukkit.entity.Player;

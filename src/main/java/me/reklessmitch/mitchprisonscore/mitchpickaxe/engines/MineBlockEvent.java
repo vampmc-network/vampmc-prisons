@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
 import com.sk89q.worldedit.math.BlockVector3;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
+import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
@@ -25,6 +26,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class MineBlockEvent extends Engine {
 
@@ -65,10 +67,45 @@ public class MineBlockEvent extends Engine {
                 case SPEED -> speed(e.getPlayer(), level);
                 case SUPPLY_DROP -> supplyDrop(e);
                 case TOKEN_POUCH -> tokenPouch(level, currency);
+                case NUKE -> nuke(e, pet, currency);
+                case EXPLOSIVE -> explosive(e, pet, currency, level);
                 default -> {}
             }
         });
         currency.changed();
+    }
+
+    private void addTokens(int blocks, Pet pet, ProfilePlayer currency, PlayerMine mine) {
+        int tokensToAdd = blocks;
+        if(pet.getType() == PetType.TOKEN) {
+            tokensToAdd = (int) (blocks * pet.getPetBooster());
+        }
+        tokensToAdd *= mine.getBooster();
+        currency.getCurrency("token").add(tokensToAdd);
+        Bukkit.broadcastMessage("Tokens made from Jackhammer: " + tokensToAdd);
+    }
+
+    private void addBlocksToBackpack(Player player, int blocks){
+        PPickaxe.get(player.getUniqueId()).addBlockBroken(blocks);
+        BlockToBackpackEvent bpEvent = new BlockToBackpackEvent(player, blocks);
+        Bukkit.getPluginManager().callEvent(bpEvent);
+    }
+
+    private void explosive(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, int level) {
+        PlayerMine mine = e.getPlayerMine();
+        int radiusIncrease = level / PickaxeConf.get().getExplosiveLevelsPerIncrease();
+        int radius = PickaxeConf.get().getExplosiveStartRadius() + radiusIncrease;
+        int blocks = mine.getExplosiveBlocks(e.getBlock().getLocation(), radius);
+        addTokens(blocks, pet, currency, mine);
+        addBlocksToBackpack(e.getPlayer(), blocks);
+    }
+
+    private void nuke(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency) {
+        PlayerMine mine = e.getPlayerMine();
+        int blocks = (int) (mine.getVolume() - mine.getVolumeMined());
+        addTokens(blocks, pet, currency, mine);
+        addBlocksToBackpack(e.getPlayer(), blocks);
+        mine.reset();
     }
 
     private void apocalypse() {
@@ -101,18 +138,9 @@ public class MineBlockEvent extends Engine {
     }
 
     private void jackhammer(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency) {
-        e.getBlock().setType(Material.AIR);
         int blocks = e.getPlayerMine().getBlocksOnYLayer(e.getBlock().getY());
-        int tokensToAdd = blocks;
-        if(pet.getType() == PetType.TOKEN) {
-            tokensToAdd = (int) (blocks * pet.getPetBooster());
-        }
-        tokensToAdd *= e.getPlayerMine().getBooster();
-        currency.getCurrency("token").add(tokensToAdd);
-        Bukkit.broadcastMessage("Tokens made from Jackhammer: " + tokensToAdd);
-        PPickaxe.get(e.getPlayer().getUniqueId()).addBlockBroken(blocks);
-        BlockToBackpackEvent bpEvent = new BlockToBackpackEvent(e.getPlayer(), blocks);
-        Bukkit.getPluginManager().callEvent(bpEvent);
+        addTokens(blocks, pet, currency, e.getPlayerMine());
+        addBlocksToBackpack(e.getPlayer(), blocks);
     }
 
     private void keyFinder(Player player) {

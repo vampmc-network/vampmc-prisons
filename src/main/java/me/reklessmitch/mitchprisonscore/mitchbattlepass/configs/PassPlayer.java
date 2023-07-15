@@ -1,13 +1,10 @@
-package me.reklessmitch.mitchprisonscore.battlepass.configs;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
-import me.reklessmitch.mitchprisonscore.battlepass.object.Reward;
-import me.reklessmitch.mitchprisonscore.colls.BackPackPlayerColl;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.object.Reward;
 import me.reklessmitch.mitchprisonscore.colls.PassPlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackConf;
-import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
