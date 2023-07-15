@@ -12,6 +12,7 @@ import com.sk89q.worldedit.function.operation.Operation;
 import com.sk89q.worldedit.function.operation.Operations;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.Vector3;
+import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.EllipsoidRegion;
 import com.sk89q.worldedit.session.ClipboardHolder;
 import com.sk89q.worldedit.world.World;
@@ -143,26 +144,21 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         World world = FaweAPI.getWorld("privatemines");
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
 
-        BlockVector3 minV = min.toBlockVector3();
-        BlockVector3 maxV = max.toBlockVector3();
-        int minX = minV.getBlockX();
-        int minZ = minV.getBlockZ();
-        int maxX = maxV.getBlockX();
-        int maxZ = maxV.getBlockZ();
+        BlockVector3 minV = min.toBlockVector3().withY(y);
+        BlockVector3 maxV = max.toBlockVector3().withY(y);
 
         int blocks = 0;
         int beacons = 0;
-        for (int x = minX; x <= maxX; x++) {
-            for (int z = minZ; z <= maxZ; z++) {
-                BlockVector3 location = BlockVector3.at(x, y, z);
-                if(world.getBlock(location) == BlockTypes.BEACON.getDefaultState()){
-                    beacons++;
-                }
-                if(world.getBlock(location) != BlockTypes.AIR.getDefaultState()){
-                    blocks++;
-                }
-                editSession.setBlock(x, y, z, BlockTypes.AIR.getDefaultState());
+
+        for(BlockVector3 vector : new CuboidRegion(minV, maxV)){
+            BlockState blockPosition = world.getBlock(vector);
+            if(blockPosition.getBlockType().equals(BlockTypes.BEACON)){
+                beacons++;
             }
+            if(blockPosition.getBlockType().equals(BlockTypes.AIR)){
+                blocks++;
+            }
+            editSession.setBlock(vector, BlockTypes.AIR);
         }
         editSession.flushQueue();
         editSession.close();
@@ -180,10 +176,9 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         int beacons = 0;
 
         BlockVector3 center = BlockVector3.at(location.getX(), location.getY(), location.getZ());
-        EllipsoidRegion ellipsoidRegion = new EllipsoidRegion(world, center, Vector3.at(radius, radius, radius));
 
         // Get all the block positions within the ellipsoid region
-        for(BlockVector3 vector : ellipsoidRegion){
+        for(BlockVector3 vector : new EllipsoidRegion(world, center, Vector3.at(radius, radius, radius))){
             BlockStateHolder<BlockState> blockState = editSession.getBlock(vector);
             if(!isInMine(vector)) continue;
             if(blockState.getBlockType().equals(BlockTypes.BEACON)){
