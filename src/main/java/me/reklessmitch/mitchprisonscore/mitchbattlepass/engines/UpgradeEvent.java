@@ -20,6 +20,7 @@ public class UpgradeEvent extends Engine {
         if(PassConf.get().getBlocksPerLevel().get(pp.getLevel() + 1) <= e.getBlocksBroken()){
             pp.addLevel();
             e.getPlayer().sendMessage("You have upgraded your battlepass to level " + pp.getLevel());
+
         }
     }
 
