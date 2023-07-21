@@ -13,8 +13,8 @@ public class CellConf extends Entity<CellConf> {
     public static CellConf get() { return i; }
 
     int maxCellSize = 10;
-    String prefix = "§7[§6Cells§7] ";
-    Map<String, Cell> cells = new HashMap<>();
+    private String prefix = "§7[§6Cells§7] ";
+    private Map<String, Cell> cells = new HashMap<>();
 
     public List<String> getCellNames(){
         return new ArrayList<>(cells.keySet());

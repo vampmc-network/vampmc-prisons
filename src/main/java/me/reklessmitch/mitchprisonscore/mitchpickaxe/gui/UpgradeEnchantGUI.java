@@ -10,7 +10,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 
 
@@ -24,21 +23,28 @@ public class UpgradeEnchantGUI extends ChestGui {
         this.enchant = enchant;
         this.player = player;
         this.p = PPickaxe.get(player);
-        setInventory(Bukkit.createInventory(null, 27, "Upgrade " + enchant.getType()));
+        setInventory(Bukkit.createInventory(null, 27, "UPGRADE " + enchant.getType()));
         refresh();
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
+        setAutoremoving(true);
         add();
     }
 
     private void getPane(int slot, int amount, int level){
+        if(level + amount > enchant.getMaxLevel()){
+            getInventory().setItem(slot, new ItemBuilder(Material.RED_STAINED_GLASS_PANE).build());
+            return;
+        }
         long cost = enchant.getCost(level, amount);
-        ItemStack is = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).displayname("Upgrade " + amount)
-                .lore("Cost: " + cost)
-                .build();
-        getInventory().setItem(slot, is);
+        getInventory().setItem(slot, new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
+                .displayname("§cUpgrade: §f" + amount)
+                .lore("§cCost: §f" + cost)
+                .build());
         setAction(slot, event -> {
             event.setCancelled(true);
             MitchCurrency currency = ProfilePlayer.get(player.getUniqueId()).getCurrency("token");
-
             if(currency.getAmount() - cost > 0){
                 currency.take(cost);
                 p.getEnchants().replace(enchant.getType(), amount + p.getEnchants().get(enchant.getType()));

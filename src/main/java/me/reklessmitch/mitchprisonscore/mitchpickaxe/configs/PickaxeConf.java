@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 
 import java.util.EnumMap;
@@ -28,7 +27,6 @@ public class PickaxeConf extends Entity<PickaxeConf> {
     private int explosiveLevelsPerIncrease = 50;
 
     private Map<EnchantType, Enchant> setUpEnchants(){
-        Bukkit.broadcastMessage("Setting up enchants");
         Map<EnchantType, Enchant> enchantList = new EnumMap<>(EnchantType.class);
         enchantList.put(EnchantType.APOCALYPSE,  new Enchant(EnchantType.APOCALYPSE, Material.ZOMBIE_HEAD, "Apocalypse", List.of("4 Zombies break to bedrock"), 0, 21, 1, 1, 0.1, 0, 0, 0));
         enchantList.put(EnchantType.BEACON, new Enchant(EnchantType.BEACON, Material.BEACON , "Beacon", List.of("Beacon"), 0, 22, 1, 1,0.1, 0, 0, 0));
@@ -46,7 +44,6 @@ public class PickaxeConf extends Entity<PickaxeConf> {
         enchantList.put(EnchantType.TOKEN_POUCH, new Enchant(EnchantType.TOKEN_POUCH, Material.MAGMA_CREAM, "Token Pouch", List.of("Gives tokens"), 0, 19, 1, 1, 0.1, 0, 0, 0));
         enchantList.put(EnchantType.NUKE, new Enchant(EnchantType.NUKE, Material.TNT, "Nuke", List.of("Nuke"), 0, 23, 1, 1, 0.1, 0, 0, 0));
         enchantList.put(EnchantType.EXPLOSIVE, new Enchant(EnchantType.EXPLOSIVE, Material.FIREWORK_STAR, "Explosive", List.of("Explosive"), 0, 24, 1, 1, 0.1, 0, 0, 0));
-        enchantList.forEach((enchantType, enchant) -> Bukkit.broadcastMessage(enchant.getClass().toString()));
         return enchantList;
     }
 

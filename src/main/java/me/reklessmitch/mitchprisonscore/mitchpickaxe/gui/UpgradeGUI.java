@@ -19,6 +19,9 @@ public class UpgradeGUI extends ChestGui {
         this.player = player;
         add();
         createInventory();
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
     }
 
     public void createInventory(){
@@ -33,8 +36,7 @@ public class UpgradeGUI extends ChestGui {
                 return true;
             });
         });
-        ItemStack pickaxeSkin = new ItemBuilder(Material.DIAMOND_PICKAXE).displayname("§aPickaxe Skins").glow().build();
-        pickaxeSkin.getItemMeta().setCustomModelData(1);
+        ItemStack pickaxeSkin = new ItemBuilder(Material.DIAMOND_PICKAXE).displayname("§aPickaxe Skins").glow().modelData(10000).build();
         getInventory().setItem(36, pickaxeSkin);
         this.setAction(36, event -> {
             event.setCancelled(true);

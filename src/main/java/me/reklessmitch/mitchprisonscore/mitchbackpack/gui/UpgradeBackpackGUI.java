@@ -23,22 +23,26 @@ public class UpgradeBackpackGUI extends ChestGui {
         this.backpackPlayer = BackpackPlayer.get(player.getUniqueId());
         this.profilePlayer = ProfilePlayer.get(player.getUniqueId());
         setInventory(Bukkit.createInventory(null, 45, "Upgrade Backpack"));
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
         refresh();
         add();
     }
 
     private void getUpgradeItem(int slot, int amount, int cost){
-        ItemStack guiItem = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).displayname("Upgrade " + amount + " slots")
-                .lore("Cost: " + cost, "Amount: " + amount)
-                .amount(amount)
+        ItemStack guiItem = new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
+                .displayname("§aUpgrade §c§l" + amount + " §aslots")
+                .lore( "§cCost: §f" + cost)
                 .build();
         getInventory().setItem(slot, guiItem);
         setAction(slot, event -> {
             MitchCurrency currency = profilePlayer.getCurrency("token");
             if(currency.getAmount() - cost > 0){
+                backpackPlayer.addSlot(amount);
                 currency.take(cost);
-                player.sendMessage("§aYou have upgraded your backpack by " + amount + " slots");
                 refresh();
+                return false;
             }else{
                 player.sendMessage("§cYou do not have enough tokens to upgrade your backpack");
             }
@@ -49,19 +53,30 @@ public class UpgradeBackpackGUI extends ChestGui {
         getInventory().setItem(4, backpackPlayer.getBackpackItem());
         getUpgradeItem(10, 1, backpackPlayer.getCost(1));
         getUpgradeItem(11, 5, backpackPlayer.getCost(5));
-        getUpgradeItem(12, 25, backpackPlayer.getCost(25));
-        getUpgradeItem(13, 50, backpackPlayer.getCost(50));
-        getUpgradeItem(14, 250, backpackPlayer.getCost(250));
-        getUpgradeItem(15, 1000, backpackPlayer.getCost(1000));
-        getUpgradeItem(16, 10000, backpackPlayer.getCost(10000));
-        getUpgradeItem(17, backpackPlayer.getMaxPurchasable(), backpackPlayer.getCost(backpackPlayer.getMaxPurchasable()));
+        getUpgradeItem(12, 50, backpackPlayer.getCost(50));
+        getUpgradeItem(13, 250, backpackPlayer.getCost(250));
+        getUpgradeItem(14, 1000, backpackPlayer.getCost(1000));
+        getUpgradeItem(15, 10000, backpackPlayer.getCost(10000));
+        getUpgradeItem(16, backpackPlayer.getMaxPurchasable(), backpackPlayer.getCost(backpackPlayer.getMaxPurchasable()));
+        getBackpackSkinItem();
         getAutoSellItem();
+    }
+
+    private void getBackpackSkinItem() {
+        getInventory().setItem(36, new ItemBuilder(Material.PAINTING).displayname("§cBackpack Skin")
+                .lore("§7Click to edit your backpack skin").modelData(backpackPlayer.getSkinID()).build());
+        setAction(36, event -> {
+            new BackpackSkins(player).open();
+            return true;
+        });
     }
 
     private void getAutoSellItem() {
         ItemStack guiItem = new ItemBuilder(Material.GOLD_BLOCK).displayname("§cAuto Sell")
-                .lore(backpackPlayer.isAutoSell() ? "§aEnabled" : "§cDisabled", "§7 ",
+                .lore("§7Instantly sells your backpack when it fills up!",
+                        backpackPlayer.isAutoSell() ? "§aEnabled" : "§cDisabled", "§7 ",
                         "§cCost: §e" + BackpackConf.get().getAutoSellCost()).build();
+
         getInventory().setItem(44, guiItem);
         setAction(44, event -> {
             event.setCancelled(true);

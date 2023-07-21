@@ -13,7 +13,7 @@ public class CmdBlocks extends PickaxeCommands {
 
     public CmdBlocks() {
         this.addAliases("blocks");
-        this.addParameter(TypePlayer.get(), "player");
+        this.addParameter(me, TypePlayer.get(), "player");
     }
 
     @Override

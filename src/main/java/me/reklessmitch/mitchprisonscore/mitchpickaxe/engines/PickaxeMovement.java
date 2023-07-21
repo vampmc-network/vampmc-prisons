@@ -4,9 +4,11 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.gui.UpgradeGUI;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 
@@ -29,6 +31,18 @@ public class PickaxeMovement extends Engine {
         if(!MUtil.isPickaxe(e.getPlayer().getInventory().getItemInMainHand().getType())) return;
         if(e.getAction().equals(Action.RIGHT_CLICK_AIR) || e.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             new UpgradeGUI(e.getPlayer()).open();
+        }
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent e){
+        if(e.getItemDrop().getItemStack().getType().equals(Material.DIAMOND_PICKAXE)){
+            e.setCancelled(true);
+            e.getPlayer().sendMessage("§cYou cannot drop your pickaxe!");
+        }
+        if(e.getItemDrop().getItemStack().getType().equals(Material.DRAGON_EGG)){
+            e.setCancelled(true);
+            e.getPlayer().sendMessage("§cYou cannot drop your backpack!");
         }
     }
 

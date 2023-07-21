@@ -3,16 +3,17 @@ package me.reklessmitch.mitchprisonscore.mitchmines.engine;
 import com.massivecraft.massivecore.Engine;
 import com.sk89q.worldedit.math.BlockVector3;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
+import me.reklessmitch.mitchprisonscore.mitchmines.configs.MineConf;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class MineEvents extends Engine {
 
@@ -35,7 +36,11 @@ public class MineEvents extends Engine {
         block.setType(Material.AIR);
         BlockVector3 blockVector3 = BlockVector3.at(block.getX(), block.getY(), block.getZ());
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
-        if(!playerMine.isInMine(blockVector3)) return;
+        if(!playerMine.isInMine(blockVector3)){
+            e.getPlayer().sendMessage("§cYou can only break blocks in your mine");
+            e.setCancelled(true);
+            return;
+        }
         if(block.getType().equals(Material.ENDER_CHEST)){
             Bukkit.broadcastMessage("DO SUPPLY DROP DROPS");
         }
@@ -44,17 +49,24 @@ public class MineEvents extends Engine {
     }
 
     @EventHandler(ignoreCancelled = true)
-    public void onTeleportToMine(PlayerTeleportEvent e){
-        if(!e.getTo().getWorld().getName().equals("privatemines")) return;
+    public void onTeleportToMine(PlayerChangedWorldEvent e){
+        if(!e.getPlayer().getWorld().getName().equals("privatemines")) return;
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
-        Bukkit.getScheduler().runTaskLater(MitchPrisonsCore.get(), () -> spoofWorldBorder(e.getPlayer(), playerMine.getMiddleLocation().toLocation(), 250), 40);
+        Bukkit.getScheduler().runTaskLater(MitchPrisonsCore.get(), () -> spoofWorldBorder(e.getPlayer(), playerMine.getMiddleLocation().toLocation(), 200), 40);
     }
 
     public void spoofWorldBorder(Player player, Location center, double size) {
-        World world = center.getWorld();
-        WorldBorder worldBorder = world.getWorldBorder();
-        worldBorder.setCenter(center.getX(), center.getZ());
-        worldBorder.setSize(size);
-        player.setWorldBorder(worldBorder);
+        MitchPrisonsCore.get().getWorldBorderApi().setBorder(player, size, center);
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void mineUpgradeCheck(BlocksMinedEvent e){
+        PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
+        if(playerMine.getRank() == MineConf.get().getMaxMineRank()) return;
+        if(MineConf.get().getMineRankLevels().get(playerMine.getRank() + 1) <= e.getBlocksBroken()){
+            playerMine.addRankLevel();
+            e.getPlayer().sendMessage("You have upgraded your mine to level " + playerMine.getRank());
+        }
+
     }
 }

@@ -7,4 +7,14 @@ public class PassConfColl extends Coll<PassConf> {
 
     private static final PassConfColl i = new PassConfColl();
     public static PassConfColl get() { return i; }
+
+    @Override
+    public void setActive(boolean active) {
+        super.setActive(active);
+        if(!active){
+            return;
+        }
+        PassConf.i = this.get("insane", true);
+    }
+
 }

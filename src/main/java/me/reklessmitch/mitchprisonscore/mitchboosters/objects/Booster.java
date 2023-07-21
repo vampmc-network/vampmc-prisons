@@ -21,8 +21,8 @@ public class Booster{
     BoosterType type;
     boolean active = false;
 
-    public Booster(String id, long timeInSeconds, double multiplier, BoosterType type) {
-        this.boosterID = id;
+    public Booster(BoosterType type, double multiplier, long timeInSeconds) {
+        this.boosterID = "" + BoosterConf.get().getBoostersMade();
         this.timeInSeconds = timeInSeconds;
         this.multiplier = multiplier;
         this.type = type;
@@ -31,7 +31,10 @@ public class Booster{
     public ItemStack getBoosterItem(){
         return new ItemBuilder(BoosterConf.get().getBoosterItems().get(type)).displayname("§a" + type.name() + " Booster")
                 .lore(List.of("§7Multiplier: " + multiplier, "§7Time: " + timeInSeconds + " seconds"))
-                .withData(pdc -> pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.STRING, boosterID))
-                .glow().build();
+                .withData(pdc -> {
+                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.STRING, type.name());
+                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.DOUBLE, multiplier);
+                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.LONG, timeInSeconds);
+                }).glow().build();
     }
 }

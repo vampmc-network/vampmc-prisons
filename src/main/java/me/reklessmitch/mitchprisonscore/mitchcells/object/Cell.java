@@ -22,6 +22,7 @@ public class Cell {
         this.owner = owner;
         this.beacons = 0;
         this.members = new HashSet<>();
+        this.invites = new HashSet<>();
         this.officers = new HashSet<>();
     }
 

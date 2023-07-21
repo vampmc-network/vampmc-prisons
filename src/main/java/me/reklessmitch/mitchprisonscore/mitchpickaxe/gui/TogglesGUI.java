@@ -17,6 +17,9 @@ public class TogglesGUI extends ChestGui {
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());
         refresh();
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
         add();
     }
 
@@ -27,7 +30,7 @@ public class TogglesGUI extends ChestGui {
             getInventory().setItem(e.getDisplayItem().getSlot(), e.getEnchantGuiToggleItem(pickaxe));
             setAction(e.getDisplayItem().getSlot(), event -> {
                 event.setCancelled(true);
-                pickaxe.toggleEnchant(e.getType());
+                pickaxe.toggleEnchant(enchant);
                 refresh();
                 return true;
             });

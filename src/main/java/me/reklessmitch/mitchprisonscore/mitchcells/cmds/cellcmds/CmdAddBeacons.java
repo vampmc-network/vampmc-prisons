@@ -6,7 +6,6 @@ import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 
 public class CmdAddBeacons extends CellCommands {
 
@@ -25,6 +24,8 @@ public class CmdAddBeacons extends CellCommands {
         long amount = this.readArg();
         ProfilePlayer profile = ProfilePlayer.get(me.getUniqueId());
         if(amount > 0 && profile.getCurrency("beacon").getAmount() > amount){
+            profile.getCurrency("beacon").take(amount);
+            profile.changed();
             cell.addBeacons(amount);
             msg("<g>Added " + amount + " beacons to your cell");
         }else{

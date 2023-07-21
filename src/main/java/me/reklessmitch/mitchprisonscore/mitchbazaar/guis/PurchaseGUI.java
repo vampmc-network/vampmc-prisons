@@ -25,6 +25,9 @@ public class PurchaseGUI extends ChestGui {
         this.itemToBeBrought = itemToBeBrought;
         this.item = item;
         this.sellPrices = BazaarConf.get().getSellPrices().get(itemToBeBrought);
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
         setup();
         add();
     }
@@ -47,7 +50,7 @@ public class PurchaseGUI extends ChestGui {
             List<ShopValue> sorted = sellPrices.get(currencies.get(i));
             if(sorted == null) {
                 getInventory().setItem(10 + i * 2, new ItemStack(Material.BARRIER));
-                return;
+                continue;
             }
             sorted.sort(Comparator.comparing(ShopValue::getPricePerItem));
             getInventory().setItem(10 + i * 2, new ItemBuilder(getCurrency(currencies.get(i)))

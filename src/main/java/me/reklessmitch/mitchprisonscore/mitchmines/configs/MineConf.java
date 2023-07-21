@@ -6,6 +6,7 @@ import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
 import org.bukkit.Material;
 
+import java.util.Map;
 import java.util.Set;
 
 @Getter
@@ -19,6 +20,14 @@ public class MineConf extends Entity<MineConf> {
     private SerLoc mineOffset = new SerLoc(-135, 19, -48);
     private int mineBoosterCost = 1000;
     private int mineBoosterMax = 10;
-    Set<Material> blockMap = Set.of(Material.STONE);
+    private int maxMineRank = 100;
+    private Map<Integer, Integer> mineRankLevels = Map.of(
+            1, 1000,
+            2, 5000,
+            3, 10000,
+            4, 25000,
+            5, 50000
+    );
+    private Set<Material> blockMap = Set.of(Material.STONE);
 
 }

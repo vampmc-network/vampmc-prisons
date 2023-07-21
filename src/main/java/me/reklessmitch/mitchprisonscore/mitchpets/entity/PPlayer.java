@@ -23,8 +23,7 @@ public class PPlayer extends SenderEntity<PPlayer> {
     }
 
     Set<Pet> pets = newPets();
-    @Setter
-    PetType activePet = PetType.TOKEN;
+    @Setter PetType activePet = PetType.TOKEN;
 
     private Set<Pet> newPets() {
         return Set.of(new Pet(PetType.CRATE), new Pet(PetType.MONEY), new Pet(PetType.SUPPLY_DROP),

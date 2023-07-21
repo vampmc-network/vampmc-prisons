@@ -1,11 +1,11 @@
 package me.reklessmitch.mitchprisonscore.mitchpets.util;
 
+import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
@@ -25,18 +25,13 @@ public class DisplayItem {
     }
 
     public ItemStack getGuiItem() {
-        ItemStack i = new ItemStack(material);
-        ItemMeta meta = i.getItemMeta();
-        meta.setDisplayName(ChatColor.translateAlternateColorCodes('&', itemName));
-        meta.setLore(itemLore.stream().map(s -> {
+        List<String> lore = itemLore.stream().map(s -> {
             if (s == null) return "";
             return ChatColor.translateAlternateColorCodes('&', s);
-        }).toList());
-
-        meta.setCustomModelData(customModelData);
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        i.setItemMeta(meta);
-        return i;
+        }).toList();
+        return new ItemBuilder(material).displayname(itemName).lore(lore).modelData(customModelData).unbreakable(true)
+                .flag(ItemFlag.HIDE_ATTRIBUTES)
+                .build();
     }
 
 

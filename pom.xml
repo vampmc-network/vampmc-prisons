@@ -70,6 +70,10 @@
             <id>jitpack-repo</id>
             <url>https://jitpack.io</url>
         </repository>
+        <repository>
+            <id>eldonexus</id>
+            <url>https://eldonexus.de/repository/maven-releases/</url>
+        </repository>
     </repositories>
 
 
@@ -78,6 +82,12 @@
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
             <version>2.11.3</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.yannicklamprecht</groupId>
+            <artifactId>worldborderapi</artifactId>
+            <version>1.192.0</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -102,14 +112,14 @@
         </dependency>
         <dependency>
             <groupId>org.spigotmc</groupId>
-            <artifactId>spigot-api</artifactId>
+            <artifactId>spigot</artifactId>
             <version>1.19.2-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <version>1.18.24</version>
+            <version>1.18.26</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

@@ -1,5 +1,6 @@
 package me.reklessmitch.mitchprisonscore;
 
+import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import com.massivecraft.massivecore.MassivePlugin;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.colls.*;
@@ -11,7 +12,7 @@ import me.reklessmitch.mitchprisonscore.mitchbazaar.cmd.CmdBazaar;
 import me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster.CmdBooster;
 import me.reklessmitch.mitchprisonscore.mitchboosters.engines.BoosterInteract;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds.CmdCell;
-import me.reklessmitch.mitchprisonscore.mitchmines.cmds.def.CmdMineGO;
+import me.reklessmitch.mitchprisonscore.mitchmines.cmds.def.CmdMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.engine.MineEvents;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.PMineWorldGen;
 import me.reklessmitch.mitchprisonscore.mitchpets.cmd.CmdPet;
@@ -21,6 +22,7 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdToggles;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdUpgradeGUI;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.MineBlockEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.PickaxeMovement;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.CmdCurrency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChangeJoinMessage;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConfColl;
@@ -30,8 +32,10 @@ import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 
 import java.security.SecureRandom;
+import java.text.DecimalFormat;
 import java.util.Random;
 
+@Getter
 public final class MitchPrisonsCore extends MassivePlugin {
 
     private static MitchPrisonsCore i;
@@ -47,11 +51,10 @@ public final class MitchPrisonsCore extends MassivePlugin {
     }
 
 
-    @Getter NamespacedKey key = new NamespacedKey(this, "mitchbooster");
-    @Getter NamespacedKey noDropKey = new NamespacedKey(this, "mitchnodrop");
-
-    @Getter private final Random random = new SecureRandom();
-
+    NamespacedKey key = new NamespacedKey(this, "mitchbooster");
+    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    WorldBorderApi worldBorderApi;
+    private final Random random = new SecureRandom();
 
     @Override
     public void onEnableInner() {
@@ -87,13 +90,13 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Cells
                 CmdCell.class,
                 // Mines
-                CmdMineGO.class,
+                CmdMine.class,
                 // Pets
                 CmdPet.class,
                 // Pickaxe
                 CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class,
                 // Profiles
-                CmdChangeJoinMessage.class,
+                CmdChangeJoinMessage.class, CmdCurrency.class,
                 // Bazaar
                 CmdBazaar.class,
 
@@ -120,7 +123,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
             new ProfilePlaceholders().register();
             new PetPlaceholders().register();
         }
-
+        worldBorderApi = Bukkit.getServicesManager().getRegistration(WorldBorderApi.class).getProvider();
 
     }
 

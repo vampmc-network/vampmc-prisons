@@ -1,7 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
 import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
@@ -43,6 +42,7 @@ public class CmdCellKick extends CellCommands {
             msg("<b>You cannot kick this player as they're equal or higher rank than you");
         }
     }
+
     private void kickPlayer(Player player, Cell cell) {
         cell.removePlayer(player.getUniqueId());
         msg("<b> You have kicked " + player.getName() + " from your cell");

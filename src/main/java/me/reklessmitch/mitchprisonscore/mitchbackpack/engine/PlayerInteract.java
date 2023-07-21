@@ -25,6 +25,7 @@ public class PlayerInteract extends Engine {
         if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
             if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.DRAGON_EGG)){
                 new UpgradeBackpackGUI(event.getPlayer()).open();
+                event.setCancelled(true);
             }
         }
     }

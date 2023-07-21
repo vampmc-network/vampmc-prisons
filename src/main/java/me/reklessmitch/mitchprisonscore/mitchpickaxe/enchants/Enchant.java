@@ -8,7 +8,6 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class Enchant {
     }
 
     public ItemStack getEnchantGuiItem(PPickaxe pickaxe) {
-        ItemStack i = new ItemBuilder(displayItem.getMaterial())
+        return new ItemBuilder(displayItem.getMaterial())
                 .displayname(displayItem.getItemName())
                 .lore(displayItem.getItemLore().stream().map(s -> {
                     if (s == null) return "";
@@ -56,23 +55,14 @@ public class Enchant {
                     s = s.replace("{maxlevel}", String.valueOf(maxLevel));
                     s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1)));
                     return s;
-                }).toList()).build();
-
-        ItemMeta meta = i.getItemMeta();
-        meta.setCustomModelData(displayItem.getCustomModelData());
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        i.setItemMeta(meta);
-        return i;
+                }).toList())
+                .modelData(displayItem.getCustomModelData())
+                .flag(ItemFlag.HIDE_ATTRIBUTES)
+                .build();
     }
 
     public ItemStack getEnchantGuiToggleItem(PPickaxe pickaxe) {
-        ItemStack i = new ItemStack(displayItem.getMaterial());
-        ItemMeta meta = i.getItemMeta();
-        meta.setDisplayName(displayItem.getItemName());
-        meta.setLore(List.of("§a ", pickaxe.getEnchantToggle().get(type) ? "§aEnabled" : "§cDisabled"));
-        meta.setCustomModelData(displayItem.getCustomModelData());
-        meta.addItemFlags(ItemFlag.HIDE_ATTRIBUTES);
-        i.setItemMeta(meta);
-        return i;
+        return new ItemBuilder(displayItem.getMaterial()).displayname(displayItem.getItemName())
+                .lore(List.of("§a ", pickaxe.getEnchantToggle().get(type) ? "§aEnabled" : "§cDisabled")).flag(ItemFlag.HIDE_ATTRIBUTES).build();
     }
 }

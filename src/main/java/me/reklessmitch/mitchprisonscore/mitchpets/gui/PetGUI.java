@@ -5,6 +5,9 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
+import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetConf;
+import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
+import me.reklessmitch.mitchprisonscore.mitchpets.util.DisplayItem;
 import org.bukkit.Bukkit;
 
 import java.util.HashMap;
@@ -23,12 +26,16 @@ public class PetGUI extends ChestGui {
         setInventory(Bukkit.createInventory(null, 18, "Pets"));
         player.getPets().forEach(pet -> pets.put(pets.size(), pet));
         setUpInventory();
+        setAutoclosing(false);
+        setSoundOpen(null);
+        setSoundClose(null);
         add();
     }
 
     private void setUpInventory() {
+        Map<PetType, DisplayItem> display = PetConf.get().getPetDisplayItems();
         pets.forEach((slot, pet) -> {
-            getInventory().setItem(slot, pet.getDisplayItem(player));
+            getInventory().setItem(slot, display.get(pet.getType()).getGuiItem());
             this.setAction(slot, event -> {
                 event.setCancelled(true);
                 player.setActivePet(pet.getType());

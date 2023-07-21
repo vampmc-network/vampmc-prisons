@@ -33,28 +33,30 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         return this;
     }
 
+    private int skinID = 0;
     private int currentLoad = 0;
     private int capacity = 100;
     private boolean autoSell = false;
 
     public void set() {
-        getPlayer().getInventory().setItem(8, getBackpackItem());
+        getPlayer().getInventory().setItem(7, getBackpackItem());
     }
 
     public ItemStack getBackpackItem() {
         return new ItemBuilder(Material.DRAGON_EGG)
                 .displayname("§6Backpack")
                 .lore("§7Size: §e" + capacity, "§7Autosell: " + (autoSell ? "§aEnabled" : "§cDisabled"))
+                .modelData(skinID)
                 .build();
     }
 
-    public void add(int amount) {
+    public void add(long amount) {
         if(capacity <= amount + currentLoad){
+            currentLoad = capacity;
             if(autoSell){
                 sell();
                 return;
             }
-            currentLoad = capacity;
             MixinTitle.get().sendTitleMsg(getPlayer(), 0, 20, 0, "§cBackpack is full!", "§7Sell your items with §e/sell");
         }else{
             currentLoad += amount;
@@ -110,7 +112,7 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     public int getCost(int amountToBuy) { // @REDO THIS
         BackpackConf conf = BackpackConf.get();
         int costPerSlot = conf.getSlotPriceIncreasePerSize();
-        return (amountToBuy * costPerSlot) - (capacity * costPerSlot);
+        return amountToBuy * costPerSlot;
     }
 
     public int getMaxPurchasable() {
@@ -118,5 +120,11 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         BackpackConf conf = BackpackConf.get();
         int costPerSlot = conf.getSlotPriceIncreasePerSize();
         return (int) (tokens / costPerSlot);
+    }
+
+    public void setSkin(int customDataModel) {
+        skinID = customDataModel;
+        set();
+        changed();
     }
 }

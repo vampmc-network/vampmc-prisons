@@ -5,9 +5,6 @@ import me.reklessmitch.mitchprisonscore.mitchmines.guis.BlockGUI;
 
 public class CmdSetBlock extends MineCommands {
 
-    private static final CmdSetBlock i = new CmdSetBlock();
-    public static CmdSetBlock get() { return i; }
-
     public CmdSetBlock(){
         this.addAliases("setblock");
     }
@@ -16,5 +13,4 @@ public class CmdSetBlock extends MineCommands {
     public void perform() {
         new BlockGUI(me).open();
     }
-
 }

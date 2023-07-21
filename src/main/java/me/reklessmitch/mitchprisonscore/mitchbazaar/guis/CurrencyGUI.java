@@ -26,14 +26,10 @@ public class CurrencyGUI extends ChestGui {
         });
     }
     private void setup() {
-        ItemStack item = new ItemBuilder(Material.BEACON).displayname("§eBeacon").lore("§7Click to buy/sell beacons").build();
-        setUpAction(10, item, "beacon");
-        getInventory().setItem(12, new ItemBuilder(Material.EMERALD).displayname("§aToken").lore("§7Click to buy/sell tokens").build());
-        setUpAction(12, item, "token");
-        getInventory().setItem(14, new ItemBuilder(Material.GOLD_INGOT).displayname("§6Money").lore("§7Click to buy/sell money").build());
-        setUpAction(14, item, "money");
-        getInventory().setItem(16, new ItemBuilder(Material.DIAMOND).displayname("§bCredits").lore("§7Click to buy/sell credits").build());
-        setUpAction(16, item, "credits");
+        setUpAction(10, new ItemBuilder(Material.BEACON).displayname("§eBeacon").lore("§7Click to buy/sell beacons").build(), "beacon");
+        setUpAction(12, new ItemBuilder(Material.EMERALD).displayname("§aToken").lore("§7Click to buy/sell tokens").build(), "token");
+        setUpAction(14, new ItemBuilder(Material.GOLD_INGOT).displayname("§6Money").lore("§7Click to buy/sell money").build(), "money");
+        setUpAction(16, new ItemBuilder(Material.DIAMOND).displayname("§bCredits").lore("§7Click to buy/sell credits").build(), "credits");
     }
 
     public void open() {

@@ -2,8 +2,8 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
-import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.UpgradeBattlePassEvent;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
@@ -19,11 +19,11 @@ import java.util.Map;
 @Getter
 public class PPickaxe extends SenderEntity<PPickaxe> {
 
-    DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "§bPickaxe", List.of("§eEnchants"), 0, 4);
-    long rawBlocksBroken = 0;
-    long blocksBroken = 0;
-    Map<EnchantType, Integer> enchants = setEnchants();
-    Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
+    private DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "§bPickaxe", List.of("§eEnchants"), 0, 4);
+    private long rawBlocksBroken = 0;
+    private long blocksBroken = 0;
+    private Map<EnchantType, Integer> enchants = setEnchants();
+    private Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
 
     private Map<EnchantType, Boolean> setEnchantToggle() {
         Map<EnchantType, Boolean> enchantTogglesList = new EnumMap<>(EnchantType.class);
@@ -37,7 +37,7 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
 
     public void addBlockBroken(long amount){
         blocksBroken += amount;
-        UpgradeBattlePassEvent e = new UpgradeBattlePassEvent(getPlayer(), blocksBroken);
+        BlocksMinedEvent e = new BlocksMinedEvent(getPlayer(), blocksBroken);
         Bukkit.getPluginManager().callEvent(e);
 
     }
@@ -54,13 +54,13 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
     }
 
     public void updatePickaxe(){
-        List<String> lore = new ArrayList<>(List.of("§eEnchants"));
+        List<String> lore = new ArrayList<>(List.of("§3§lEnchants"));
         lore.add("§7 ");
         enchants.forEach((enchantType, level) -> {
             if(level == 0) return;
             Enchant e = PickaxeConf.get().getEnchantByType(enchantType);
             if (e == null) return;
-            lore.add(e.getDisplayItem().getItemName() + "§f: " + level);
+            lore.add("§b| §3" + e.getType() + "§f: " + level);
         });
         pickaxe.setItemLore(lore);
         this.changed();

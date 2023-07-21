@@ -26,6 +26,7 @@ public class BlockGUI extends ChestGui {
                 PlayerMine.get(player.getUniqueId()).setBlock(block);
                 return true;
             });
+            i++;
         }
     }
 

@@ -1,4 +1,4 @@
-package me.reklessmitch.mitchprisonscore.mitchpickaxe.events;
+package me.reklessmitch.mitchprisonscore.mitchbattlepass.events;
 
 import lombok.Getter;
 import org.bukkit.entity.Player;
@@ -7,14 +7,14 @@ import org.bukkit.event.HandlerList;
 import org.jetbrains.annotations.NotNull;
 
 @Getter
-public class BlockToBackpackEvent extends Event {
+public class BlocksMinedEvent extends Event {
     private static final HandlerList handlers = new HandlerList();
     private final Player player;
-    private final int amount;
+    private final long blocksBroken;
 
-    public BlockToBackpackEvent(Player player, int amount) {
+    public BlocksMinedEvent(Player player, long blocksBroken) {
         this.player = player;
-        this.amount = amount;
+        this.blocksBroken = blocksBroken;
     }
 
     public @NotNull HandlerList getHandlers() {

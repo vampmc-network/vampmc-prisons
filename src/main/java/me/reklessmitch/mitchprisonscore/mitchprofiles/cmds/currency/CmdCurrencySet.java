@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 public class CmdCurrencySet extends CurrencyCommands {
 
     public CmdCurrencySet() {
+        this.addAliases("set");
         this.setDesc("Set currency of a player");
         this.addParameter(TypePlayer.get(), "player");
         this.addParameter(TypeString.get(), "currency");

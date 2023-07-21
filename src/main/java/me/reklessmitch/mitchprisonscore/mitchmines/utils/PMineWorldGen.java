@@ -20,7 +20,7 @@ public class PMineWorldGen extends ChunkGenerator {
 
     public void createWorld() {
         World world = MitchPrisonsCore.get().getServer().createWorld((new WorldCreator(this.worldName))
-                .generator(this));
+                .generator(this).generateStructures(false));
         world.setDifficulty(Difficulty.EASY);
         world.setGameRuleValue("doDaylightCycle", "false");
         world.setTime(6000L);

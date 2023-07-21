@@ -9,7 +9,6 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.profile.PlayerProfile;
 
 public class MineGUI extends ChestGui {
 
@@ -44,12 +43,15 @@ public class MineGUI extends ChestGui {
     private void addUpgradeBoosterItem(){
         int cost = MineConf.get().getMineBoosterCost();
         int maxLevel = MineConf.get().getMineBoosterMax();
-        getInventory().setItem(13, new ItemBuilder(Material.DIAMOND).displayname("§aUpgrade Booster")
-            .lore("§7Upgrade your mine booster by 1x", "",
-                    playerMine.getBooster() >= maxLevel ? "§cCost: §f" + cost : "").build());
         if(playerMine.getBooster() >= maxLevel){
+            getInventory().setItem(13, new ItemBuilder(Material.BARRIER).displayname("§aUpgrade Booster")
+                .lore("§7Upgrade your mine booster by 1x", "", "§cMax Level Reached").build());
             return;
+        }else{
+            getInventory().setItem(13, new ItemBuilder(Material.DIAMOND).displayname("§aUpgrade Booster")
+                .lore("§7Upgrade your mine booster by 1x", "§cCost: §f" + cost).build());
         }
+
         setAction(13, event -> {
             ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
             MitchCurrency currency = profile.getCurrency("credits");
@@ -74,7 +76,6 @@ public class MineGUI extends ChestGui {
     }
 
     private void init() {
-        // - Mine GO , Mine SetBlock, Upgrade Boosters, Reset Mine, Mine Info
         addMineInformationItem();
         addMineGOItem();
         addUpgradeBoosterItem();
@@ -82,6 +83,6 @@ public class MineGUI extends ChestGui {
     }
 
     public void open() {
-
+        player.openInventory(getInventory());
     }
 }

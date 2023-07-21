@@ -15,6 +15,7 @@ import org.bukkit.entity.Player;
 public class CmdCurrencyRemove extends CurrencyCommands {
 
     public CmdCurrencyRemove() {
+        this.addAliases("remove");
         this.setDesc("Remove currency to a player");
         this.addParameter(TypePlayer.get(), "player");
         this.addParameter(TypeString.get(), "currency");
