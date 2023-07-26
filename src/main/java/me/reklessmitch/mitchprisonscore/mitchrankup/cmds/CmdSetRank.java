@@ -11,8 +11,8 @@ import org.bukkit.entity.Player;
 
 public class CmdSetRank extends RankupCommands{
 
-    private static final CmdRankup i = new CmdRankup();
-    public static CmdRankup get() { return i; }
+    private static final CmdSetRank i = new CmdSetRank();
+    public static CmdSetRank get() { return i; }
 
     public CmdSetRank() {
         this.setVisibility(Visibility.SECRET);
