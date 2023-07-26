@@ -14,6 +14,7 @@ import me.reklessmitch.mitchprisonscore.mitchboosters.engines.BoosterInteract;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds.CmdCell;
 import me.reklessmitch.mitchprisonscore.mitchmines.cmds.def.CmdMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.engine.MineEvents;
+import me.reklessmitch.mitchprisonscore.mitchmines.placeholders.MinePlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.PMineWorldGen;
 import me.reklessmitch.mitchprisonscore.mitchpets.cmd.CmdPet;
 import me.reklessmitch.mitchprisonscore.mitchpets.placeholders.PetPlaceholders;
@@ -27,13 +28,17 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChange
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConfColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.engines.PlayerEvents;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.CurrencyPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.ProfilePlaceholders;
+import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdRankup;
+import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdSetRank;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 
 import java.security.SecureRandom;
 import java.text.DecimalFormat;
 import java.util.Random;
+
 
 @Getter
 public final class MitchPrisonsCore extends MassivePlugin {
@@ -51,7 +56,12 @@ public final class MitchPrisonsCore extends MassivePlugin {
     }
 
 
-    NamespacedKey key = new NamespacedKey(this, "mitchbooster");
+    // Booster Keys
+    NamespacedKey typeKey = new NamespacedKey(this, "boosterType");
+    NamespacedKey multiKey = new NamespacedKey(this, "boosterMultiplier");
+    NamespacedKey durationKey = new NamespacedKey(this, "boosterDuration");
+
+
     DecimalFormat decimalFormat = new DecimalFormat("#.##");
     WorldBorderApi worldBorderApi;
     private final Random random = new SecureRandom();
@@ -79,6 +89,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 ProfilesConfColl.class, ProfilePlayerColl.class,
                 // Bazaar
                 BazaarConfColl.class,
+                // Rankup
+                RankupConfColl.class,
 
                 // --- Commands ---
                 // Backpack
@@ -99,6 +111,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 CmdChangeJoinMessage.class, CmdCurrency.class,
                 // Bazaar
                 CmdBazaar.class,
+                // Rankup
+                CmdRankup.class, CmdSetRank.class,
 
                 // --- Listeners ---
                 // Backpack
@@ -120,8 +134,11 @@ public final class MitchPrisonsCore extends MassivePlugin {
 
         createPrivateMineWorld();
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new CurrencyPlaceholders().register();
             new ProfilePlaceholders().register();
             new PetPlaceholders().register();
+            new MinePlaceholders().register();
+
         }
         worldBorderApi = Bukkit.getServicesManager().getRegistration(WorldBorderApi.class).getProvider();
 
@@ -130,5 +147,6 @@ public final class MitchPrisonsCore extends MassivePlugin {
     @Override
     public void onDisable() {
         i = null;
+        super.onDisable();
     }
 }

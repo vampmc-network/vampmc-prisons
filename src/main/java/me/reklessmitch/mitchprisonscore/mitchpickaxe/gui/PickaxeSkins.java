@@ -32,6 +32,10 @@ public class PickaxeSkins extends ChestGui {
         this.setAction(slot, event -> {
             event.setCancelled(true);
             PPickaxe pick = PPickaxe.get(player.getUniqueId());
+            if(!player.hasPermission("mitchprisonscore.pickaxe." + customDataModel)){
+                player.sendMessage("§cYou do not have permission to use this skin!");
+                return false;
+            }
             if(pick.getPickaxe().getCustomModelData() == customDataModel){
                 player.sendMessage("§cYou already have this skin selected!");
                 return false;

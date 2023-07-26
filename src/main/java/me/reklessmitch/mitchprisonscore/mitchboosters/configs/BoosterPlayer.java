@@ -28,7 +28,7 @@ public class BoosterPlayer extends SenderEntity<BoosterPlayer> {
         return this;
     }
 
-    public void combineBoosters() {
+    public boolean combineBoosters() {
         int changes = 0;
         Map<BoosterType, Map<Double, Long>> multipliersToTime = new EnumMap<>(BoosterType.class);
         for(Booster booster : boosters){
@@ -52,8 +52,10 @@ public class BoosterPlayer extends SenderEntity<BoosterPlayer> {
                     multipliers.forEach((multiplier, time) ->
                             boosters.add(new Booster(type, multiplier, time))));
             getPlayer().sendMessage("§aYour boosters have been combined!");
+            return true;
         }else{
             getPlayer().sendMessage("§cYou have no boosters to combine!");
+            return false;
         }
     }
 }

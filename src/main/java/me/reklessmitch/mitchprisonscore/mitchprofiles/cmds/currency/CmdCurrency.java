@@ -11,9 +11,11 @@ public class CmdCurrency extends CurrencyCommands {
     public CmdCurrencyPay cmdCurrencyPay = new CmdCurrencyPay();
     public CmdCurrencyRemove cmdCurrencyRemove = new CmdCurrencyRemove();
     public CmdCurrencySet cmdCurrencySet = new CmdCurrencySet();
+    public CmdBuy cmdBuy = new CmdBuy();
 
     public CmdCurrency() {
         this.addAliases("currency");
+        this.addChild(cmdBuy);
         this.addChild(cmdCurrencyAdd);
         this.addChild(cmdCurrencyPay);
         this.addChild(cmdCurrencyRemove);

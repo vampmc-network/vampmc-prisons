@@ -6,6 +6,7 @@ import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterConf;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
+import me.reklessmitch.mitchprisonscore.mitchboosters.utils.TimeFormat;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -30,11 +31,11 @@ public class Booster{
 
     public ItemStack getBoosterItem(){
         return new ItemBuilder(BoosterConf.get().getBoosterItems().get(type)).displayname("§a" + type.name() + " Booster")
-                .lore(List.of("§7Multiplier: " + multiplier, "§7Time: " + timeInSeconds + " seconds"))
-                .withData(pdc -> {
-                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.STRING, type.name());
-                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.DOUBLE, multiplier);
-                    pdc.set(MitchPrisonsCore.get().getKey(), PersistentDataType.LONG, timeInSeconds);
-                }).glow().build();
+            .lore(List.of("§7Multiplier: " + multiplier, "§7Time: " + TimeFormat.formatSeconds((int) timeInSeconds)))
+            .withData(pdc -> {
+                pdc.set(MitchPrisonsCore.get().getTypeKey(), PersistentDataType.STRING, type.toString());
+                pdc.set(MitchPrisonsCore.get().getMultiKey(), PersistentDataType.DOUBLE, multiplier);
+                pdc.set(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG, timeInSeconds);
+            }).glow().build();
     }
 }

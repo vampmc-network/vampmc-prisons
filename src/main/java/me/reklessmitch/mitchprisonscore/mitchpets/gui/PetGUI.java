@@ -35,7 +35,7 @@ public class PetGUI extends ChestGui {
     private void setUpInventory() {
         Map<PetType, DisplayItem> display = PetConf.get().getPetDisplayItems();
         pets.forEach((slot, pet) -> {
-            getInventory().setItem(slot, display.get(pet.getType()).getGuiItem());
+            getInventory().setItem(slot, display.get(pet.getType()).getGuiItem(pet.getLevel()));
             this.setAction(slot, event -> {
                 event.setCancelled(true);
                 player.setActivePet(pet.getType());

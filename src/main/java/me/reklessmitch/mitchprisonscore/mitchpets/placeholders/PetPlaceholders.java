@@ -35,6 +35,5 @@ public class PetPlaceholders extends PlaceholderExpansion {
         }
         return "Not Active";
     }
-
 }
 

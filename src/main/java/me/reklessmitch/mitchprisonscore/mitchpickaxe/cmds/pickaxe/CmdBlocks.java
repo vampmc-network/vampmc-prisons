@@ -13,12 +13,14 @@ public class CmdBlocks extends PickaxeCommands {
 
     public CmdBlocks() {
         this.addAliases("blocks");
-        this.addParameter(me, TypePlayer.get(), "player");
+        this.addParameter(TypePlayer.get(), "player");
     }
 
     @Override
     public void perform() throws MassiveException {
         Player player = this.readArg();
+        if(player == null) player = me.getPlayer();
+        assert player != null;
         PPickaxe pick = PPickaxe.get(player.getUniqueId());
         me.sendMessage("§6§l§n" + player.getName() + "§eBlock Stats" +
                 "\n§6Blocks: §e" + pick.getBlocksBroken() +

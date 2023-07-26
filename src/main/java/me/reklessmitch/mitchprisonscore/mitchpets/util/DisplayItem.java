@@ -24,12 +24,9 @@ public class DisplayItem {
         this.customModelData = customModelData;
     }
 
-    public ItemStack getGuiItem() {
-        List<String> lore = itemLore.stream().map(s -> {
-            if (s == null) return "";
-            return ChatColor.translateAlternateColorCodes('&', s);
-        }).toList();
-        return new ItemBuilder(material).displayname(itemName).lore(lore).modelData(customModelData).unbreakable(true)
+    public ItemStack getGuiItem(int level) {
+        itemLore.replaceAll(lore -> lore.replace("{level}", "" + level));
+        return new ItemBuilder(material).displayname(itemName).lore(itemLore).modelData(customModelData).unbreakable(true)
                 .flag(ItemFlag.HIDE_ATTRIBUTES)
                 .build();
     }

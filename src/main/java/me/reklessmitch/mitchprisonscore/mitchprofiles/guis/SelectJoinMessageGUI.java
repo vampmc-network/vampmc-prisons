@@ -7,16 +7,14 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.Inventory;
 
 public class SelectJoinMessageGUI extends ChestGui{
 
-    Inventory inv;
     ProfilePlayer profilePlayer;
     Player player;
 
     public SelectJoinMessageGUI(Player player) {
-        this.inv = Bukkit.createInventory(null, 45, "§aSelect Join Message");
+        setInventory(Bukkit.createInventory(null, 45, "§aSelect Join Message"));
         this.profilePlayer = ProfilePlayer.get(player);
         this.player = player;
         add();
@@ -24,10 +22,10 @@ public class SelectJoinMessageGUI extends ChestGui{
     }
 
     private void refresh(){
-        inv.setItem(4, new ItemBuilder(Material.DIAMOND, 1, "§aCurrent Join Message").lore(profilePlayer.getJoinMessage()).build());
+        getInventory().setItem(4, new ItemBuilder(Material.DIAMOND, 1, "§aCurrent Join Message").lore(profilePlayer.getJoinMessage()).build());
         int i = 9;
         for(String message : ProfilesConf.get().getJoinMessages()){
-            inv.setItem(i, new ItemBuilder(Material.PAPER, 1, "§a" + message).build());
+            getInventory().setItem(i, new ItemBuilder(Material.PAPER, 1, "§a" + message).build());
             setAction(i, event -> {
                 event.setCancelled(true);
                 profilePlayer.setJoinMessage(message);
@@ -43,7 +41,7 @@ public class SelectJoinMessageGUI extends ChestGui{
 
 
     public void open(){
-        player.openInventory(inv);
+        player.openInventory(getInventory());
     }
 
 }

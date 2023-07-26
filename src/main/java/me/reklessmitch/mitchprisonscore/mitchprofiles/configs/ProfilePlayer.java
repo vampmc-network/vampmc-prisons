@@ -10,14 +10,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Getter
 public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     public static ProfilePlayer get(Object oid) {
         return ProfilePlayerColl.get().get(oid);
     }
 
-    @Getter List<MitchCurrency> currencyList = ProfilesConf.get().getCurrencyList().stream().collect(ArrayList::new, (list, str) -> list.add(new MitchCurrency(str, 0)), ArrayList::addAll);
-    List<UUID> friends = new ArrayList<>();
-    @Getter @Setter private String joinMessage = "";
+    private List<MitchCurrency> currencyList = ProfilesConf.get().getCurrencyList().stream().collect(ArrayList::new, (list, str) -> list.add(new MitchCurrency(str, 0)), ArrayList::addAll);
+    private List<UUID> friends = new ArrayList<>();
+    @Setter private String joinMessage = "";
+    private List<Integer> claimedRewards = new ArrayList<>();
+    @Setter private int rank = 0;
 
     @Override
     public ProfilePlayer load(@NotNull ProfilePlayer that)

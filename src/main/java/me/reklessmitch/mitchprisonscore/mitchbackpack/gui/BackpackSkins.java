@@ -27,6 +27,10 @@ public class BackpackSkins extends ChestGui {
         getInventory().setItem(slot, item);
         this.setAction(slot, event -> {
             event.setCancelled(true);
+            if(!player.hasPermission("mitchprisonscore.backpack." + customDataModel)){
+                player.sendMessage("§cYou do not have permission to use this skin!");
+                return false;
+            }
             BackpackPlayer bp = BackpackPlayer.get(player.getUniqueId());
             if(bp.getSkinID() == customDataModel){
                 player.sendMessage("§cYou already have this skin selected!");

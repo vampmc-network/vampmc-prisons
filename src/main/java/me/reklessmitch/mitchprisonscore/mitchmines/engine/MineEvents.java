@@ -62,8 +62,8 @@ public class MineEvents extends Engine {
     @EventHandler(ignoreCancelled = true)
     public void mineUpgradeCheck(BlocksMinedEvent e){
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
-        if(playerMine.getRank() == MineConf.get().getMaxMineRank()) return;
-        if(MineConf.get().getMineRankLevels().get(playerMine.getRank() + 1) <= e.getBlocksBroken()){
+        if(playerMine.getRank() >= MineConf.get().getMaxMineRank()) return;
+        if(MineConf.get().getNextMineLevelBlockRequirement(playerMine.getRank()) <= e.getBlocksBroken()){
             playerMine.addRankLevel();
             e.getPlayer().sendMessage("You have upgraded your mine to level " + playerMine.getRank());
         }

@@ -21,13 +21,15 @@ public class MineConf extends Entity<MineConf> {
     private int mineBoosterCost = 1000;
     private int mineBoosterMax = 10;
     private int maxMineRank = 100;
-    private Map<Integer, Integer> mineRankLevels = Map.of(
-            1, 1000,
-            2, 5000,
-            3, 10000,
-            4, 25000,
-            5, 50000
-    );
+
+    private int startValue = 5000;
+    private int increaseAmount = 1000;
+    private double increment = 3.2;
+
     private Set<Material> blockMap = Set.of(Material.STONE);
+
+    public long getNextMineLevelBlockRequirement(int level){
+        return (long) (startValue + (increaseAmount * Math.pow(level, increment)));
+    }
 
 }
