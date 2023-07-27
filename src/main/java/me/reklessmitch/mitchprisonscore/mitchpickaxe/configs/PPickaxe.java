@@ -37,7 +37,7 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
 
     public void addBlockBroken(long amount){
         blocksBroken += amount;
-        BlocksMinedEvent e = new BlocksMinedEvent(getPlayer(), blocksBroken);
+        BlocksMinedEvent e = new BlocksMinedEvent(getPlayer(), amount);
         Bukkit.getPluginManager().callEvent(e);
 
     }

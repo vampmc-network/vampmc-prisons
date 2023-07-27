@@ -15,8 +15,9 @@ public class BoosterGUI extends ChestGui {
 
     BoosterPlayer player;
 
-    public BoosterGUI(UUID player) {
-        this.player = BoosterPlayer.get(player);
+    public BoosterGUI(UUID p) {
+        this.player = BoosterPlayer.get(p);
+        player.changed();
         setInventory(Bukkit.createInventory(null, 54, "Boosters"));
         setAutoclosing(false);
         setAutoremoving(true);
@@ -28,16 +29,43 @@ public class BoosterGUI extends ChestGui {
 
     public void refresh() {
         getInventory().clear();
-        getInventory().setItem(50, getUpgradeBoosterItem());
-        int boosterSlot = 10;
+        setUpActiveBoosters();
+        getInventory().setItem(53, getUpgradeBoosterItem());
+        int boosterSlot = 0;
         for(Booster booster : player.getBoosters()){
             getInventory().setItem(boosterSlot, booster.getBoosterItem());
+            setAction(boosterSlot, event -> {
+                event.setCancelled(true);
+                player.activateBooster(booster);
+                refresh();
+                return true;
+            });
             boosterSlot++;
         }
     }
 
+    private void setUpActiveBoosters() {
+        Booster tokenBooster = player.getActiveTokenBooster();
+        Booster moneyBooster = player.getActiveMoneyBooster();
+        Booster beaconBooster = player.getActiveBeaconBooster();
+
+        if(tokenBooster != null) {boostersPos(45, tokenBooster);}
+        if(moneyBooster != null) {boostersPos(47, moneyBooster);}
+        if(beaconBooster != null) {boostersPos(49, beaconBooster);}
+    }
+
+    private void boostersPos(int slot, Booster booster){
+        getInventory().setItem(slot, booster.getBoosterItem());
+        setAction(slot, event -> {
+            event.setCancelled(true);
+            player.deactivateBooster(booster);
+            refresh();
+            return true;
+        });
+    }
+
     private ItemStack getUpgradeBoosterItem() {
-        setAction(50, event -> {
+        setAction(53, event -> {
             event.setCancelled(true);
             if(player.combineBoosters()) {
                 refresh();

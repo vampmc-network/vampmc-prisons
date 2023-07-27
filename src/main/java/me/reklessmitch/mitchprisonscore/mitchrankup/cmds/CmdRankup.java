@@ -1,6 +1,5 @@
 package me.reklessmitch.mitchprisonscore.mitchrankup.cmds;
 
-import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.CmdBuy;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;

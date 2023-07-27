@@ -38,7 +38,7 @@ public class UpgradeBackpackGUI extends ChestGui {
         getInventory().setItem(slot, guiItem);
         setAction(slot, event -> {
             MitchCurrency currency = profilePlayer.getCurrency("token");
-            if(currency.getAmount() - cost > 0){
+            if(currency.getAmount() - cost >= 0){
                 backpackPlayer.addSlot(amount);
                 currency.take(cost);
                 refresh();

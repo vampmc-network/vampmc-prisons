@@ -3,8 +3,10 @@ package me.reklessmitch.mitchprisonscore.mitchboosters.configs;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
+import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.BoosterPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
+import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterActiveTask;
 import me.reklessmitch.mitchprisonscore.mitchboosters.utils.BoosterType;
 import org.jetbrains.annotations.NotNull;
 
@@ -13,10 +15,10 @@ import java.util.*;
 @Setter @Getter
 public class BoosterPlayer extends SenderEntity<BoosterPlayer> {
 
-    Booster activeTokenBooster = null;
-    Booster activeMoneyBooster = null;
-    Booster activeBeaconBooster = null;
-    List<Booster> boosters = new ArrayList<>();
+    private Booster activeTokenBooster = null;
+    private Booster activeMoneyBooster = null;
+    private Booster activeBeaconBooster = null;
+    private List<Booster> boosters = new ArrayList<>();
 
     public static BoosterPlayer get(Object oid) {
         return BoosterPlayerColl.get().get(oid);
@@ -51,11 +53,49 @@ public class BoosterPlayer extends SenderEntity<BoosterPlayer> {
             multipliersToTime.forEach((type, multipliers) ->
                     multipliers.forEach((multiplier, time) ->
                             boosters.add(new Booster(type, multiplier, time))));
-            getPlayer().sendMessage("§aYour boosters have been combined!");
+            getPlayer().sendMessage("§aYour boosters have been combined! (Reactivate your boosters!)");
+            activeBeaconBooster = null;
+            activeMoneyBooster = null;
+            activeTokenBooster = null;
             return true;
         }else{
             getPlayer().sendMessage("§cYou have no boosters to combine!");
             return false;
         }
+    }
+
+    public void activateBooster(Booster booster) {
+        switch (booster.getType()){
+            case BEACON -> {
+                if(activeBeaconBooster != null){
+                    activeBeaconBooster.setActive(false);
+                }
+                activeBeaconBooster = booster;
+            }
+            case TOKEN -> {
+                if(activeTokenBooster != null){
+                    activeTokenBooster.setActive(false);
+                }
+                activeTokenBooster = booster;
+            }
+            case MONEY -> {
+                if(activeMoneyBooster != null){
+                    activeMoneyBooster.setActive(false);
+                }
+                activeMoneyBooster = booster;
+            }
+        }
+        booster.setActive(true);
+        new BoosterActiveTask(booster, this).runTaskTimer(MitchPrisonsCore.get(), 0, 20);
+
+    }
+
+    public void deactivateBooster(Booster booster) {
+        switch (booster.getType()){
+            case BEACON -> activeBeaconBooster = null;
+            case TOKEN -> activeTokenBooster = null;
+            case MONEY -> activeMoneyBooster = null;
+        }
+        booster.setActive(false);
     }
 }

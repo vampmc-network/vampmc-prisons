@@ -12,6 +12,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.jetbrains.annotations.NotNull;
 
 public class BoosterInteract extends Engine {
 
@@ -32,8 +33,9 @@ public class BoosterInteract extends Engine {
         if(pdc.has(MitchPrisonsCore.get().getTypeKey(), PersistentDataType.STRING)
             && pdc.has(MitchPrisonsCore.get().getMultiKey(), PersistentDataType.DOUBLE)
             && pdc.has(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG)) {
+            String id = pdc.get(MitchPrisonsCore.get().getTypeKey(), PersistentDataType.STRING);
 
-            BoosterType type = BoosterType.valueOf(pdc.get(MitchPrisonsCore.get().getTypeKey(), PersistentDataType.STRING));
+            BoosterType type = BoosterType.valueOf(id);
             double multiplier = pdc.get(MitchPrisonsCore.get().getMultiKey(), PersistentDataType.DOUBLE);
             long time = pdc.get(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG);
             event.getPlayer().sendMessage("§aAdded booster with " + multiplier + "x to /boosters");

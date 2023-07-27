@@ -6,7 +6,8 @@ import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Set;
+import java.util.EnumMap;
+import java.util.Map;
 
 @Getter
 public class PPlayer extends SenderEntity<PPlayer> {
@@ -22,16 +23,22 @@ public class PPlayer extends SenderEntity<PPlayer> {
         return this;
     }
 
-    Set<Pet> pets = newPets();
+    private final Map<PetType, Pet> pets = initializePets();
+
     @Setter PetType activePet = PetType.TOKEN;
 
-    private Set<Pet> newPets() {
-        return Set.of(new Pet(PetType.CRATE), new Pet(PetType.MONEY), new Pet(PetType.SUPPLY_DROP),
-                new Pet(PetType.JACKHAMMER_BOOST), new Pet(PetType.TOKEN));
+    private Map<PetType, Pet> initializePets() {
+        Map<PetType, Pet> petsCreate = new EnumMap<>(PetType.class);
+        petsCreate.put(PetType.CRATE, new Pet(PetType.CRATE));
+        petsCreate.put(PetType.MONEY, new Pet(PetType.MONEY));
+        petsCreate.put(PetType.SUPPLY_DROP, new Pet(PetType.SUPPLY_DROP));
+        petsCreate.put(PetType.JACKHAMMER_BOOST, new Pet(PetType.JACKHAMMER_BOOST));
+        petsCreate.put(PetType.TOKEN, new Pet(PetType.TOKEN));
+        return petsCreate;
     }
 
-    public Pet getPet(PetType type){
-        return pets.stream().filter(pet -> pet.getType() == type).findFirst().orElse(null);
+    public Pet getPet(PetType type) {
+        return pets.getOrDefault(type, null);
     }
 
 

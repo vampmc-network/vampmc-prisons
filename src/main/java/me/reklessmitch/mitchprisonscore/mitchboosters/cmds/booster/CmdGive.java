@@ -28,12 +28,13 @@ public class CmdGive extends BoosterCommands {
     public void perform(){
         try {
             Player player = this.readArg();
-            BoosterType type = BoosterType.valueOf(this.readArg().toString().toUpperCase());
+            String sType = this.readArg();
+            BoosterType type = BoosterType.valueOf(sType.toUpperCase());
             double multiplier = this.readArg();
             long duration = this.readArg();
             Booster booster = new Booster(type, multiplier, duration);
             player.getInventory().addItem(booster.getBoosterItem());
-        } catch (MassiveException e) {
+        } catch (Exception typeError) {
             me.sendMessage("Invalid arguments");
         }
     }

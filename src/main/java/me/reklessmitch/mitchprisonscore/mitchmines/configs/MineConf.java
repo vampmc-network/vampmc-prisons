@@ -6,7 +6,6 @@ import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
 import org.bukkit.Material;
 
-import java.util.Map;
 import java.util.Set;
 
 @Getter

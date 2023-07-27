@@ -30,22 +30,22 @@ public class PetConf extends Entity<PetConf> {
                     List.of("§7Increases proc chance of jackhammer",
                             "§7 ",
                             "§7Level: §a{level}"),
-                    0),
+                    0, 0),
             PetType.MONEY, new DisplayItem(Material.CREEPER_HEAD, "§bMONEY PET",
                     List.of("§7Increases money made from backpack",
                             "§7 ",
-                            "§7Level: §a{level}"), 0),
+                            "§7Level: §a{level}"), 0, 1),
             PetType.TOKEN, new DisplayItem(Material.WITHER_SKELETON_SKULL, "§bTOKEN PET",
                     List.of("§7Increases token amount per block",
                             "§7 ",
-                            "§7Level: §a{level}"), 0),
+                            "§7Level: §a{level}"), 0, 2),
 
             PetType.CRATE, new DisplayItem(Material.ZOMBIE_HEAD, "§bCRATE PET",
                     List.of("§7Increases proc chance of key enchantment",
                             "§7 ",
-                            "§7Level: §a{level}"), 0),
-            PetType.SUPPLY_DROP, new DisplayItem(Material.ZOMBIE_HEAD, "§bSUPPLY DROP PET",
+                            "§7Level: §a{level}"), 0, 3),
+            PetType.SUPPLY_DROP, new DisplayItem(Material.CHEST, "§bSUPPLY DROP PET",
                    List.of("§7Increases proc chance of Supply Drop Pet",
                            "§7 ",
-                           "§7Level: §a{level}"), 0));
+                           "§7Level: §a{level}"), 0, 4));
 }

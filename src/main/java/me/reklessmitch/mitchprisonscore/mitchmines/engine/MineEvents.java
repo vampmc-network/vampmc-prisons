@@ -52,7 +52,8 @@ public class MineEvents extends Engine {
     public void onTeleportToMine(PlayerChangedWorldEvent e){
         if(!e.getPlayer().getWorld().getName().equals("privatemines")) return;
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
-        Bukkit.getScheduler().runTaskLater(MitchPrisonsCore.get(), () -> spoofWorldBorder(e.getPlayer(), playerMine.getMiddleLocation().toLocation(), 200), 40);
+        Bukkit.getScheduler().runTaskLater(MitchPrisonsCore.get(), () ->
+                spoofWorldBorder(e.getPlayer(), playerMine.getMiddleLocation().toLocation(), 124), 40);
     }
 
     public void spoofWorldBorder(Player player, Location center, double size) {

@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class RankupRewardsGUI extends ChestGui {
 
-    Player player;
+    private final Player player;
 
     public RankupRewardsGUI(Player player){
         this.player = player;

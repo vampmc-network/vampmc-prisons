@@ -2,7 +2,6 @@ package me.reklessmitch.mitchprisonscore.mitchpets.gui;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 
-import me.reklessmitch.mitchprisonscore.colls.PPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetConf;
@@ -18,13 +17,11 @@ import static com.massivecraft.massivecore.util.IdUtil.getPlayer;
 
 public class PetGUI extends ChestGui {
 
-    private final PPlayer player;
-    private final Map<Integer, Pet> pets = new HashMap<>();
+    private final PPlayer pPlayer;
 
     public PetGUI(UUID pID){
-        this.player = PPlayerColl.get().get(pID);
+        this.pPlayer = PPlayer.get(pID);
         setInventory(Bukkit.createInventory(null, 18, "Pets"));
-        player.getPets().forEach(pet -> pets.put(pets.size(), pet));
         setUpInventory();
         setAutoclosing(false);
         setSoundOpen(null);
@@ -33,20 +30,25 @@ public class PetGUI extends ChestGui {
     }
 
     private void setUpInventory() {
-        Map<PetType, DisplayItem> display = PetConf.get().getPetDisplayItems();
-        pets.forEach((slot, pet) -> {
-            getInventory().setItem(slot, display.get(pet.getType()).getGuiItem(pet.getLevel()));
-            this.setAction(slot, event -> {
-                event.setCancelled(true);
-                player.setActivePet(pet.getType());
-                event.getWhoClicked().sendMessage("You have selected the " + pet.getType().name() + " pet.");
+        Map<PetType, DisplayItem> displayItems =  PetConf.get().getPetDisplayItems();
+        pPlayer.getPets().values().forEach(pet -> {
+            int slot = displayItems.get(pet.getType()).getSlot();
+            getInventory().setItem(slot, displayItems.get(pet.getType()).getGuiItem(pet.getLevel()));
+            setAction(slot, event -> {
+                if(pPlayer.getActivePet() == pet.getType()) {
+                    event.getWhoClicked().sendMessage("You already have the " + pet.getType().name() + " pet selected.");
+                    return true;
+                }
+                pPlayer.setActivePet(pet.getType());
+                event.getWhoClicked().sendMessage("You have selected the " + pet.getType().name() + " pet." + " Level: " + pet.getLevel());
                 setUpInventory();
+                pPlayer.changed();
                 return true;
             });
         });
     }
 
     public void open() {
-        getPlayer(player.getId()).openInventory(getInventory());
+        getPlayer(pPlayer.getPlayer()).openInventory(getInventory());
     }
 }

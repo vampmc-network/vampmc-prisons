@@ -7,6 +7,8 @@ import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.colls.BackPackPlayerColl;
+import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
+import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
@@ -87,7 +89,8 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
             startAmount *= 1 + greedMulti;
         }
         int boostLevel = ppickaxe.getEnchants().get(EnchantType.BOOST);
-        if(boostLevel == 0 && new SecureRandom().nextDouble(1) > PickaxeConf.get().getEnchantByType(EnchantType.BOOST).getProcChance(boostLevel)){
+        if(boostLevel != 0 &&
+                new SecureRandom().nextDouble(1) < PickaxeConf.get().getEnchantByType(EnchantType.BOOST).getProcChance(boostLevel)){
             startAmount *= 2;
             boostActivated = true;
         }
@@ -96,9 +99,14 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
             startAmount *= 1 + petBooster;
         }
 
+        Booster booster = BoosterPlayer.get(getId()).getActiveMoneyBooster();
+        if(booster != null){
+            startAmount *= booster.getMultiplier();
+        }
         ProfilePlayer.get(getId()).getCurrency("money").add(startAmount);
         getPlayer().sendMessage("§a-------------------------" +
                                 "\n§aYou have sold §e" + currentLoad + " §aitems for §e" + startAmount + " §amoney" +
+                (booster != null ? "\n§aBooster Multiplier (+" + booster.getMultiplier() + ")" : "") +
                 (boostActivated ? "\n§aBoost Multiplier (2x)" : "") +
                         (greedMulti > 0 ? "\n§aGreed Multiplier (+" + greedMulti / 1000.0 + ")" : "") +
                 (petBooster > 0 ? "\n§aPet Multiplier (+" + petBooster + ")" : "" ) +

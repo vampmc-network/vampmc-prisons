@@ -4,6 +4,8 @@ import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
 import com.sk89q.worldedit.math.BlockVector3;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
+import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
+import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
@@ -93,19 +95,28 @@ public class MineBlockEvent extends Engine {
     }
 
     private void addTokens(int blocks, Pet pet, ProfilePlayer currency, PlayerMine mine, String enchant) {
+        // @TODO Add fortune buffs
+        PPickaxe pickaxe = PPickaxe.get(mine.getPlayer().getUniqueId());
+        int fortuneLevel = pickaxe.getEnchants().get(EnchantType.FORTUNE);
+        if(fortuneLevel > 0) {
+            blocks *= (double) fortuneLevel / 1000;
+        }
         int tokensToAdd = blocks;
         if(pet.getType() == PetType.TOKEN) {
             tokensToAdd = (int) (blocks * pet.getPetBooster());
         }
         tokensToAdd *= mine.getBooster();
+        Booster booster = BoosterPlayer.get(mine.getPlayer().getUniqueId()).getActiveTokenBooster();
+        if(booster != null){
+            tokensToAdd *= booster.getMultiplier();
+        }
         currency.getCurrency("token").add(tokensToAdd);
+        currency.changed();
         // mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
     }
 
     private void addBlocksToBackpack(Player player, int blocks){
         PPickaxe.get(player.getUniqueId()).addBlockBroken(blocks);
-        BlocksMinedEvent bpEvent = new BlocksMinedEvent(player, blocks);
-        Bukkit.getPluginManager().callEvent(bpEvent);
     }
 
     private void explosive(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency, int level) {

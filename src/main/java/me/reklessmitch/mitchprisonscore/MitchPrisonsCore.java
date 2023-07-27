@@ -1,5 +1,6 @@
 package me.reklessmitch.mitchprisonscore;
 
+import com.fastasyncworldedit.core.FaweAPI;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import com.massivecraft.massivecore.MassivePlugin;
 import lombok.Getter;
@@ -23,7 +24,7 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdToggles;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdUpgradeGUI;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.MineBlockEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.PickaxeMovement;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.CmdCurrency;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.*;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChangeJoinMessage;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConfColl;
@@ -57,12 +58,13 @@ public final class MitchPrisonsCore extends MassivePlugin {
 
 
     // Booster Keys
-    NamespacedKey typeKey = new NamespacedKey(this, "boosterType");
-    NamespacedKey multiKey = new NamespacedKey(this, "boosterMultiplier");
-    NamespacedKey durationKey = new NamespacedKey(this, "boosterDuration");
+    private final NamespacedKey typeKey = new NamespacedKey(this, "boosterType");
+    private final NamespacedKey multiKey = new NamespacedKey(this, "boosterMultiplier");
+    private final NamespacedKey durationKey = new NamespacedKey(this, "boosterDuration");
+    private final NamespacedKey noMove = new NamespacedKey(this, "noMove");
 
 
-    DecimalFormat decimalFormat = new DecimalFormat("#.##");
+    private final DecimalFormat decimalFormat = new DecimalFormat("#.##");
     WorldBorderApi worldBorderApi;
     private final Random random = new SecureRandom();
 
@@ -70,7 +72,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
     public void onEnableInner() {
         i = this;
         this.activate(
-                // --- Colls ---
+                // --- Collections ---
                 // Backpack
                 BackpackConfColl.class, BackPackPlayerColl.class,
                 // BattlePass
@@ -108,7 +110,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Pickaxe
                 CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class,
                 // Profiles
-                CmdChangeJoinMessage.class, CmdCurrency.class,
+                CmdChangeJoinMessage.class, CmdCurrency.class, CmdBal.class,
+                CmdCurrencyPay.class, CmdCurrencyAddAmount.class, CmdCurrencyAddPercent.class,
                 // Bazaar
                 CmdBazaar.class,
                 // Rankup
@@ -133,13 +136,14 @@ public final class MitchPrisonsCore extends MassivePlugin {
         );
 
         createPrivateMineWorld();
+
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new CurrencyPlaceholders().register();
             new ProfilePlaceholders().register();
             new PetPlaceholders().register();
             new MinePlaceholders().register();
-
         }
+
         worldBorderApi = Bukkit.getServicesManager().getRegistration(WorldBorderApi.class).getProvider();
 
     }

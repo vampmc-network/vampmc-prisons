@@ -19,6 +19,8 @@ import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.PlayerMineColl;
+import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
+import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Location;
@@ -36,10 +38,10 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
 
     private int rank = 1;
     private int size = 10;
-    private int offSetX = 400 * PlayerMineColl.get().getAll().size();
-    private SerLoc spawnPoint = new SerLoc(offSetX, 107, 0);
-    private SerLoc middleLocation = new SerLoc(offSetX -87, 97, 0);
-    private SerLoc min = new SerLoc(-size, -50, -size).addS(middleLocation);
+    private int offSetX = 300 * PlayerMineColl.get().getAll().size();
+    private SerLoc spawnPoint = new SerLoc(offSetX, 99, 0);
+    private SerLoc middleLocation = new SerLoc(offSetX -57, 97, 0);
+    private SerLoc min = new SerLoc(-size, -70, -size).addS(middleLocation);
     private SerLoc max = new SerLoc(size, 0, size).addS(middleLocation);
     private long volume = (long) (size + 1) * (size + 1) * 100; // 50 * 2 for size radius
     private long volumeMined = 0;
@@ -54,14 +56,14 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
     public void reset(){
         volumeMined = 0;
         World world = FaweAPI.getWorld("privatemines");
-        Location l = getPlayer().getLocation().subtract(0, 2, 0);
+        Location l = getPlayer().getLocation();
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
         Region cub = new CuboidRegion(min.toBlockVector3(), max.toBlockVector3());
         editSession.setBlocks(cub, BlockTypes.get(block.name().toLowerCase()));
         editSession.flushQueue();
         editSession.close();
         if(isInMine(BlockVector3.at(l.getX(), l.getY(), l.getZ()))){
-            getPlayer().teleport(middleLocation.toLocation());
+            getPlayer().teleport(middleLocation.toLocation().add(0, 1, 0));
         }
         getPlayer().sendMessage("Mine Reset");
     }
@@ -73,14 +75,16 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
     }
 
     private void generateSchematic(){
-        File file = new File(WorldEdit.getInstance().getSchematicsFolderPath() + File.separator + "3.schem");
+        File file = new File(WorldEdit.getInstance().getSchematicsFolderPath() + File.separator + "mine.schem");
         World world = FaweAPI.getWorld("privatemines");
 
         try {Clipboard clip = FaweAPI.load(file);
             MitchPrisonsCore.get().getServer().getScheduler().runTaskAsynchronously(MitchPrisonsCore.get(), () ->
                     clip.paste(world, spawnPoint.toBlockVector3(), false,
                             false, false, null));
-        }catch (IOException ignored){}
+        }catch (IOException e){
+            e.printStackTrace();
+        }
 
     }
 
@@ -106,25 +110,7 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         BlockVector3 minV = min.toBlockVector3().withY(y);
         BlockVector3 maxV = max.toBlockVector3().withY(y);
 
-        int blocks = 0;
-        int beacons = 0;
-
-        for(BlockVector3 vector : new CuboidRegion(minV, maxV)){
-            BlockState blockPosition = world.getBlock(vector);
-            if(blockPosition.getBlockType().equals(BlockTypes.BEACON)){
-                beacons++;
-            }
-            if(!blockPosition.getBlockType().equals(BlockTypes.AIR)){
-                blocks++;
-            }
-            editSession.setBlock(vector, BlockTypes.AIR);
-        }
-        editSession.flushQueue();
-        editSession.close();
-        volumeMined += blocks;
-        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
-        volumeMinedCheck();
-        return blocks;
+        return getBeaconsAndBlocksInRegion(new CuboidRegion(minV, maxV), editSession);
     }
 
     public int getExplosiveBlocks(Location location, int radius){
@@ -151,11 +137,18 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         editSession.flushQueue();
         editSession.close();
         volumeMined += blocks;
-        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
+        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(multiplyBeaconBooster(beacons));
         volumeMinedCheck();
         return blocks;
     }
 
+    private int multiplyBeaconBooster(int beacons){
+        Booster beaconBooster = BoosterPlayer.get(getPlayer()).getActiveBeaconBooster();
+        if(beaconBooster != null){
+            beacons *= beaconBooster.getMultiplier();
+        }
+        return beacons;
+    }
     private void volumeMinedCheck(){
         if(volumeMined >= volume * 0.7){
             reset();
@@ -180,6 +173,28 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         }
     }
 
+    public int getBeaconsAndBlocksInRegion(CuboidRegion region, EditSession editSession){
+        int beacons = 0;
+        int blocks = 0;
+
+        for(BlockVector3 vector : region){
+            BlockState blockPosition = editSession.getBlock(vector);
+            if(blockPosition.getBlockType().equals(BlockTypes.BEACON)){
+                beacons++;
+            }
+            if(!blockPosition.getBlockType().equals(BlockTypes.AIR)){
+                blocks++;
+            }
+            editSession.setBlock(vector, BlockTypes.AIR);
+        }
+        editSession.flushQueue();
+        editSession.close();
+        volumeMined += blocks;
+        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(multiplyBeaconBooster(beacons));
+        volumeMinedCheck();
+        return blocks;
+    }
+
     public int apocolypse() {
         World world = FaweAPI.getWorld("privatemines");
         EditSession editSession = WorldEdit.getInstance().getEditSessionFactory().getEditSession(world, -1);
@@ -196,30 +211,15 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
             randomBlocks.add(BlockVector3.at(x, 97, z));
         }
 
-        int beacons = 0;
-        int blocks = 0;
+        int totalBlocks = 0;
 
         for(BlockVector3 v3 : randomBlocks){
             BlockVector3 minM = BlockVector3.at(v3.getX(), 47, v3.getZ());
             BlockVector3 maxM = BlockVector3.at(v3.getX(), 97, v3.getZ());
             CuboidRegion cuboidRegion = new CuboidRegion(minM, maxM);
-            for(BlockVector3 vector : cuboidRegion){
-                BlockState blockPosition = world.getBlock(vector);
-                if(blockPosition.getBlockType().equals(BlockTypes.BEACON)){
-                    beacons++;
-                }
-                if(!blockPosition.getBlockType().equals(BlockTypes.AIR)){
-                    blocks++;
-                }
-                editSession.setBlock(vector, BlockTypes.AIR);
-            }
+            totalBlocks += getBeaconsAndBlocksInRegion(cuboidRegion, editSession);
         }
-        editSession.flushQueue();
-        editSession.close();
-        volumeMined += blocks;
-        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(beacons);
-        volumeMinedCheck();
-        return blocks;
+        return totalBlocks;
     }
 
     public void addRankLevel() {

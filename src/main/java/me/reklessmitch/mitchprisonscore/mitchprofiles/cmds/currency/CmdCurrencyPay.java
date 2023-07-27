@@ -7,15 +7,19 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.entity.Player;
 
 public class CmdCurrencyPay extends CurrencyCommands {
+
+    private static CmdCurrencyPay i = new CmdCurrencyPay();
+    public static CmdCurrencyPay get() { return i; }
 
     public CmdCurrencyPay(){
         this.addAliases("pay");
         this.addParameter(TypePlayer.get(), "player");
         this.addParameter(TypeString.get(), "currency");
-        this.addParameter(TypeLong.get(), "amount");
+        this.addParameter(TypeString.get(), "amount");
     }
 
     @Override
@@ -35,16 +39,22 @@ public class CmdCurrencyPay extends CurrencyCommands {
         if(!ProfilesConf.get().getCurrencyList().contains(currency)){
             return;
         }
-        long amount = this.readArg();
-        if(amount <= 0){
+
+        String amount = this.readArg();
+        long amountInt = CurrencyUtils.parse(amount);
+        if(amountInt == -1){
+            msg("<b>Invalid amount / character (k, m, b)");
+            return;
+        }
+        if(amountInt <= 0){
             msg("<b>Amount must be greater than 0");
             return;
         }
-        if(sender.getCurrency("token").getAmount() < amount){
+        if(sender.getCurrency(currency).getAmount() < amountInt){
             msg("<b>You do not have enough " + currency + "/s");
         }else{
-            sender.getCurrency("token").take(amount);
-            receiver.getCurrency("token").add(amount);
+            sender.getCurrency(currency).take(amountInt);
+            receiver.getCurrency(currency).add(amountInt);
             sender.changed();
             receiver.changed();
             msg("<g>You have sent " + amount + " " + currency + "/s to " + player.getName());
