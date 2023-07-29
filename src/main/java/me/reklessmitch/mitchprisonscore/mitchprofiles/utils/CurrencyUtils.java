@@ -4,10 +4,16 @@ import org.bukkit.Bukkit;
 
 public class CurrencyUtils {
 
-    public static String format(int amount){
-        return String.valueOf(amount);
-        // @TODO: Format the amount
+    public static String format(long number) {
+        String[] suffixes = {"", "k", "m", "b", "t"};
+        if (number < 1000) {
+            return String.valueOf(number);
+        }
+        int magnitude = (int) (Math.log10(number) / 3);
+        double convertedNumber = number / Math.pow(1000, magnitude);
+        return String.format("%.1f%s", convertedNumber, suffixes[magnitude]);
     }
+
 
     public static long parse(String amount){
         long amountInt;
@@ -17,7 +23,7 @@ public class CurrencyUtils {
 
         if (Character.isDigit(lastChar)) {
             try{
-                amountInt = Integer.parseInt(amount);
+                amountInt = Long.parseLong(amount);
             }catch (NumberFormatException e){
                 return -1; // Cannot pay in doubles
             }

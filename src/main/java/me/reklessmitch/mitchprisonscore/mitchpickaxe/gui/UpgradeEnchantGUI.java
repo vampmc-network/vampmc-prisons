@@ -10,16 +10,16 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.potion.PotionEffectType;
+import org.jetbrains.annotations.NotNull;
 
 
 public class UpgradeEnchantGUI extends ChestGui {
 
-    Enchant enchant;
-    Player player;
-    PPickaxe p;
+    private final Enchant enchant;
+    private final Player player;
+    private final PPickaxe p;
 
-    public UpgradeEnchantGUI(Enchant enchant, Player player) {
+    public UpgradeEnchantGUI(@NotNull Enchant enchant, Player player) {
         this.enchant = enchant;
         this.player = player;
         this.p = PPickaxe.get(player);
@@ -38,18 +38,27 @@ public class UpgradeEnchantGUI extends ChestGui {
             return;
         }
         long cost = enchant.getCost(level, amount);
+        MitchCurrency currency = ProfilePlayer.get(player.getUniqueId()).getCurrency("token");
+        if(currency.getAmount() - cost < 0){
+            getInventory().setItem(slot, new ItemBuilder(Material.RED_STAINED_GLASS_PANE)
+                    .displayname("§cUpgrade: §f" + amount)
+                    .lore("§cCost: §f" + cost)
+                    .build());
+            return;
+        }
+
         getInventory().setItem(slot, new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE)
                 .displayname("§cUpgrade: §f" + amount)
                 .lore("§cCost: §f" + cost)
                 .build());
+
         setAction(slot, event -> {
             event.setCancelled(true);
-            MitchCurrency currency = ProfilePlayer.get(player.getUniqueId()).getCurrency("token");
             if(currency.getAmount() - cost > 0){
                 currency.take(cost);
                 p.getEnchants().replace(enchant.getType(), amount + p.getEnchants().get(enchant.getType()));
                 player.sendMessage("§aYou have upgraded " + enchant.getType() + " by " + amount + " levels");
-                updatePickaxe(player);
+                p.updatePickaxe();
                 refresh();
             }else{
                 player.sendMessage("§cYou do not have enough tokens to upgrade this enchantment");
@@ -58,13 +67,6 @@ public class UpgradeEnchantGUI extends ChestGui {
         });
     }
 
-    private void updatePickaxe(Player effectPlayer){
-        p.updatePickaxe();
-        p.givePickaxe();
-        refresh();
-        effectPlayer.removePotionEffect(PotionEffectType.SPEED);
-        effectPlayer.removePotionEffect(PotionEffectType.FAST_DIGGING);
-    }
 
     public void refresh(){
         int currentLevel = p.getEnchants().get(enchant.getType());

@@ -3,6 +3,7 @@ package me.reklessmitch.mitchprisonscore.mitchbazaar.config;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
+import org.bukkit.Material;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,5 +37,15 @@ public class BazaarConf extends Entity<BazaarConf> {
                     "beacon", new ArrayList<>()
             )
     );
+
+    public Material getCurrency(String itemToBeBrought) {
+        return switch (itemToBeBrought) {
+            case "beacon" -> Material.EMERALD;
+            case "token" -> Material.GOLD_INGOT;
+            case "money" -> Material.DIAMOND;
+            case "credits" -> Material.BEACON;
+            default -> Material.BARRIER;
+        };
+    }
 
 }

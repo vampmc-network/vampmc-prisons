@@ -7,6 +7,7 @@ import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.MineConf;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.BlockInPmineBrokeEvent;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import org.bukkit.*;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
@@ -63,8 +64,9 @@ public class MineEvents extends Engine {
     @EventHandler(ignoreCancelled = true)
     public void mineUpgradeCheck(BlocksMinedEvent e){
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
+        long blocksMined = PPickaxe.get(e.getPlayer().getUniqueId()).getBlocksBroken();
         if(playerMine.getRank() >= MineConf.get().getMaxMineRank()) return;
-        if(MineConf.get().getNextMineLevelBlockRequirement(playerMine.getRank()) <= e.getBlocksBroken()){
+        if(MineConf.get().getNextMineLevelBlockRequirement(playerMine.getRank()) <= blocksMined){
             playerMine.addRankLevel();
             e.getPlayer().sendMessage("You have upgraded your mine to level " + playerMine.getRank());
         }

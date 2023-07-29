@@ -6,13 +6,14 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
 
 public class TogglesGUI extends ChestGui {
 
-    Player player;
-    PPickaxe pickaxe;
+    private final Player player;
+    private final PPickaxe pickaxe;
 
-    public TogglesGUI(Player player) {
+    public TogglesGUI(@NotNull  Player player) {
         setInventory(Bukkit.createInventory(player, 45, "Pickaxe Toggles"));
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());

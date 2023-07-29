@@ -15,14 +15,14 @@ public class CmdCellLeave extends CellCommands {
     public void perform() {
         Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
         if(cell == null){
-            msg("<b>You are not in a cell");
+            msg("§cYou are not in a cell");
             return;
         }
         if(cell.getOwner().equals(me.getUniqueId())){
-            msg("<b>You are the owner of this cell, you must disband it to leave");
+            msg("§cYou are the owner of this cell, you must disband it to leave");
             return;
         }
-        msg("<g>You have left your cell");
+        msg("§aYou have left your cell");
         cell.removePlayer(me.getUniqueId());
     }
 }

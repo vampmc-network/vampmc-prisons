@@ -27,11 +27,10 @@ public class UpgradeGUI extends ChestGui {
     public void createInventory(){
         PPickaxe playerPickaxe = PPickaxe.get(player.getUniqueId());
         getInventory().setItem(4, playerPickaxe.getPickaxe().getGuiItem(player.getUniqueId()));
-        playerPickaxe.getEnchants().forEach((enchant, level) -> {
-            Enchant e = PickaxeConf.get().getEnchantByType(enchant);
-            getInventory().setItem(e.getDisplayItem().getSlot(), e.getEnchantGuiItem(playerPickaxe));
-            this.setAction(e.getDisplayItem().getSlot(), event -> {
-                event.setCancelled(true);
+        PickaxeConf.get().getEnchants().forEach((enchant, e) -> {
+            int slot = e.getDisplayItem().getSlot();
+            getInventory().setItem(slot, e.getEnchantGuiItem(playerPickaxe));
+            this.setAction(slot, event -> {
                 new UpgradeEnchantGUI(e, player).open();
                 return true;
             });
@@ -39,8 +38,12 @@ public class UpgradeGUI extends ChestGui {
         ItemStack pickaxeSkin = new ItemBuilder(Material.DIAMOND_PICKAXE).displayname("§aPickaxe Skins").glow().modelData(10000).build();
         getInventory().setItem(36, pickaxeSkin);
         this.setAction(36, event -> {
-            event.setCancelled(true);
             new PickaxeSkins(player).open();
+            return true;
+        });
+        getInventory().setItem(40, new ItemBuilder(Material.COMPARATOR).displayname("§cTOGGLES").build());
+        setAction(40, event -> {
+            new TogglesGUI(player).open();
             return true;
         });
     }

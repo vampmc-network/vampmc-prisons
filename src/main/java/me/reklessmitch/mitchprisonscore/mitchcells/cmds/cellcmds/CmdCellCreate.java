@@ -18,14 +18,14 @@ public class CmdCellCreate extends CellCommands {
         String cellName = this.readArg();
         CellConf conf = CellConf.get();
         if(conf.getCellNames().contains(cellName.toUpperCase())){
-            msg("<b>Cell already exists");
+            msg("§cCell already exists");
             return;
         }
         if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
-            msg("<b>You are already in a cell");
+            msg("§cYou are already in a cell");
             return;
         }
         conf.getCells().put(cellName.toUpperCase(), new Cell(cellName, me.getUniqueId()));
-        msg("<g>Cell created " + cellName);
+        msg("§aCell created " + cellName);
     }
 }

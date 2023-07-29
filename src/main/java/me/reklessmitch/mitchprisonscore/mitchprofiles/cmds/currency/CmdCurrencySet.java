@@ -3,7 +3,6 @@ package me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency;
 
 import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
-import com.massivecraft.massivecore.command.type.primitive.TypeLong;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.Perm;
@@ -31,11 +30,11 @@ public class CmdCurrencySet extends CurrencyCommands {
         String amount = this.readArg();
         long amountInt = CurrencyUtils.parse(amount);
         if(amountInt == -1){
-            msg("<b>Invalid amount / character (k, m, b)");
+            msg("§cInvalid amount / character (k, m, b)");
             return;
         }
         MitchCurrency c = ProfilePlayer.get(player.getUniqueId()).getCurrency(currency);
         c.set(amountInt);
-        this.msg("<g>You have set <h>%s <g>to <h>%s's <g>balance", amountInt, player.getName());
+        this.msg("§aYou have set §c%s §ato §c%s's §cbalance", amountInt, player.getName());
     }
 }

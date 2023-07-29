@@ -5,6 +5,7 @@ import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
@@ -54,6 +55,8 @@ public class Enchant {
                     s = s.replace("{level}", String.valueOf(pickaxe.getEnchants().get(type)));
                     s = s.replace("{maxlevel}", String.valueOf(maxLevel));
                     s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1)));
+                    s = s.replace("{levelRequired}", ProfilePlayer.get(pickaxe.getPlayer()).getRank() >= levelRequired
+                            ? "" : "§7Rank Required: §c" + levelRequired);
                     return s;
                 }).toList())
                 .modelData(displayItem.getCustomModelData())

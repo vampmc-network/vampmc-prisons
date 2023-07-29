@@ -9,6 +9,7 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -19,7 +20,8 @@ import java.util.Map;
 @Getter
 public class PPickaxe extends SenderEntity<PPickaxe> {
 
-    private DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "§bPickaxe", List.of("§eEnchants"), 0, 4);
+    private DisplayItem pickaxe = new DisplayItem(Material.DIAMOND_PICKAXE, "§bPickaxe",
+            List.of("§eEnchants"), 0, 4);
     private long rawBlocksBroken = 0;
     private long blocksBroken = 0;
     private Map<EnchantType, Integer> enchants = setEnchants();
@@ -63,6 +65,9 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
             lore.add("§b| §3" + e.getType() + "§f: " + level);
         });
         pickaxe.setItemLore(lore);
+        givePickaxe();
+        getPlayer().removePotionEffect(PotionEffectType.SPEED);
+        getPlayer().removePotionEffect(PotionEffectType.FAST_DIGGING);
         this.changed();
     }
 

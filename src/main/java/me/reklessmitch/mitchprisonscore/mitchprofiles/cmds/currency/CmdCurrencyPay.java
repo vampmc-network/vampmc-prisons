@@ -1,7 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency;
 
 import com.massivecraft.massivecore.MassiveException;
-import com.massivecraft.massivecore.command.type.primitive.TypeLong;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
@@ -28,11 +27,11 @@ public class CmdCurrencyPay extends CurrencyCommands {
         ProfilePlayer receiver = ProfilePlayer.get(player.getUniqueId());
         ProfilePlayer sender = ProfilePlayer.get(me.getUniqueId());
         if(receiver == null){
-            msg("<b>Player has not joined the server before");
+            msg("§cPlayer has not joined the server before");
             return;
         }
         if(player.getUniqueId() == me.getUniqueId()){
-            msg("<b>You cannot pay yourself");
+            msg("§cYou cannot pay yourself");
             return;
         }
         String currency = this.readArg();
@@ -43,22 +42,22 @@ public class CmdCurrencyPay extends CurrencyCommands {
         String amount = this.readArg();
         long amountInt = CurrencyUtils.parse(amount);
         if(amountInt == -1){
-            msg("<b>Invalid amount / character (k, m, b)");
+            msg("§cInvalid amount / character (k, m, b)");
             return;
         }
         if(amountInt <= 0){
-            msg("<b>Amount must be greater than 0");
+            msg("§cAmount must be greater than 0");
             return;
         }
         if(sender.getCurrency(currency).getAmount() < amountInt){
-            msg("<b>You do not have enough " + currency + "/s");
+            msg("§bYou do not have enough " + currency + "/s");
         }else{
             sender.getCurrency(currency).take(amountInt);
             receiver.getCurrency(currency).add(amountInt);
             sender.changed();
             receiver.changed();
-            msg("<g>You have sent " + amount + " " + currency + "/s to " + player.getName());
-            player.sendMessage("<g>You have received " + amount + " " + currency + "/s from " + me.getName());
+            msg("§aYou have sent " + amount + " " + currency + "/s to " + player.getName());
+            player.sendMessage("§aYou have received " + amount + " " + currency + "/s from " + me.getName());
         }
     }
 }

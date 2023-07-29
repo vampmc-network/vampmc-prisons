@@ -7,7 +7,10 @@ public class CmdBazaar extends BazaarCommands{
     private static final CmdBazaar i = new CmdBazaar();
     public static CmdBazaar get() { return i; }
 
+    CmdBazaarSell cmdBazaarSell = new CmdBazaarSell();
+
     public CmdBazaar(){
+        this.addChild(cmdBazaarSell);
         this.addAliases("bazaar");
     }
 

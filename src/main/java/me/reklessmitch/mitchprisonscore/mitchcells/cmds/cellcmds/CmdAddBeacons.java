@@ -18,7 +18,7 @@ public class CmdAddBeacons extends CellCommands {
     public void perform() throws MassiveException {
         Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
         if(cell == null){
-            msg("<b>You are not in a cell");
+            msg("§cYou are not in a cell");
             return;
         }
         long amount = this.readArg();
@@ -27,9 +27,9 @@ public class CmdAddBeacons extends CellCommands {
             profile.getCurrency("beacon").take(amount);
             profile.changed();
             cell.addBeacons(amount);
-            msg("<g>Added " + amount + " beacons to your cell");
+            msg("§aAdded " + amount + " beacons to your cell");
         }else{
-            msg("<b>You do not have enough beacons");
+            msg("§cYou do not have enough beacons");
         }
     }
 }

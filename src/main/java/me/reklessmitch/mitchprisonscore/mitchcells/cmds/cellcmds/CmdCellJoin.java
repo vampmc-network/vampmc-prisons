@@ -19,24 +19,24 @@ public class CmdCellJoin extends CellCommands {
         String cellName = this.readArg();
         CellConf conf = CellConf.get();
         if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
-            msg("<b>You are already in a cell");
+            msg("§cYou are already in a cell");
             return;
         }
         Cell cell = conf.getCells().get(cellName);
         if(cell == null){
-            msg("<b>Cell does not exist");
+            msg("§cCell does not exist");
             return;
         }
         if(cell.getMembers().size() >= conf.getMaxCellSize()){
-            msg("<b>Cell is full");
+            msg("§cCell is full");
             return;
         }
         if(cell.getInvites().contains(me.getUniqueId())){
             cell.getMembers().add(me.getUniqueId());
-            msg("<g>Joined cell " + cellName);
+            msg("§aJoined cell " + cellName);
             cell.getInvites().remove(me.getUniqueId());
         }else{
-            msg("<b>You are not invited to this cell");
+            msg("§cYou are not invited to this cell");
         }
 
 

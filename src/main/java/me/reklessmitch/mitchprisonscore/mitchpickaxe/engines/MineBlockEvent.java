@@ -112,7 +112,7 @@ public class MineBlockEvent extends Engine {
         }
         currency.getCurrency("token").add(tokensToAdd);
         currency.changed();
-        // mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
+        mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
     }
 
     private void addBlocksToBackpack(Player player, int blocks){
@@ -187,6 +187,8 @@ public class MineBlockEvent extends Engine {
         PPickaxe pickaxe = PPickaxe.get(player.getUniqueId());
         pickaxe.getEnchants().replace(EnchantType.EFFICIENCY, pickaxe.getEnchants().get(EnchantType.EFFICIENCY) + 1);
         pickaxe.getEnchants().replace(EnchantType.FORTUNE, pickaxe.getEnchants().get(EnchantType.FORTUNE) + 1);
+        pickaxe.changed();
+        pickaxe.updatePickaxe();
         // player.sendMessage("§6§l" + player.getName() + " §7has found §6§l1x Efficiency and " +
         //        "1x Fortune level from scavenger!");
     }

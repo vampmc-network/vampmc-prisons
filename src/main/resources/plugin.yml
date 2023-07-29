@@ -8,5 +8,6 @@ depend:
   - MassiveCore
   - ItemsAdder
   - WorldBorderAPI
+  - ProtocolLib
 
 

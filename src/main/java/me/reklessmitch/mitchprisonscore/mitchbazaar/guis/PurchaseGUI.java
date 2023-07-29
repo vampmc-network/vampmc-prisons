@@ -2,8 +2,10 @@ package me.reklessmitch.mitchprisonscore.mitchbazaar.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
+import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
+import me.reklessmitch.mitchprisonscore.mitchbazaar.runnables.SignOverGUI;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -32,33 +34,31 @@ public class PurchaseGUI extends ChestGui {
         add();
     }
 
-    private Material getCurrency(String itemToBeBrought) {
-        return switch (itemToBeBrought) {
-            case "beacon" -> Material.EMERALD;
-            case "token" -> Material.GOLD_INGOT;
-            case "money" -> Material.DIAMOND;
-            case "credits" -> Material.BEACON;
-            default -> Material.BARRIER;
-        };
-    }
 
     private void setup() {
-        getInventory().setItem(4, new ItemBuilder(item.getType()).lore("§7Click the currency",
-                "§7you want to exchange!").build());
+        getInventory().setItem(4, new ItemBuilder(item.getType()).lore("§7Click the currency", "§7you want to exchange!").build());
         List<String> currencies = ProfilesConf.get().getCurrencyList();
         for(int i = 0; i < currencies.size(); i++){
-            List<ShopValue> sorted = sellPrices.get(currencies.get(i));
+            String currency = currencies.get(i);
+            List<ShopValue> sorted = sellPrices.get(currency);
             if(sorted == null) {
                 getInventory().setItem(10 + i * 2, new ItemStack(Material.BARRIER));
                 continue;
             }
             sorted.sort(Comparator.comparing(ShopValue::getPricePerItem));
-            getInventory().setItem(10 + i * 2, new ItemBuilder(getCurrency(currencies.get(i)))
+            long totalStock = sorted.stream().mapToLong(ShopValue::getAmount).sum();
+            getInventory().setItem(10 + i * 2, new ItemBuilder(BazaarConf.get().getCurrency(currency))
                     .displayname("§e" + currencies.get(i).toUpperCase())
-                    .lore("§7Price per item" + (sorted.isEmpty() ? ": §cN/A" : ": §a" + sorted.get(0).getPricePerItem()))
+                    .lore("§7Total Stock: §c" + totalStock,
+                            "§7Lowest Price" + (sorted.isEmpty() ? ": §cN/A" :
+                            "§a: " + sorted.get(0).getAmount() + " @ " +
+                                    MitchPrisonsCore.get().getDecimalFormat().format(sorted.get(0).getPricePerItem()) + "per"))
                     .build());
+
+
             setAction(10 + i * 2, event -> {
-                Bukkit.broadcastMessage("Clicked, attempt to buy item at" +  sorted.get(0).getPricePerItem());
+                event.getWhoClicked().closeInventory();
+                new SignOverGUI((Player) event.getWhoClicked(), itemToBeBrought, currency, totalStock).runTask(MitchPrisonsCore.get());
                 return true;
             });
         }
