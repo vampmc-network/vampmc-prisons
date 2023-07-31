@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class PickaxeSkins extends ChestGui {
 
-    Player player;
+    private final Player player;
 
     public PickaxeSkins(Player player){
         setInventory(Bukkit.createInventory(null, 27, "Pickaxe Skins"));

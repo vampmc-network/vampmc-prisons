@@ -1,5 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchcells.configs;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
@@ -7,6 +8,7 @@ import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 import java.util.*;
 
 @Getter
+@EditorName("config")
 public class CellConf extends Entity<CellConf> {
 
     public static CellConf i = new CellConf();

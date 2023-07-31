@@ -3,6 +3,7 @@ package me.reklessmitch.mitchprisonscore.mitchprofiles.configs;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
+import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import org.jetbrains.annotations.NotNull;
 

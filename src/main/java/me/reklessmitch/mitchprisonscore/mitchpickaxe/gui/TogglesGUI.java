@@ -12,11 +12,13 @@ public class TogglesGUI extends ChestGui {
 
     private final Player player;
     private final PPickaxe pickaxe;
+    private final boolean toggle;
 
-    public TogglesGUI(@NotNull  Player player) {
-        setInventory(Bukkit.createInventory(player, 45, "Pickaxe Toggles"));
+    public TogglesGUI(@NotNull  Player player, boolean toggle) {
+        this.toggle = toggle;
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());
+        setInventory(Bukkit.createInventory(player, 45, "Pickaxe Toggles"));
         refresh();
         setAutoclosing(false);
         setSoundOpen(null);
@@ -25,16 +27,26 @@ public class TogglesGUI extends ChestGui {
     }
 
     public void refresh(){
-        getInventory().setItem(4, pickaxe.getPickaxe().getGuiItem(player.getUniqueId()));
-        PickaxeConf.get().getEnchants().forEach((enchant, level) -> {
-            Enchant e = PickaxeConf.get().getEnchantByType(enchant);
-            getInventory().setItem(e.getDisplayItem().getSlot(), e.getEnchantGuiToggleItem(pickaxe));
-            setAction(e.getDisplayItem().getSlot(), event -> {
-                event.setCancelled(true);
-                pickaxe.toggleEnchant(enchant);
-                refresh();
-                return true;
-            });
+        getInventory().setItem(4, pickaxe.getPickaxeGuiItem());
+        PickaxeConf.get().getEnchants().forEach((type, e) -> {
+            int slot = e.getDisplayItem().getSlot();
+            if(toggle) {
+                getInventory().setItem(slot, e.getEnchantGuiToggleItem(pickaxe));
+                setAction(slot, event -> {
+                    event.setCancelled(true);
+                    pickaxe.toggleEnchant(type);
+                    refresh();
+                    return true;
+                });
+            }else{
+                getInventory().setItem(slot, e.getEnchantMessageToggleItem(pickaxe));
+                setAction(slot, event -> {
+                    event.setCancelled(true);
+                    pickaxe.toggleEnchantMessage(type);
+                    refresh();
+                    return true;
+                });
+            }
         });
     }
 

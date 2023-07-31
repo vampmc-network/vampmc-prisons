@@ -4,7 +4,6 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,7 +11,7 @@ import org.bukkit.inventory.ItemStack;
 
 public class UpgradeGUI extends ChestGui {
 
-    Player player;
+    private final Player player;
 
     public UpgradeGUI(Player player) {
         this.setInventory(Bukkit.createInventory(null, 45, "Upgrade Pickaxe"));
@@ -26,7 +25,7 @@ public class UpgradeGUI extends ChestGui {
 
     public void createInventory(){
         PPickaxe playerPickaxe = PPickaxe.get(player.getUniqueId());
-        getInventory().setItem(4, playerPickaxe.getPickaxe().getGuiItem(player.getUniqueId()));
+        getInventory().setItem(4, playerPickaxe.getPickaxeGuiItem());
         PickaxeConf.get().getEnchants().forEach((enchant, e) -> {
             int slot = e.getDisplayItem().getSlot();
             getInventory().setItem(slot, e.getEnchantGuiItem(playerPickaxe));
@@ -35,6 +34,7 @@ public class UpgradeGUI extends ChestGui {
                 return true;
             });
         });
+        // Extra items
         ItemStack pickaxeSkin = new ItemBuilder(Material.DIAMOND_PICKAXE).displayname("§aPickaxe Skins").glow().modelData(10000).build();
         getInventory().setItem(36, pickaxeSkin);
         this.setAction(36, event -> {
@@ -43,7 +43,12 @@ public class UpgradeGUI extends ChestGui {
         });
         getInventory().setItem(40, new ItemBuilder(Material.COMPARATOR).displayname("§cTOGGLES").build());
         setAction(40, event -> {
-            new TogglesGUI(player).open();
+            new TogglesGUI(player, true).open();
+            return true;
+        });
+        getInventory().setItem(44, new ItemBuilder(Material.WRITABLE_BOOK).displayname("§cMessage Toggles").build());
+        setAction(44, event -> {
+            new TogglesGUI(player, false).open();
             return true;
         });
     }

@@ -22,11 +22,13 @@ public class MineEvents extends Engine {
     public static MineEvents get() { return i; }
 
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onJoin(PlayerJoinEvent e){
-        if(e.getPlayer().hasPlayedBefore()) return;
+        if(e.getPlayer().hasPlayedBefore()) {
+            return;
+        }
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
-        playerMine.createMine();
+        playerMine.generateSchematic();
     }
 
     @EventHandler(ignoreCancelled = true)

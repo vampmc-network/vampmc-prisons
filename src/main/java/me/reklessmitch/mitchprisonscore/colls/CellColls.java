@@ -7,4 +7,13 @@ public class CellColls extends Coll<CellConf> {
 
     private static final CellColls i = new CellColls();
     public static CellColls get() { return i; }
+
+    @Override
+    public void setActive(boolean active) {
+        super.setActive(active);
+        if(!active){
+            return;
+        }
+        CellConf.i = this.get("insane", true);
+    }
 }

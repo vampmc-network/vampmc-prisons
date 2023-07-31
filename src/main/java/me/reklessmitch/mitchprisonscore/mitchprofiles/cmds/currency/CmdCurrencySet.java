@@ -33,8 +33,9 @@ public class CmdCurrencySet extends CurrencyCommands {
             msg("§cInvalid amount / character (k, m, b)");
             return;
         }
-        MitchCurrency c = ProfilePlayer.get(player.getUniqueId()).getCurrency(currency);
-        c.set(amountInt);
+        ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
+        pp.getCurrency(currency).set(amountInt);
+        pp.changed();
         this.msg("§aYou have set §c%s §ato §c%s's §cbalance", amountInt, player.getName());
     }
 }

@@ -1,6 +1,7 @@
 package me.reklessmitch.mitchprisonscore.mitchpickaxe.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
+import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
@@ -9,6 +10,9 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
@@ -26,6 +30,7 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
     private long blocksBroken = 0;
     private Map<EnchantType, Integer> enchants = setEnchants();
     private Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
+    private Map<EnchantType, Boolean> enchantMessages = setEnchantToggle();
 
     private Map<EnchantType, Boolean> setEnchantToggle() {
         Map<EnchantType, Boolean> enchantTogglesList = new EnumMap<>(EnchantType.class);
@@ -71,14 +76,24 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         this.changed();
     }
 
+    public ItemStack getPickaxeGuiItem(){
+        return pickaxe.getGuiItem(enchants.get(EnchantType.EFFICIENCY));
+    }
+
     private Map<EnchantType, Integer> setEnchants(){
         Map<EnchantType, Integer> enchantList = new EnumMap<>(EnchantType.class);
-        PickaxeConf.get().enchants.keySet().forEach(enchant -> enchantList.put(enchant, 0));
+        PickaxeConf.get().enchants.keySet().forEach(enchant -> {
+            if(enchant == EnchantType.EFFICIENCY){
+                enchantList.put(enchant, 10);
+                return;
+            }
+            enchantList.put(enchant, 0);
+        });
         return enchantList;
     }
 
     public void givePickaxe() {
-        getPlayer().getInventory().setItem(0, pickaxe.getGuiItem(getPlayer().getUniqueId()));
+        getPlayer().getInventory().setItem(0, getPickaxeGuiItem());
     }
 
     public void setSkin(int customDataModel) {
@@ -91,6 +106,13 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         boolean toggle = enchantToggle.get(enchantType);
         getPlayer().sendMessage("§aToggled " + enchantType + ": " + (toggle ? "§cDISABLED" : "§aENABLED"));
         enchantToggle.replace(enchantType, !toggle);
+        changed();
+    }
+
+    public void toggleEnchantMessage(EnchantType type) {
+        boolean toggle = enchantMessages.get(type);
+        getPlayer().sendMessage("§aToggled " + type + " messages : " + (toggle ? "§cDISABLED" : "§aENABLED"));
+        enchantMessages.replace(type, !toggle);
         changed();
     }
 }

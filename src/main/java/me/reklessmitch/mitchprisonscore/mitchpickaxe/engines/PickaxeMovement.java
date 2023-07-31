@@ -22,7 +22,7 @@ public class PickaxeMovement extends Engine {
         Player player = e.getPlayer();
         //if(!player.hasPlayedBefore()) return;
         PPickaxe ppickaxe = PPickaxe.get(player.getUniqueId());
-        player.getInventory().setItem(0, ppickaxe.getPickaxe().getGuiItem(player.getUniqueId()));
+        player.getInventory().setItem(0, ppickaxe.getPickaxeGuiItem());
     }
 
     @EventHandler

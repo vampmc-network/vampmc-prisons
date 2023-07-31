@@ -1,7 +1,8 @@
-package me.reklessmitch.mitchprisonscore.mitchprofiles.configs;
+package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.MassiveCore;
 import com.massivecraft.massivecore.store.Coll;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 
 public class ProfilesConfColl extends Coll<ProfilesConf> {
 

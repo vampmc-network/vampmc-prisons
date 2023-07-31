@@ -30,8 +30,9 @@ public class CmdCurrencyRemove extends CurrencyCommands {
         String currency = this.readArg();
         String amount = this.readArg();
         long amountInt = CurrencyUtils.parse(amount);
-        MitchCurrency c = ProfilePlayer.get(player.getUniqueId()).getCurrency(currency);
-        c.take(amountInt);
+        ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
+        pp.getCurrency(currency).take(amountInt);
+        pp.changed();
         this.msg("§aYou have removed §c%s §ato §c%s's §abalance", amount, player.getName());
     }
 }

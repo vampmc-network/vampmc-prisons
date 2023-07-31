@@ -14,7 +14,7 @@ public class CmdToggles extends PickaxeCommands {
 
     @Override
     public void perform() {
-        new TogglesGUI(me).open();
+        new TogglesGUI(me, true).open();
     }
 
 }

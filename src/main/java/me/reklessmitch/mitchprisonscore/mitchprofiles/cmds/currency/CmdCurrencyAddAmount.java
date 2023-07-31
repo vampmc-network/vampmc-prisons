@@ -31,8 +31,9 @@ public class CmdCurrencyAddAmount extends CurrencyCommands {
         String currency = this.readArg();
         String amount = this.readArg();
         long amountLong = CurrencyUtils.parse(amount);
-        MitchCurrency c = ProfilePlayer.get(player.getUniqueId()).getCurrency(currency);
-        c.add(amountLong);
+        ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
+        pp.getCurrency(currency).add(amountLong);
+        pp.changed();
         this.msg("§aYou have added §c%s §ato §c%s's §abalance", amount, player.getName());
     }
 }

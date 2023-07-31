@@ -22,8 +22,8 @@ public class CmdBlocks extends PickaxeCommands {
         if(player == null) player = me.getPlayer();
         assert player != null;
         PPickaxe pick = PPickaxe.get(player.getUniqueId());
-        me.sendMessage("§6§l§n" + player.getName() + "§eBlock Stats" +
-                "\n§6Blocks: §e" + pick.getBlocksBroken() +
-                "\n§6Raw Blocks: §e" + pick.getRawBlocksBroken());
+        me.sendMessage("§3§l" + player.getName() + "§3Block Stats" +
+                "\n§b| §6Blocks: §e" + pick.getBlocksBroken() +
+                "\n§b| §6Raw Blocks: §e" + pick.getRawBlocksBroken());
     }
 }

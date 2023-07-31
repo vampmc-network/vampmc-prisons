@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @EditorName("config")
 public class ProfilesConf extends Entity<ProfilesConf> {
-    protected static transient ProfilesConf i;
+    public static transient ProfilesConf i;
     public static ProfilesConf get() { return i; }
 
     private List<String> currencyList = List.of("token", "beacon", "money", "credits");

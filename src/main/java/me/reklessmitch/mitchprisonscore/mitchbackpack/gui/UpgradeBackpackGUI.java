@@ -14,9 +14,9 @@ import org.bukkit.inventory.ItemStack;
 
 public class UpgradeBackpackGUI extends ChestGui {
 
-    Player player;
-    BackpackPlayer backpackPlayer;
-    ProfilePlayer profilePlayer;
+    private Player player;
+    private BackpackPlayer backpackPlayer;
+    private ProfilePlayer profilePlayer;
 
     public UpgradeBackpackGUI(Player player) {
         this.player = player;

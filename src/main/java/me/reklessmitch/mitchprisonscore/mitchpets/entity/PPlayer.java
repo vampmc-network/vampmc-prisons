@@ -23,7 +23,7 @@ public class PPlayer extends SenderEntity<PPlayer> {
         return this;
     }
 
-    private final Map<PetType, Pet> pets = initializePets();
+    private Map<PetType, Pet> pets = initializePets();
 
     @Setter PetType activePet = PetType.TOKEN;
 

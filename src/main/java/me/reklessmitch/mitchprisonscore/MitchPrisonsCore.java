@@ -1,6 +1,5 @@
 package me.reklessmitch.mitchprisonscore;
 
-import com.fastasyncworldedit.core.FaweAPI;
 import com.github.yannicklamprecht.worldborder.api.WorldBorderApi;
 import com.massivecraft.massivecore.MassivePlugin;
 import lombok.Getter;
@@ -26,8 +25,8 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.MineBlockEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.engines.PickaxeMovement;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.*;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChangeJoinMessage;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayerColl;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConfColl;
+import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
+import me.reklessmitch.mitchprisonscore.colls.ProfilesConfColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.engines.PlayerEvents;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.CurrencyPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.ProfilePlaceholders;
@@ -71,6 +70,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
     @Override
     public void onEnableInner() {
         i = this;
+        createPrivateMineWorld();
         this.activate(
                 // --- Collections ---
                 // Backpack
@@ -134,8 +134,6 @@ public final class MitchPrisonsCore extends MassivePlugin {
 
 
         );
-
-        createPrivateMineWorld();
 
         if(Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null) {
             new CurrencyPlaceholders().register();

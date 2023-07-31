@@ -99,7 +99,7 @@ public class MineBlockEvent extends Engine {
         PPickaxe pickaxe = PPickaxe.get(mine.getPlayer().getUniqueId());
         int fortuneLevel = pickaxe.getEnchants().get(EnchantType.FORTUNE);
         if(fortuneLevel > 0) {
-            blocks *= (double) fortuneLevel / 1000;
+            blocks *= 1 + ((double) fortuneLevel / 1000);
         }
         int tokensToAdd = blocks;
         if(pet.getType() == PetType.TOKEN) {
@@ -112,7 +112,7 @@ public class MineBlockEvent extends Engine {
         }
         currency.getCurrency("token").add(tokensToAdd);
         currency.changed();
-        mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
+        //mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
     }
 
     private void addBlocksToBackpack(Player player, int blocks){

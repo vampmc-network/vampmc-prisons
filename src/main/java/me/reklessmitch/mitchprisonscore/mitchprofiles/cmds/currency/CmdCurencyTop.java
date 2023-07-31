@@ -4,7 +4,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayerColl;
+import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 
 import java.util.Comparator;
