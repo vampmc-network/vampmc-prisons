@@ -13,7 +13,6 @@ import me.reklessmitch.mitchprisonscore.mitchpets.entity.Pet;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
-import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import org.bukkit.Bukkit;
@@ -90,12 +89,11 @@ public class MineBlockEvent extends Engine {
 
     private void addRawBlock(Pet pet, ProfilePlayer currency, PlayerMine mine, PPickaxe pickaxe) {
         pickaxe.addRawBlockBroken();
-        addTokens(1, pet, currency, mine, "Raw Block");
+        addTokens(1, pet, currency, mine);
         addBlocksToBackpack(pickaxe.getPlayer(), 1);
     }
 
-    private void addTokens(int blocks, Pet pet, ProfilePlayer currency, PlayerMine mine, String enchant) {
-        // @TODO Add fortune buffs
+    private void addTokens(int blocks, Pet pet, ProfilePlayer currency, PlayerMine mine) {
         PPickaxe pickaxe = PPickaxe.get(mine.getPlayer().getUniqueId());
         int fortuneLevel = pickaxe.getEnchants().get(EnchantType.FORTUNE);
         if(fortuneLevel > 0) {
@@ -112,7 +110,6 @@ public class MineBlockEvent extends Engine {
         }
         currency.getCurrency("token").add(tokensToAdd);
         currency.changed();
-        //mine.getPlayer().sendMessage("Tokens made from " + enchant + ": " + tokensToAdd);
     }
 
     private void addBlocksToBackpack(Player player, int blocks){
@@ -124,22 +121,31 @@ public class MineBlockEvent extends Engine {
         int radiusIncrease = level / PickaxeConf.get().getExplosiveLevelsPerIncrease();
         int radius = PickaxeConf.get().getExplosiveStartRadius() + radiusIncrease;
         int blocks = mine.getExplosiveBlocks(e.getBlock().getLocation(), radius);
-        addTokens(blocks, pet, currency, mine, "explosive");
+        addTokens(blocks, pet, currency, mine);
         addBlocksToBackpack(e.getPlayer(), blocks);
+        if(PPickaxe.get(e.getPlayer()).getEnchantToggle().get(EnchantType.EXPLOSIVE)) {
+            e.getPlayer().sendMessage("§6§lExplosive has been activated");
+        }
     }
 
     private void nuke(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency) {
         PlayerMine mine = e.getPlayerMine();
         int blocks = (int) (mine.getVolume() - mine.getVolumeMined());
-        addTokens(blocks, pet, currency, mine, "nuke");
+        addTokens(blocks, pet, currency, mine);
         addBlocksToBackpack(e.getPlayer(), blocks);
         mine.reset();
+        if(PPickaxe.get(e.getPlayer()).getEnchantToggle().get(EnchantType.NUKE)) {
+            e.getPlayer().sendMessage("§6§lNuke has been activated");
+        }
     }
 
     private void apocalypse(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency) {
         int blocks = e.getPlayerMine().apocolypse();
-        addTokens(blocks, pet, currency, e.getPlayerMine(), "explosive");
+        addTokens(blocks, pet, currency, e.getPlayerMine());
         addBlocksToBackpack(e.getPlayer(), blocks);
+        if(PPickaxe.get(e.getPlayer()).getEnchantToggle().get(EnchantType.APOCALYPSE)) {
+            e.getPlayer().sendMessage("§6§lApocalypse has been activated");
+        }
     }
 
     private void beacon(BlockInPmineBrokeEvent e) {
@@ -150,8 +156,9 @@ public class MineBlockEvent extends Engine {
                 if (xOffset == 0 && zOffset == 0) continue;
                 Location location = centerLocation.clone().add(xOffset, 0, zOffset);
                 Block surroundingBlock = location.getBlock();
-                if(surroundingBlock.getType() == Material.AIR ||
-                        !e.getPlayerMine().isInMine(BlockVector3.at(surroundingBlock.getX(), surroundingBlock.getY(), surroundingBlock.getZ()))) continue;
+                if (surroundingBlock.getType() == Material.AIR ||
+                        !e.getPlayerMine().isInMine(BlockVector3.at(surroundingBlock.getX(), surroundingBlock.getY(), surroundingBlock.getZ())))
+                    continue;
                 surroundingBlocks.add(surroundingBlock);
             }
         }
@@ -159,7 +166,9 @@ public class MineBlockEvent extends Engine {
         int rand = MitchPrisonsCore.get().getRandom().nextInt(1, 35);
         List<Block> beaconBlocks = MUtil.randomSubset(surroundingBlocks, rand);
         beaconBlocks.forEach(block -> block.setType(Material.BEACON));
-        // e.getPlayer().sendMessage("§6§l" + e.getPlayer().getName() + " §7has found a §6§l" + rand + "x Beacons §7from Beacon Finder!");
+        if (PPickaxe.get(e.getPlayer()).getEnchantToggle().get(EnchantType.BEACON)) {
+            e.getPlayer().sendMessage("§6§l" + e.getPlayer().getName() + " §7has found a §6§l" + rand + "x Beacons §7from Beacon Finder!");
+        }
     }
 
     private void haste(Player player, int level) {
@@ -169,18 +178,25 @@ public class MineBlockEvent extends Engine {
 
     private void jackhammer(BlockInPmineBrokeEvent e, Pet pet, ProfilePlayer currency) {
         int blocks = e.getPlayerMine().getBlocksOnYLayer(e.getBlock().getY());
-        addTokens(blocks, pet, currency, e.getPlayerMine(), "jackhammer");
+        addTokens(blocks, pet, currency, e.getPlayerMine());
         addBlocksToBackpack(e.getPlayer(), blocks);
+        if(PPickaxe.get(e.getPlayer()).getEnchantToggle().get(EnchantType.JACKHAMMER)) {
+            e.getPlayer().sendMessage("§6§lJackhammer has been activated");
+        }
     }
 
     private void keyFinder(Player player) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate givekey " + player.getName() + "mine 1");
-        // player.sendMessage("§6§l" + player.getName() + " §7has found a §6§lMine Key!");
+        if(PPickaxe.get(player).getEnchantToggle().get(EnchantType.KEY_FINDER)) {
+            player.sendMessage("§6§lFound §6§l1x Loot Key from loot finder!");
+        }
     }
 
     private void lootFinder(Player player) {
         Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "crate givekey " + player.getName() + "loot 1");
-        // player.sendMessage("§6§l" + player.getName() + " §7has found a §6§lLoot Key!");
+        if(PPickaxe.get(player).getEnchantToggle().get(EnchantType.LOOT_FINDER)) {
+            player.sendMessage("§6§lFound §6§l1x Loot Key from loot finder!");
+        }
     }
 
     private void scavenger(Player player) {
@@ -189,8 +205,9 @@ public class MineBlockEvent extends Engine {
         pickaxe.getEnchants().replace(EnchantType.FORTUNE, pickaxe.getEnchants().get(EnchantType.FORTUNE) + 1);
         pickaxe.changed();
         pickaxe.updatePickaxe();
-        // player.sendMessage("§6§l" + player.getName() + " §7has found §6§l1x Efficiency and " +
-        //        "1x Fortune level from scavenger!");
+        if(pickaxe.getEnchantToggle().get(EnchantType.SCAVENGER)) {
+            player.sendMessage("§6§lFound §6§l1x Efficiency and 1x Fortune level from scavenger!");
+        }
     }
 
     private void speed(Player player, int level) {
@@ -199,14 +216,20 @@ public class MineBlockEvent extends Engine {
     }
 
     private void supplyDrop(BlockInPmineBrokeEvent e) {
+        Player player = e.getPlayer();
         e.getBlock().setType(Material.ENDER_CHEST);
-        e.getPlayer().playSound(e.getPlayer().getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
-        //e.getPlayer().sendMessage("§6§l" + e.getPlayer().getName() + " §7has found a §6§lSupply Drop!");
+        e.getPlayer().playSound(player.getLocation(), Sound.ENTITY_FIREWORK_ROCKET_SHOOT, 1, 1);
+        if(PPickaxe.get(player.getUniqueId()).getEnchantToggle().get(EnchantType.SUPPLY_DROP)) {
+            e.getPlayer().sendMessage("§6§lFound a §6§lSupply Drop!");
+        }
     }
 
     private void tokenPouch(int level, ProfilePlayer currency) {
         long tokensToGive = PickaxeConf.get().getTokenPouchBaseAmount() +
                 ((long) PickaxeConf.get().getTokenPouchIncreasePerLevel() * level);
         currency.getCurrency("token").add(tokensToGive);
+        if(PPickaxe.get(currency.getId()).getEnchantToggle().get(EnchantType.TOKEN_POUCH)) {
+            currency.getPlayer().sendMessage("§6§lToken Pouch§7: §6§l" + tokensToGive + " Tokens§7!");
+        }
     }
 }

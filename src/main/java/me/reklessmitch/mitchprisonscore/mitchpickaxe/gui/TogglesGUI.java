@@ -3,7 +3,6 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.gui;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
@@ -12,7 +11,7 @@ public class TogglesGUI extends ChestGui {
 
     private final Player player;
     private final PPickaxe pickaxe;
-    private final boolean toggle;
+    private final boolean toggle; // true = Enchant Toggles, false = Enchant Message Toggles
 
     public TogglesGUI(@NotNull  Player player, boolean toggle) {
         this.toggle = toggle;

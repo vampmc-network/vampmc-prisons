@@ -10,8 +10,8 @@ public class CmdRankup extends RankupCommands{
     private static final CmdRankup i = new CmdRankup();
     public static CmdRankup get() { return i; }
 
-    CmdRankupGUI cmdRankupGUI = new CmdRankupGUI();
-    CmdRankupMax cmdRankupMax = new CmdRankupMax();
+    private CmdRankupGUI cmdRankupGUI = new CmdRankupGUI();
+    private CmdRankupMax cmdRankupMax = new CmdRankupMax();
 
     public CmdRankup() {
         this.setAliases("rankup", "levelup");

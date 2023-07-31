@@ -12,8 +12,7 @@ import com.sk89q.worldedit.regions.CuboidRegion;
 import com.sk89q.worldedit.regions.EllipsoidRegion;
 import com.sk89q.worldedit.regions.Region;
 import com.sk89q.worldedit.world.World;
-import com.sk89q.worldedit.world.block.BlockState;
-import com.sk89q.worldedit.world.block.BlockStateHolder;
+import com.sk89q.worldedit.world.block.BlockType;
 import com.sk89q.worldedit.world.block.BlockTypes;
 import lombok.Getter;
 import lombok.Setter;
@@ -104,31 +103,8 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
     }
 
     public int getExplosiveBlocks(Location location, int radius){
-
-        int blocks = 0;
-        int beacons = 0;
-
-        BlockVector3 center = BlockVector3.at(location.getX(), location.getY(), location.getZ());
-
         World world = FaweAPI.getWorld("privatemines");
-        try(EditSession editSession = WorldEdit.getInstance().newEditSession(world)) {
-            // Get all the block positions within the ellipsoid region
-            for (BlockVector3 vector : new EllipsoidRegion(world, center, Vector3.at(radius, radius, radius))) {
-                BlockStateHolder<BlockState> blockState = editSession.getBlock(vector);
-                if (!isInMine(vector)) continue;
-                if (blockState.getBlockType().equals(BlockTypes.BEACON)) {
-                    beacons++;
-                }
-                if (!blockState.getBlockType().equals(BlockTypes.AIR)) {
-                    editSession.setBlock(vector, BlockTypes.AIR);
-                    blocks++;
-                }
-            }
-        }
-        volumeMined += blocks;
-        ProfilePlayer.get(getPlayer()).getCurrency("beacon").add(multiplyBeaconBooster(beacons));
-        volumeMinedCheck();
-        return blocks;
+        return getBeaconsAndBlocksInRegion(new EllipsoidRegion(world, BlockVector3.at(location.getX(), location.getY(), location.getZ()), Vector3.at(radius, radius, radius)));
     }
 
     private int multiplyBeaconBooster(int beacons){
@@ -162,21 +138,21 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         }
     }
 
-    public int getBeaconsAndBlocksInRegion(CuboidRegion region){
+    public int getBeaconsAndBlocksInRegion(Region region){
         int beacons = 0;
         int blocks = 0;
 
         try(EditSession editSession = WorldEdit.getInstance().newEditSession(FaweAPI.getWorld("privatemines"))) {
-
             for (BlockVector3 vector : region) {
-                BlockState blockPosition = editSession.getBlock(vector);
-                if (blockPosition.getBlockType().equals(BlockTypes.BEACON)) {
+                if (!isInMine(vector)) continue;
+                BlockType type = editSession.getBlock(vector).getBlockType();
+                if (type.equals(BlockTypes.BEACON)) {
                     beacons++;
                 }
-                if (!blockPosition.getBlockType().equals(BlockTypes.AIR)) {
+                if (!type.equals(BlockTypes.AIR)) {
                     blocks++;
+                    editSession.setBlock(vector, BlockTypes.AIR);
                 }
-                editSession.setBlock(vector, BlockTypes.AIR);
             }
         }
         volumeMined += blocks;
