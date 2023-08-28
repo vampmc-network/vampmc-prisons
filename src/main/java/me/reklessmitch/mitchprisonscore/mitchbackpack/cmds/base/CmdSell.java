@@ -10,7 +10,7 @@ public class CmdSell extends BackpackCommands {
     public static CmdSell get() { return i; }
 
     public CmdSell() {
-        this.addAliases("sell");
+        this.addAliases("sell", "SELL");
         this.addRequirements(RequirementIsPlayer.get());
     }
 

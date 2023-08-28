@@ -28,14 +28,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
 @Getter
 public class PlayerMine extends SenderEntity<PlayerMine> {
 
-    private int rank = 1;
     private int size = 10;
     private int offSetX = 300 * PlayerMineColl.get().getAll().size();
     private SerLoc spawnPoint = new SerLoc(offSetX, 99, 0);
@@ -120,8 +117,13 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         }
     }
 
-    public void upgradeSize(int amount) {
-        size += amount;
+    public void upgradeSize(int amount, boolean set) {
+        if(set){
+            size = amount;
+        }else{
+            getPlayer().sendMessage("§a§lYour Mine has been upgraded to size: " + size);
+            size += amount;
+        }
         min = new SerLoc(-size, -70, -size).addS(middleLocation);
         max = new SerLoc(size, 0, size).addS(middleLocation);
         volume = (long) (size + 1) * (size + 1) * 100;
@@ -161,33 +163,19 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         return blocks;
     }
 
-    public int apocolypse() {
-
+    public int apocalypse() {
         BlockVector3 minV = min.toBlockVector3().withY(97);
         BlockVector3 maxV = max.toBlockVector3().withY(97);
 
         Random random = MitchPrisonsCore.get().getRandom();
-        List<BlockVector3> randomBlocks = new ArrayList<>();
 
+        int totalBlocks = 0;
         for (int i = 0; i < 4; i++) {
             int x = random.nextInt(maxV.getBlockX() - minV.getBlockX() + 1) + minV.getBlockX();
             int z = random.nextInt(maxV.getBlockZ() - minV.getBlockZ() + 1) + minV.getBlockZ();
-            randomBlocks.add(BlockVector3.at(x, 97, z));
+            totalBlocks += getBeaconsAndBlocksInRegion(new CuboidRegion(BlockVector3.at(x, 47, z), BlockVector3.at(x, 97, z)));
         }
 
-        int totalBlocks = 0;
-
-        for(BlockVector3 v3 : randomBlocks){
-            BlockVector3 minM = BlockVector3.at(v3.getX(), 47, v3.getZ());
-            BlockVector3 maxM = BlockVector3.at(v3.getX(), 97, v3.getZ());
-            CuboidRegion cuboidRegion = new CuboidRegion(minM, maxM);
-            totalBlocks += getBeaconsAndBlocksInRegion(cuboidRegion);
-        }
         return totalBlocks;
-    }
-
-    public void addRankLevel() {
-        rank++;
-        upgradeSize(1);
     }
 }

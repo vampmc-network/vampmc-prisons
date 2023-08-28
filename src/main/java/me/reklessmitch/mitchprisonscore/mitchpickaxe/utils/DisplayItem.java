@@ -3,14 +3,12 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.utils;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import lombok.Setter;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.List;
-import java.util.UUID;
 
 @Getter
 @Setter

@@ -7,7 +7,6 @@ import com.massivecraft.massivecore.command.type.sender.TypePlayer;
 import me.reklessmitch.mitchprisonscore.Perm;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.CurrencyCommands;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.entity.Player;
 

@@ -11,8 +11,8 @@ import java.util.List;
 
 public class StoreShop extends ChestGui {
 
-    Player player;
-    ProfilePlayer profilePlayer;
+    private final Player player;
+    private final ProfilePlayer profilePlayer;
 
     public StoreShop(Player player) {
         this.player = player;

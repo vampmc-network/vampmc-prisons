@@ -10,13 +10,8 @@ public class CmdRankup extends RankupCommands{
     private static final CmdRankup i = new CmdRankup();
     public static CmdRankup get() { return i; }
 
-    private CmdRankupGUI cmdRankupGUI = new CmdRankupGUI();
-    private CmdRankupMax cmdRankupMax = new CmdRankupMax();
-
     public CmdRankup() {
         this.setAliases("rankup", "levelup");
-        this.addChild(cmdRankupGUI);
-        this.addChild(cmdRankupMax);
     }
 
     @Override
@@ -26,7 +21,7 @@ public class CmdRankup extends RankupCommands{
         MitchCurrency money = pp.getCurrency("money");
         int cost = RankupConf.get().getCost(pp.getRank());
         if(money.getAmount() < cost){
-            player.sendMessage("§cYou do not have enough money to rankup!");
+            player.sendMessage("§cYou do not have enough money to rankup!" + "§e You need " + (cost - money.getAmount()) + " more money to rankup.");
             return;
         }
         money.take(cost);

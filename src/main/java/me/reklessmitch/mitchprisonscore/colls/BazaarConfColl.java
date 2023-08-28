@@ -2,7 +2,6 @@ package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.Coll;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
-import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterConf;
 
 public class BazaarConfColl extends Coll<BazaarConf> {
 

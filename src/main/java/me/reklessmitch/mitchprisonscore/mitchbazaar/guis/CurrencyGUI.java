@@ -2,6 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchbazaar.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
+import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +14,7 @@ public class CurrencyGUI extends ChestGui {
 
     public CurrencyGUI(Player player) {
         this.player = player;
-        setInventory(Bukkit.createInventory(null, 27, "Currency"));
+        setInventory(Bukkit.createInventory(null, 27, BazaarConf.get().getBazaarGuiTitle()));
         setup();
         add();
     }

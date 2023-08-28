@@ -1,6 +1,5 @@
 package me.reklessmitch.mitchprisonscore.mitchbackpack.config;
 
-import com.massivecraft.massivecore.mixin.MixinActionbar;
 import com.massivecraft.massivecore.mixin.MixinTitle;
 import com.massivecraft.massivecore.store.SenderEntity;
 import com.massivecraft.massivecore.util.ItemBuilder;
@@ -15,6 +14,8 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
@@ -35,9 +36,10 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         return this;
     }
 
+    private boolean messages = true;
     private int skinID = 0;
-    private int currentLoad = 0;
-    private int capacity = 100;
+    private long currentLoad = 0;
+    private long capacity = 100;
     private boolean autoSell = false;
 
     public void set() {
@@ -52,6 +54,11 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
                 .build();
     }
 
+    public void setMessages(boolean messages) {
+        this.messages = messages;
+        this.changed();
+    }
+
     public void add(long amount) {
         if(capacity <= amount + currentLoad){
             currentLoad = capacity;
@@ -62,13 +69,11 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
             MixinTitle.get().sendTitleMsg(getPlayer(), 0, 20, 0, "§cBackpack is full!", "§7Sell your items with §e/sell");
         }else{
             currentLoad += amount;
-            MixinActionbar.get().sendActionbarMessage(getPlayer(), "§a" + currentLoad + "/" + capacity);
         }
         changed();
-        set();
     }
 
-    public void addSlot(int amount){
+    public void addSlot(long amount){
         capacity += amount;
         getPlayer().sendMessage("§aYou have upgraded your backpack by " + amount + " slots!");
         changed();
@@ -82,7 +87,7 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
 
     public void sell() {
         boolean boostActivated = false;
-        int startAmount = currentLoad;
+        long startAmount = currentLoad;
         PPickaxe ppickaxe = PPickaxe.get(getId());
         double greedMulti = ppickaxe.getEnchants().get(EnchantType.GREED) / 1000.0;
         if(greedMulti != 0) {
@@ -104,22 +109,24 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
             startAmount *= booster.getMultiplier();
         }
         ProfilePlayer.get(getId()).getCurrency("money").add(startAmount);
-        getPlayer().sendMessage("§a-------------------------" +
-                                "\n§aYou have sold §e" + currentLoad + " §aitems for §e" + startAmount + " §amoney" +
-                (booster != null ? "\n§aBooster Multiplier (+" + booster.getMultiplier() + ")" : "") +
-                (boostActivated ? "\n§aBoost Multiplier (2x)" : "") +
-                        (greedMulti > 0 ? "\n§aGreed Multiplier (+" + greedMulti / 1000.0 + ")" : "") +
-                (petBooster > 0 ? "\n§aPet Multiplier (+" + petBooster + ")" : "" ) +
-                                "\n§a-------------------------");
+        if(messages) {
+            getPlayer().sendMessage("§a-------------------------" +
+                    "\n§aYou have sold §e" + currentLoad + " §aitems for §e" + CurrencyUtils.format(startAmount) + " §amoney" +
+                    (booster != null ? "\n§aBooster Multiplier (+" + booster.getMultiplier() + ")" : "") +
+                    (boostActivated ? "\n§aBoost Multiplier (2x)" : "") +
+                    (greedMulti > 0 ? "\n§aGreed Multiplier (+" + greedMulti / 1000.0 + ")" : "") +
+                    (petBooster > 0 ? "\n§aPet Multiplier (+" + petBooster + ")" : "") +
+                    "\n§a-------------------------");
+        }
 
         currentLoad = 0;
         changed();
         set();
     }
 
-    public int getCost(int amountToBuy) { // @REDO THIS
+    public long getCost(int amountToBuy) { // @REDO THIS
         BackpackConf conf = BackpackConf.get();
-        int costPerSlot = conf.getSlotPriceIncreasePerSize();
+        long costPerSlot = conf.getSlotPriceIncreasePerSize();
         return amountToBuy * costPerSlot;
     }
 
@@ -130,8 +137,18 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         return (int) (tokens / costPerSlot);
     }
 
+    private String getSkinName(){
+        return switch(skinID){
+            case 10001 -> "duck";
+            case 10002 -> "cat";
+            case 2192001 -> "sadshark";
+            case 2192002 -> "happyshark";
+            default -> "penguin";
+        };
+    }
     public void setSkin(int customDataModel) {
         skinID = customDataModel;
+        Bukkit.dispatchCommand(Bukkit.getConsoleSender(), "hud popup" + getPlayer().getName() + " " + getSkinName() + " 2100000000");
         set();
         changed();
     }

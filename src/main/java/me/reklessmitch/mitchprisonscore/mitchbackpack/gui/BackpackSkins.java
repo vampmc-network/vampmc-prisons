@@ -46,8 +46,8 @@ public class BackpackSkins extends ChestGui {
     private void setupInventory() {
         getBackpackSkinItem("§aDefault", "§7The default pickaxe skin.", 0, 0);
         getBackpackSkinItem("§bPenguin Backpack", "§b ", 10000, 1);
-        getBackpackSkinItem("§bDuck Backpack", "§b ", 1001, 2);
-        getBackpackSkinItem("§bCat Backpack", "§b ", 1002, 3);
+        getBackpackSkinItem("§bDuck Backpack", "§b ", 10001, 2);
+        getBackpackSkinItem("§bCat Backpack", "§b ", 10002, 3);
         getBackpackSkinItem("§bHappy Shark Backpack", "§b ", 2192002, 4);
         getBackpackSkinItem("§bSad Shark Backpack", "§b ", 2192001, 5);
     }

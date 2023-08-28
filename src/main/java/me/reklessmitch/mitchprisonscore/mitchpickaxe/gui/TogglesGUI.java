@@ -13,11 +13,11 @@ public class TogglesGUI extends ChestGui {
     private final PPickaxe pickaxe;
     private final boolean toggle; // true = Enchant Toggles, false = Enchant Message Toggles
 
-    public TogglesGUI(@NotNull  Player player, boolean toggle) {
+    public TogglesGUI(@NotNull Player player, boolean toggle) {
         this.toggle = toggle;
         this.player = player;
         this.pickaxe = PPickaxe.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(player, 45, "Pickaxe Toggles"));
+        setInventory(Bukkit.createInventory(null, 27, PickaxeConf.get().getPickaxeTogglesGuiTitle()));
         refresh();
         setAutoclosing(false);
         setSoundOpen(null);
@@ -29,23 +29,17 @@ public class TogglesGUI extends ChestGui {
         getInventory().setItem(4, pickaxe.getPickaxeGuiItem());
         PickaxeConf.get().getEnchants().forEach((type, e) -> {
             int slot = e.getDisplayItem().getSlot();
-            if(toggle) {
-                getInventory().setItem(slot, e.getEnchantGuiToggleItem(pickaxe));
-                setAction(slot, event -> {
-                    event.setCancelled(true);
+            getInventory().setItem(slot, e.getEnchantGuiToggleItem(pickaxe));
+            this.setAction(slot, event -> {
+                event.setCancelled(true);
+                if(toggle) {
                     pickaxe.toggleEnchant(type);
-                    refresh();
-                    return true;
-                });
-            }else{
-                getInventory().setItem(slot, e.getEnchantMessageToggleItem(pickaxe));
-                setAction(slot, event -> {
-                    event.setCancelled(true);
+                }else{
                     pickaxe.toggleEnchantMessage(type);
-                    refresh();
-                    return true;
-                });
-            }
+                }
+                refresh();
+                return true;
+            });
         });
     }
 

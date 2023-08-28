@@ -2,8 +2,6 @@ package me.reklessmitch.mitchprisonscore.mitchpets.util;
 
 import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;

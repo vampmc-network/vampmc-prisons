@@ -13,5 +13,6 @@ public class BackpackConf extends Entity<BackpackConf> {
     private int startBackPackSize = 200;
     private int slotPriceIncreasePerSize = 5;
     private int autoSellCost = 1000000;
+    private String guiTitle = ":backpack:";
 
 }

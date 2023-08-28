@@ -19,7 +19,9 @@ public class MineConf extends Entity<MineConf> {
     private SerLoc mineOffset = new SerLoc(-135, 19, -48);
     private int mineBoosterCost = 1000;
     private int mineBoosterMax = 10;
-    private int maxMineRank = 100;
+    private String guiTitle = ":mine:";
+
+    private int maxMineSize = 100;
 
     private int startValue = 5000;
     private int increaseAmount = 1000;
@@ -28,7 +30,7 @@ public class MineConf extends Entity<MineConf> {
     private Set<Material> blockMap = Set.of(Material.STONE);
 
     public long getNextMineLevelBlockRequirement(int level){
-        return (long) (startValue + (increaseAmount * Math.pow(level, increment)));
+        return (long) (startValue + (increaseAmount * Math.pow(level - 9.0, increment)));
     }
 
 }

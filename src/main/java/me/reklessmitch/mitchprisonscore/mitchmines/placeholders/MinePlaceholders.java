@@ -32,10 +32,10 @@ public class MinePlaceholders extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("rank")) {
-            return "" + PlayerMine.get(player.getUniqueId()).getRank();
+            return "" + PlayerMine.get(player.getUniqueId()).getSize();
         }
         if(params.equalsIgnoreCase("blockstonextrankup")) {
-            return "" + MineConf.get().getNextMineLevelBlockRequirement(PlayerMine.get(player.getUniqueId()).getRank());
+            return "" + MineConf.get().getNextMineLevelBlockRequirement(PlayerMine.get(player.getUniqueId()).getSize());
         }
         if(params.equalsIgnoreCase("blocksmined")) {
             return "" + PPickaxe.get(player.getUniqueId()).getBlocksBroken();

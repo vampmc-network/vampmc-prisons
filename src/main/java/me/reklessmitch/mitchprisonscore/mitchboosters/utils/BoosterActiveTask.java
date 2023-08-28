@@ -2,13 +2,12 @@ package me.reklessmitch.mitchprisonscore.mitchboosters.utils;
 
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
-import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class BoosterActiveTask extends BukkitRunnable{
 
-    Booster booster;
-    BoosterPlayer player;
+    private final Booster booster;
+    private final BoosterPlayer player;
 
     public BoosterActiveTask(Booster booster, BoosterPlayer player) {
         this.booster = booster;

@@ -1,5 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchbazaar.config;
 
+import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
@@ -9,10 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+@Getter
+@EditorName("config")
 public class BazaarConf extends Entity<BazaarConf> {
 
     public static BazaarConf i;
     public static BazaarConf get() {return i;}
+    private String bazaarGuiTitle = ":bazaar:";
 
     @Getter
     private Map<String, Map<String, List<ShopValue>>> sellPrices = Map.of(
@@ -40,10 +44,10 @@ public class BazaarConf extends Entity<BazaarConf> {
 
     public Material getCurrency(String itemToBeBrought) {
         return switch (itemToBeBrought) {
-            case "beacon" -> Material.EMERALD;
-            case "token" -> Material.GOLD_INGOT;
+            case "beacon", "beacons" -> Material.EMERALD;
+            case "token", "tokens" -> Material.GOLD_INGOT;
             case "money" -> Material.DIAMOND;
-            case "credits" -> Material.BEACON;
+            case "credits", "credit" -> Material.BEACON;
             default -> Material.BARRIER;
         };
     }

@@ -1,10 +1,12 @@
 package me.reklessmitch.mitchprisonscore.mitchbattlepass.engines;
 
 import com.massivecraft.massivecore.Engine;
+import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.BlocksToBackpack;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassConf;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
 import org.bukkit.event.EventHandler;
+import org.jetbrains.annotations.NotNull;
 
 public class UpgradeEvent extends Engine {
 
@@ -14,7 +16,7 @@ public class UpgradeEvent extends Engine {
     }
 
     @EventHandler
-    public void onUpgrade(BlocksMinedEvent e){
+    public void onUpgrade(@NotNull BlocksMinedEvent e){
         PassPlayer pp = PassPlayer.get(e.getPlayer().getUniqueId());
         if(pp.getLevel() == PassConf.get().getMaxLevel()) return;
         if(PassConf.get().getBlocksPerLevel().get(pp.getLevel() + 1) <= e.getBlocksBroken()){

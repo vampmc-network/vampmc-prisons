@@ -3,17 +3,17 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.gui;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 
 public class PickaxeSkins extends ChestGui {
 
     private final Player player;
 
     public PickaxeSkins(Player player){
-        setInventory(Bukkit.createInventory(null, 27, "Pickaxe Skins"));
+        setInventory(Bukkit.createInventory(null, 27, PickaxeConf.get().getPickaxeSkinsGuiTitle()));
         this.player = player;
         setupInventory();
         setAutoclosing(false);
@@ -23,12 +23,11 @@ public class PickaxeSkins extends ChestGui {
     }
 
     private void getPickaxeSkinItem(String name, String lore, int customDataModel, int slot){
-        ItemStack item = new ItemBuilder(Material.DIAMOND_PICKAXE)
+        getInventory().setItem(slot, new ItemBuilder(Material.DIAMOND_PICKAXE)
                 .displayname(name)
                 .lore(lore)
                 .modelData(customDataModel)
-                .build();
-        getInventory().setItem(slot, item);
+                .build());
         this.setAction(slot, event -> {
             event.setCancelled(true);
             PPickaxe pick = PPickaxe.get(player.getUniqueId());

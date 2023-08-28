@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 
 public class CmdRankupGUI extends RankupCommands{
 
-    private static final CmdRankup i = new CmdRankup();
-    public static CmdRankup get() { return i; }
+    private static final CmdRankupGUI i = new CmdRankupGUI();
+    public static CmdRankupGUI get() { return i; }
 
     public CmdRankupGUI() {
-        this.setAliases("rankupgui", "rgui");
+        this.setAliases("rankupgui", "rgui", "ranks");
         this.setDesc("Rankup GUI");
     }
 

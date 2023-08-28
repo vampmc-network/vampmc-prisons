@@ -14,46 +14,61 @@ public class UpgradeGUI extends ChestGui {
     private final Player player;
 
     public UpgradeGUI(Player player) {
-        this.setInventory(Bukkit.createInventory(null, 45, "Upgrade Pickaxe"));
+        this.setInventory(Bukkit.createInventory(null, 45, PickaxeConf.get().getGuiTitle()));
         this.player = player;
         add();
         createInventory();
-        setAutoclosing(false);
         setSoundOpen(null);
         setSoundClose(null);
     }
 
     public void createInventory(){
-        PPickaxe playerPickaxe = PPickaxe.get(player.getUniqueId());
-        getInventory().setItem(4, playerPickaxe.getPickaxeGuiItem());
+        PPickaxe pPickaxe = PPickaxe.get(player.getUniqueId());
         PickaxeConf.get().getEnchants().forEach((enchant, e) -> {
-            int slot = e.getDisplayItem().getSlot();
-            getInventory().setItem(slot, e.getEnchantGuiItem(playerPickaxe));
-            this.setAction(slot, event -> {
+            getInventory().setItem(e.getDisplayItem().getSlot(), e.getEnchantGuiItem(pPickaxe));
+            if(e.getMaxLevel() == pPickaxe.getEnchants().get(enchant)){
+                this.setAction(e.getDisplayItem().getSlot(), event -> {
+                    player.sendMessage("§cYou have already maxed out this enchantment");
+                    return true;
+                });
+                return;
+            }
+            this.setAction(e.getDisplayItem().getSlot(), event -> {
                 new UpgradeEnchantGUI(e, player).open();
                 return true;
             });
         });
-        // Extra items
-        ItemStack pickaxeSkin = new ItemBuilder(Material.DIAMOND_PICKAXE).displayname("§aPickaxe Skins").glow().modelData(10000).build();
-        getInventory().setItem(36, pickaxeSkin);
-        this.setAction(36, event -> {
-            new PickaxeSkins(player).open();
-            return true;
-        });
-        getInventory().setItem(40, new ItemBuilder(Material.COMPARATOR).displayname("§cTOGGLES").build());
-        setAction(40, event -> {
-            new TogglesGUI(player, true).open();
-            return true;
-        });
-        getInventory().setItem(44, new ItemBuilder(Material.WRITABLE_BOOK).displayname("§cMessage Toggles").build());
-        setAction(44, event -> {
-            new TogglesGUI(player, false).open();
-            return true;
-        });
+        setupPickaxeSkinButton();
+        setupTogglesButton();
     }
 
+    private void setupTogglesButton() {
+        int[] toggleSlots = {36, 37, 38, 39, 27, 28, 29, 30};
+        ItemStack toggleGuiItem = new ItemBuilder(Material.PAPER).modelData(10006).displayname("§aToggles").lore(
+                "§7Click to change your toggles").build();
+        for(int slot : toggleSlots){
+            getInventory().setItem(slot, toggleGuiItem);
+            this.setAction(slot, event -> {
+                new TogglesGUI(player, false).open();
+                return true;
+            });
+        }
+    }
+
+    private void setupPickaxeSkinButton(){
+        int[] pickaxeSkinSlots = {41, 42, 43, 44, 32, 33, 34, 35};
+        ItemStack skinGuiItem = new ItemBuilder(Material.PAPER).modelData(10006).displayname("§aPickaxe Skins").lore(
+                "§7Click to change your pickaxe skin").build();
+        for(int slot : pickaxeSkinSlots){
+            getInventory().setItem(slot, skinGuiItem);
+            this.setAction(slot, event -> {
+                new PickaxeSkins(player).open();
+                return true;
+            });
+        }
+    }
     public void open(){
         player.openInventory(getInventory());
     }
+
 }

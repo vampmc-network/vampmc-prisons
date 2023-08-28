@@ -23,7 +23,7 @@ public class PurchaseGUI extends ChestGui {
     String itemToBeBrought; // item being brought
 
     public PurchaseGUI(ItemStack item, String itemToBeBrought) {
-        setInventory(Bukkit.createInventory(null, 27, "Purchase " + itemToBeBrought));
+        setInventory(Bukkit.createInventory(null, 27, BazaarConf.get().getBazaarGuiTitle()));
         this.itemToBeBrought = itemToBeBrought;
         this.item = item;
         this.sellPrices = BazaarConf.get().getSellPrices().get(itemToBeBrought);

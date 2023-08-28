@@ -13,6 +13,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.inventory.InventoryOpenEvent;
 import org.bukkit.event.player.PlayerChangedWorldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 
@@ -36,20 +37,20 @@ public class MineEvents extends Engine {
         if(!e.getPlayer().getWorld().getName().equals("privatemines")) return;
         e.setCancelled(true);
         Block block = e.getBlock();
-        block.setType(Material.AIR);
         BlockVector3 blockVector3 = BlockVector3.at(block.getX(), block.getY(), block.getZ());
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
         if(!playerMine.isInMine(blockVector3)){
             e.getPlayer().sendMessage("§cYou can only break blocks in your mine");
-            e.setCancelled(true);
             return;
         }
+        block.setType(Material.AIR);
         if(block.getType().equals(Material.ENDER_CHEST)){
             Bukkit.broadcastMessage("DO SUPPLY DROP DROPS");
         }
         BlockInPmineBrokeEvent event = new BlockInPmineBrokeEvent(e.getPlayer(), playerMine, e.getBlock());
         Bukkit.getServer().getPluginManager().callEvent(event);
     }
+
 
     @EventHandler(ignoreCancelled = true)
     public void onTeleportToMine(PlayerChangedWorldEvent e){
@@ -67,10 +68,9 @@ public class MineEvents extends Engine {
     public void mineUpgradeCheck(BlocksMinedEvent e){
         PlayerMine playerMine = PlayerMine.get(e.getPlayer().getUniqueId());
         long blocksMined = PPickaxe.get(e.getPlayer().getUniqueId()).getBlocksBroken();
-        if(playerMine.getRank() >= MineConf.get().getMaxMineRank()) return;
-        if(MineConf.get().getNextMineLevelBlockRequirement(playerMine.getRank()) <= blocksMined){
-            playerMine.addRankLevel();
-            e.getPlayer().sendMessage("You have upgraded your mine to level " + playerMine.getRank());
+        if(playerMine.getSize() >= MineConf.get().getMaxMineSize()) return;
+        if(MineConf.get().getNextMineLevelBlockRequirement(playerMine.getSize()) <= blocksMined){
+            playerMine.upgradeSize(1, false);
         }
 
     }

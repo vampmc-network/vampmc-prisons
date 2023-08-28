@@ -1,7 +1,6 @@
 package me.reklessmitch.mitchprisonscore.colls;
 
 import com.massivecraft.massivecore.store.Coll;
-import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterConf;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
 
 public class RankupConfColl extends Coll<RankupConf> {

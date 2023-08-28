@@ -15,8 +15,8 @@ import java.util.Map;
 public class PetConf extends Entity<PetConf> {
     public static PetConf i;
     public static PetConf get() { return i; }
-
-    Map<PetType, PetBoost> petBoosts = Map.of(
+    private String petGuiTitle = ":pets:";
+    private Map<PetType, PetBoost> petBoosts = Map.of(
             PetType.JACKHAMMER_BOOST, new PetBoost(1.1, 0.1),
             PetType.MONEY, new PetBoost(1.1, 0.1),
             PetType.TOKEN, new PetBoost(1.1, 0.1),
@@ -24,7 +24,7 @@ public class PetConf extends Entity<PetConf> {
             PetType.SUPPLY_DROP, new PetBoost(1.1, 0.1));
 
 
-    Map<PetType, DisplayItem> petDisplayItems = Map.of(
+    private Map<PetType, DisplayItem> petDisplayItems = Map.of(
             PetType.JACKHAMMER_BOOST, new DisplayItem(Material.SKELETON_SKULL,
                     "§bJACKHAMMER-BOOST PET",
                     List.of("§7Increases proc chance of jackhammer",

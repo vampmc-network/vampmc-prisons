@@ -1,7 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchpickaxe.configs;
 
 import com.massivecraft.massivecore.store.SenderEntity;
-import com.massivecraft.massivecore.util.ItemBuilder;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
@@ -10,8 +9,6 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.enchantments.Enchantment;
-import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
@@ -67,12 +64,10 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
             if(level == 0) return;
             Enchant e = PickaxeConf.get().getEnchantByType(enchantType);
             if (e == null) return;
-            lore.add("§b| §3" + e.getType() + "§f: " + level);
+            lore.add("§b| §3" + e.getDisplayItem().getItemName() + "§f: " + level);
         });
         pickaxe.setItemLore(lore);
         givePickaxe();
-        getPlayer().removePotionEffect(PotionEffectType.SPEED);
-        getPlayer().removePotionEffect(PotionEffectType.FAST_DIGGING);
         this.changed();
     }
 
@@ -98,6 +93,8 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
 
     public void setSkin(int customDataModel) {
         pickaxe.setCustomModelData(customDataModel);
+        // do the popup listener for the pickaxe
+
         changed();
         givePickaxe();
     }

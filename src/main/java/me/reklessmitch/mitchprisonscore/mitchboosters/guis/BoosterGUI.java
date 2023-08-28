@@ -2,6 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchboosters.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
+import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterConf;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import org.bukkit.Bukkit;
@@ -18,7 +19,7 @@ public class BoosterGUI extends ChestGui {
     public BoosterGUI(UUID p) {
         this.player = BoosterPlayer.get(p);
         player.changed();
-        setInventory(Bukkit.createInventory(null, 54, "Boosters"));
+        setInventory(Bukkit.createInventory(null, 54, BoosterConf.get().getGuiTitle()));
         setAutoclosing(false);
         setAutoremoving(true);
         setSoundOpen(null);

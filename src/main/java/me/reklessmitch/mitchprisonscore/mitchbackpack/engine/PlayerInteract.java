@@ -1,16 +1,13 @@
 package me.reklessmitch.mitchprisonscore.mitchbackpack.engine;
 
 import com.massivecraft.massivecore.Engine;
-import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.gui.UpgradeBackpackGUI;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.persistence.PersistentDataType;
 
 public class PlayerInteract extends Engine {
 
@@ -24,10 +21,10 @@ public class PlayerInteract extends Engine {
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event){
-//        if(event.getItem().getItemMeta().getPersistentDataContainer().has(MitchPrisonsCore.get().getNoMove(), PersistentDataType.STRING)){
-//            event.setCancelled(true);
-//        }
         if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)){
+            if(event.getClickedBlock() != null && event.getClickedBlock().getType().equals(Material.BEACON)){
+                event.setCancelled(true);
+            }
             if(event.getPlayer().getInventory().getItemInMainHand().getType().equals(Material.DRAGON_EGG)){
                 new UpgradeBackpackGUI(event.getPlayer()).open();
                 event.setCancelled(true);

@@ -11,7 +11,7 @@ public class CmdBazaar extends BazaarCommands{
 
     public CmdBazaar(){
         this.addChild(cmdBazaarSell);
-        this.addAliases("bazaar");
+        this.addAliases("bazaar", "bz");
     }
 
     @Override

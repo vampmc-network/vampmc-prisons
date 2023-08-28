@@ -12,6 +12,7 @@ public class BoosterConf extends Entity<BoosterConf> {
     public static BoosterConf i = new BoosterConf();
     public static BoosterConf get() { return i; }
 
+    private String guiTitle = ":boosters:";
     long boostersMade = 0;
     Map<BoosterType, Material> boosterItems = Map.of(BoosterType.MONEY, Material.DIAMOND, BoosterType.BEACON, Material.BEACON, BoosterType.TOKEN, Material.EMERALD);
 

@@ -15,7 +15,7 @@ public class PassGUI extends ChestGui {
 
     public PassGUI(Player player){
         this.player = player;
-        setInventory(Bukkit.createInventory(null, 27, "Battle Pass"));
+        setInventory(Bukkit.createInventory(null, 27, ":offset_-28::pass:"));
         setupInventory();
         add();
     }

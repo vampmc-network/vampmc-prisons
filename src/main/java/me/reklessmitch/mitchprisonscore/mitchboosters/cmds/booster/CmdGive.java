@@ -1,6 +1,5 @@
 package me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster;
 
-import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.requirement.RequirementHasPerm;
 import com.massivecraft.massivecore.command.type.primitive.TypeDouble;
 import com.massivecraft.massivecore.command.type.primitive.TypeLong;

@@ -9,75 +9,84 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class MineGUI extends ChestGui {
 
-    Player player;
-    PlayerMine playerMine;
+    private final Player player;
+    private final PlayerMine playerMine;
 
     public MineGUI(Player player){
         this.player = player;
         this.playerMine = PlayerMine.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 36, "Mine GUI"));
+        setInventory(Bukkit.createInventory(null, 54, MineConf.get().getGuiTitle()));
         init();
+        setAutoclosing(false);
         add();
     }
 
     private void addMineInformationItem(){
-        getInventory().setItem(4, new ItemBuilder(playerMine.getBlock()).displayname("§aMine Information")
-            .lore("§cMine Size: §f" + playerMine.getSize(),
-                    "§cMine Block: §f" + playerMine.getBlock().name(),
-                    "§cMine Booster: §f" + playerMine.getBooster()).build());
+        int[] slots = {0, 1, 2, 9, 10, 11, 18, 19, 20, 27, 28, 29, 36, 37, 38, 45, 46, 47};
+        for(int slot: slots) {
+            getInventory().setItem(slot, new ItemBuilder(Material.PAPER).displayname("§aMine GO").modelData(10006)
+                    .lore("§cMine Size: §f" + playerMine.getSize(),
+                            "§cMine Block: §f" + playerMine.getBlock().name(),
+                            "§cMine Booster: §f" + playerMine.getBooster(),
+                            "§7",
+                            "§aClick here to teleport to your mine!").build());
+            this.setAction(slot, event -> {
+                playerMine.teleport();
+                return true;
+            });
+        }
 
-    }
-
-    private void addMineGOItem(){
-        getInventory().setItem(11, new ItemBuilder(playerMine.getBlock()).displayname("§aMine GO")
-            .lore("§cTeleport to your mine").build());
-        setAction(11, event -> {
-            playerMine.teleport();
-            return true;
-        });
     }
 
     private void addUpgradeBoosterItem(){
+        int[] slots = {6, 7, 8, 15, 16, 17, 24, 25, 26, 33, 34, 35, 42, 43, 44, 51, 52, 53};
         int cost = MineConf.get().getMineBoosterCost();
         int maxLevel = MineConf.get().getMineBoosterMax();
-        if(playerMine.getBooster() >= maxLevel){
-            getInventory().setItem(13, new ItemBuilder(Material.BARRIER).displayname("§aUpgrade Booster")
-                .lore("§7Upgrade your mine booster by 1x", "", "§cMax Level Reached").build());
-            return;
-        }else{
-            getInventory().setItem(13, new ItemBuilder(Material.DIAMOND).displayname("§aUpgrade Booster")
-                .lore("§7Upgrade your mine booster by 1x", "§cCost: §f" + cost).build());
-        }
 
-        setAction(13, event -> {
-            ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
-            MitchCurrency currency = profile.getCurrency("credits");
-            if(currency.getAmount() >= cost){
-                currency.take(cost);
-                playerMine.addBooster(1);
-                addUpgradeBoosterItem();
-            }else {
-                player.sendMessage("§cYou do not have enough credits to upgrade your mine booster");
-            }
-            return true;
-        });
+        boolean maxed = playerMine.getBooster() >= maxLevel;
+        ItemStack item = maxed ? new ItemBuilder(Material.PAPER).displayname("§aUpgrade Booster").modelData(10006)
+                .lore("§7Upgrade your mine booster by 1x", "", "§cMax Level Reached").build() :
+                new ItemBuilder(Material.PAPER).displayname("§aUpgrade Booster").modelData(10006)
+                        .lore("§7Upgrade your mine booster by 1x", "§cCost: §f" + cost, "§7", "§cCurrent Multiplier: " + playerMine.getBooster()).build();
+        for(int slot: slots) {
+            getInventory().setItem(slot, item);
+            this.setAction(slot, event -> {
+                if(maxed) {
+                    event.getWhoClicked().sendMessage("§cYou have reached the max level for your mine booster");
+                    return true;
+                }
+                ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
+                MitchCurrency currency = profile.getCurrency("credits");
+                if (currency.getAmount() >= cost) {
+                    currency.take(cost);
+                    playerMine.addBooster(1);
+                    addUpgradeBoosterItem();
+                } else {
+                    player.sendMessage("§cYou do not have enough credits to upgrade your mine booster");
+                }
+                return true;
+            });
+        }
     }
 
     private void addResetItem(){
-        getInventory().setItem(15, new ItemBuilder(Material.BARRIER).displayname("§aReset Mine")
-            .lore("§cReset your mine").build());
-        setAction(15, event -> {
-            playerMine.reset();
-            return true;
-        });
+        int[] slots = {3, 4 ,5, 12, 13, 14, 21, 22, 23, 30, 31, 32, 39, 40, 41, 48, 49, 50};
+        for(int slot: slots) {
+            getInventory().setItem(slot, new ItemBuilder(Material.PAPER).displayname("§aReset Mine").modelData(10006)
+                    .lore("§cReset your mine").build());
+            this.setAction(slot, event -> {
+                playerMine.reset();
+                return true;
+            });
+        }
     }
 
     private void init() {
         addMineInformationItem();
-        addMineGOItem();
         addUpgradeBoosterItem();
         addResetItem();
     }
