@@ -4,7 +4,7 @@ import com.massivecraft.massivecore.MassiveException;
 import com.massivecraft.massivecore.command.type.primitive.TypeInteger;
 import com.massivecraft.massivecore.command.type.primitive.TypeString;
 import com.massivecraft.massivecore.command.type.sender.TypePlayer;
-import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
+import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import org.bukkit.entity.Player;
 
@@ -22,8 +22,8 @@ public class CmdPetRemoveLevel extends PetCommand{
         Player player = this.readArg();
         String petType = this.readArg();
         int level = this.readArg();
-        PPlayer pPlayer = PPlayer.get(player.getUniqueId());
-        pPlayer.getPet(PetType.valueOf(petType.toUpperCase())).removeLevel(level);
-        pPlayer.changed();
+        PetPlayer petPlayer = PetPlayer.get(player.getUniqueId());
+        petPlayer.getPet(PetType.valueOf(petType.toUpperCase())).removeLevel(level);
+        petPlayer.changed();
     }
 }

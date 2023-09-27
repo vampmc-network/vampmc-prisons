@@ -15,7 +15,6 @@ public class CellConf extends Entity<CellConf> {
     public static CellConf get() { return i; }
 
     int maxCellSize = 10;
-    private String prefix = "§7[§6Cells§7] ";
     private Map<String, Cell> cells = new HashMap<>();
 
     public List<String> getCellNames(){

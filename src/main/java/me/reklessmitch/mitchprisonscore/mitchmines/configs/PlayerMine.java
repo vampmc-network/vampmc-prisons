@@ -22,6 +22,7 @@ import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.SerLoc;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.jetbrains.annotations.NotNull;
@@ -53,14 +54,15 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         }
         if(isInMine(BlockVector3.at(l.getX(), l.getY(), l.getZ()))){
             getPlayer().teleport(middleLocation.toLocation().add(0, 1, 0));
-            getPlayer().sendMessage("§a§lYour Mine has Reset");
+            getPlayer().sendMessage(LangConf.get().getMineReset());
         }
     }
 
 
     public void addBooster(int amount){
         booster += amount;
-        getPlayer().sendMessage("Booster added");
+        getPlayer().sendMessage(LangConf.get().getMineBoosterAdded());
+        changed();
     }
 
     public void generateSchematic(){

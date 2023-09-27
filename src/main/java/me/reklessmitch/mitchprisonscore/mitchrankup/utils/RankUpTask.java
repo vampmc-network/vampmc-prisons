@@ -1,8 +1,10 @@
 package me.reklessmitch.mitchprisonscore.mitchrankup.utils;
 
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -27,7 +29,7 @@ public class RankUpTask extends BukkitRunnable {
     }
 
     private void repeat(){
-        int cost = rankupConf.getCost(rank);
+        long cost = rankupConf.getCost(rank);
         if (money.getAmount() >= cost){
             money.take(cost);
             rank++;
@@ -35,7 +37,7 @@ public class RankUpTask extends BukkitRunnable {
         } else {
             pp.setRank(rank);
             pp.changed();
-            player.sendMessage("§aYou have ranked up to " + pp.getRank());
+            player.sendMessage(PlaceholderAPI.setPlaceholders(player, LangConf.get().getRankUp()));
             super.cancel();
         }
     }

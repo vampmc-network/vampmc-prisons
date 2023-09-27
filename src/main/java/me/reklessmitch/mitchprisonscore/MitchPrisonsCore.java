@@ -9,6 +9,7 @@ import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.BlocksToBackpack;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.engine.PlayerInteract;
 import me.reklessmitch.mitchprisonscore.mitchbackpack.placeholders.BackpackPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.cmds.CmdPass;
+import me.reklessmitch.mitchprisonscore.mitchbattlepass.engines.UpgradeEvent;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.cmd.CmdBazaar;
 import me.reklessmitch.mitchprisonscore.mitchboosters.cmds.booster.CmdBooster;
 import me.reklessmitch.mitchprisonscore.mitchboosters.engines.BoosterInteract;
@@ -28,7 +29,6 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.currency.*;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.joinmessage.CmdChangeJoinMessage;
 import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.colls.ProfilesConfColl;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.cmds.wardrobe.CmdWardrobe;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.engines.PlayerEvents;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.CurrencyPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.ProfilePlaceholders;
@@ -81,12 +81,14 @@ public final class MitchPrisonsCore extends MassivePlugin {
         createPrivateMineWorld();
         this.activate(
                 // --- Collections ---
+                // Lang
+                LangColl.class,
                 // Backpack
                 BackpackConfColl.class, BackPackPlayerColl.class,
                 // BattlePass
                 PassPlayerColl.class, PassConfColl.class,
                 // Boosters
-                BoosterConfColl.class, BoosterPlayerColl.class,
+                BoosterPlayerColl.class,
                 // Cells
                 CellColls.class,
                 // Mines
@@ -96,7 +98,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Pickaxe
                 PickaxeConfColl.class, PPickaxeColl.class,
                 // Profiles
-                ProfilesConfColl.class, ProfilePlayerColl.class, PlayerWardrobeColl.class,
+                ProfilesConfColl.class, ProfilePlayerColl.class, //PlayerWardrobeColl.class,
                 // Bazaar
                 BazaarConfColl.class,
                 // Rankup
@@ -120,7 +122,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Profiles
                 CmdChangeJoinMessage.class, CmdCurrency.class, CmdBal.class,
                 CmdCurrencyPay.class, CmdCurrencyAddAmount.class, CmdCurrencyAddPercent.class,
-                CmdCurrencyShop.class, CmdWardrobe.class,
+                CmdCurrencyShop.class, //CmdWardrobe.class,
                 // Bazaar
                 CmdBazaar.class,
                 // Rankup
@@ -132,6 +134,8 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Boosters
                 BoosterInteract.class,
                 // Cells
+                // BattlePass
+                UpgradeEvent.class,
                 // Mines
                 MineEvents.class,
                 // Pets

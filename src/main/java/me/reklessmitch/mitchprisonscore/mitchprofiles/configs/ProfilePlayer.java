@@ -3,8 +3,11 @@ package me.reklessmitch.mitchprisonscore.mitchprofiles.configs;
 import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import lombok.Setter;
+import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
+import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
+import me.reklessmitch.mitchprisonscore.mitchrankup.utils.RankUpTask;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -29,6 +32,11 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     {
         super.load(that);
         return this;
+    }
+
+    public void rankUpMax(){
+        MitchCurrency money = getCurrency("money");
+        new RankUpTask(getPlayer(), this, money, RankupConf.get()).runTaskAsynchronously(MitchPrisonsCore.get());
     }
 
     public MitchCurrency getCurrency(String currencyID){

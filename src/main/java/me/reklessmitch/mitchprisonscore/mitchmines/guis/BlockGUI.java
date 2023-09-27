@@ -11,6 +11,7 @@ import org.bukkit.inventory.ItemStack;
 public class BlockGUI extends ChestGui {
 
     Player player;
+
     public BlockGUI(Player player){
         this.player = player;
         setInventory(Bukkit.createInventory(null, 45, "Set Block"));

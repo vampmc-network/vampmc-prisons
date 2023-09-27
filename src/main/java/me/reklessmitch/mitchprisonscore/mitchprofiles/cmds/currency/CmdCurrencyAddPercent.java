@@ -30,10 +30,9 @@ public class CmdCurrencyAddPercent extends CurrencyCommands {
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         long cost = RankupConf.get().getCost(pp.getRank());
         MitchCurrency money = pp.getCurrency("money");
-        Bukkit.broadcastMessage("§a" + player.getName() + " §7has been given §a" + percent + "% §7of §a" + cost + " §7for their next rankup");
-        money.add(cost * (percent / 100));
+        long amountToAdd = (cost * percent) / 100;
+        player.sendMessage("§7You have been given §a" + percent + "% §7of §a" + cost + " §7of your next rankup §a" + amountToAdd + "§7.");
+        money.add(amountToAdd);
         pp.changed();
     }
-
-
 }

@@ -1,6 +1,5 @@
 package me.reklessmitch.mitchprisonscore.mitchprofiles.utils;
 
-import org.bukkit.Bukkit;
 
 public class CurrencyUtils {
 
@@ -30,7 +29,6 @@ public class CurrencyUtils {
         } else {
             letter = amount.substring(amount.length() - 1).toLowerCase().charAt(0);
             double doubleAmount = Double.parseDouble(amount.substring(0, amount.length() - 1));
-            Bukkit.broadcastMessage(String.valueOf(doubleAmount));
             amountInt = change(letter, doubleAmount);
         }
 
@@ -47,7 +45,6 @@ public class CurrencyUtils {
             case 'q' -> result = amountInt * 1000000000000000L;
             default -> result = -1;
         }
-        Bukkit.broadcastMessage(String.valueOf(result));
         return (long) result;
     }
 }

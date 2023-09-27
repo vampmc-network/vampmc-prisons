@@ -2,7 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchpets.placeholders;
 
 
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
-import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
+import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -31,7 +31,7 @@ public class PetPlaceholders extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, String params) {
         if(params.equalsIgnoreCase("activepet")) {
-            return PPlayer.get(player.getUniqueId()).getActivePet().name();
+            return PetPlayer.get(player.getUniqueId()).getActivePet().name();
         }
         return "Not Active";
     }

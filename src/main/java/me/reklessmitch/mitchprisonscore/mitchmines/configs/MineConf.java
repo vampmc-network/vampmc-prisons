@@ -19,10 +19,7 @@ public class MineConf extends Entity<MineConf> {
     private SerLoc mineOffset = new SerLoc(-135, 19, -48);
     private int mineBoosterCost = 1000;
     private int mineBoosterMax = 10;
-    private String guiTitle = ":mine:";
-
     private int maxMineSize = 100;
-
     private int startValue = 5000;
     private int increaseAmount = 1000;
     private double increment = 3.2;

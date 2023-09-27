@@ -4,11 +4,11 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -27,7 +27,7 @@ public class UpgradeEnchantGUI extends ChestGui {
         this.player = player;
         this.p = PPickaxe.get(player);
         this.profilePlayer = ProfilePlayer.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 54, PickaxeConf.get().getEnchantGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, LangConf.get().getPickaxeGuiTitle()));
         refresh();
         setAutoclosing(false);
         setSoundOpen(null);

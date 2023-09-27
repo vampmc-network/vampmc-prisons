@@ -1,10 +1,6 @@
 package me.reklessmitch.mitchprisonscore.mitchrankup.cmds;
 
-import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
-import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
-import me.reklessmitch.mitchprisonscore.mitchrankup.utils.RankUpTask;
 import org.bukkit.entity.Player;
 
 public class CmdRankupMax extends RankupCommands {
@@ -21,8 +17,7 @@ public class CmdRankupMax extends RankupCommands {
     public void perform(){
         Player player = (Player) sender;
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
-        MitchCurrency money = pp.getCurrency("money");
-        new RankUpTask(player, pp, money, RankupConf.get()).runTaskAsynchronously(MitchPrisonsCore.get());
+        pp.rankUpMax();
     }
 
 }

@@ -15,14 +15,14 @@ public class CmdCellDisband extends CellCommands {
     public void perform() {
         Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
         if(cell == null){
-            msg("<b>You are not in a cell");
+            msg("§bYou are not in a cell");
             return;
         }
         if(!cell.getOwner().equals(me.getUniqueId())){
-            msg("<b>You are not the owner of this cell");
+            msg("§bYou are not the owner of this cell");
             return;
         }
         cell.disband();
-        msg("<b>You have disbanded your cell");
+        msg("§bYou have disbanded your cell");
     }
 }

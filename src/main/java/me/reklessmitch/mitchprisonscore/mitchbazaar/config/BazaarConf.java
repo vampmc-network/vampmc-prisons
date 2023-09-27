@@ -16,7 +16,6 @@ public class BazaarConf extends Entity<BazaarConf> {
 
     public static BazaarConf i;
     public static BazaarConf get() {return i;}
-    private String bazaarGuiTitle = ":bazaar:";
 
     @Getter
     private Map<String, Map<String, List<ShopValue>>> sellPrices = Map.of(

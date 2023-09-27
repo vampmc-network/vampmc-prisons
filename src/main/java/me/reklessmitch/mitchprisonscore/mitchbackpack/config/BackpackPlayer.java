@@ -8,7 +8,7 @@ import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.colls.BackPackPlayerColl;
 import me.reklessmitch.mitchprisonscore.mitchboosters.configs.BoosterPlayer;
 import me.reklessmitch.mitchprisonscore.mitchboosters.objects.Booster;
-import me.reklessmitch.mitchprisonscore.mitchpets.entity.PPlayer;
+import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetPlayer;
 import me.reklessmitch.mitchprisonscore.mitchpets.entity.PetType;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
@@ -81,7 +81,7 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
     }
 
     public double getPetBooster(){
-        PPlayer pet = PPlayer.get(getId());
+        PetPlayer pet = PetPlayer.get(getId());
         return pet.getActivePet() == PetType.MONEY ? pet.getPet(PetType.MONEY).getPetBooster() : 0;
     }
 
@@ -108,10 +108,13 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         if(booster != null){
             startAmount *= booster.getMultiplier();
         }
+        int rank = ProfilePlayer.get(getId()).getRank();
+        startAmount *= rank;
         ProfilePlayer.get(getId()).getCurrency("money").add(startAmount);
         if(messages) {
             getPlayer().sendMessage("§a-------------------------" +
                     "\n§aYou have sold §e" + currentLoad + " §aitems for §e" + CurrencyUtils.format(startAmount) + " §amoney" +
+                    "\n§aRank Multiplier (+" + rank + ")" +
                     (booster != null ? "\n§aBooster Multiplier (+" + booster.getMultiplier() + ")" : "") +
                     (boostActivated ? "\n§aBoost Multiplier (2x)" : "") +
                     (greedMulti > 0 ? "\n§aGreed Multiplier (+" + greedMulti / 1000.0 + ")" : "") +
@@ -119,6 +122,9 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
                     "\n§a-------------------------");
         }
 
+        if(ppickaxe.isAutoRankup()){
+            ProfilePlayer.get(getId()).rankUpMax();
+        }
         currentLoad = 0;
         changed();
         set();

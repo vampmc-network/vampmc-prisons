@@ -2,6 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders;
 
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.OfflinePlayer;
 import org.jetbrains.annotations.NotNull;
 
@@ -28,10 +29,10 @@ public class CurrencyPlaceholders extends PlaceholderExpansion {
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, String params) {
+    public String onRequest(OfflinePlayer player, @NotNull String params) {
         return ProfilePlayer.get(player.getUniqueId()).getCurrencyList().stream()
                 .filter(currency -> params.equalsIgnoreCase(currency.getName()))
-                .map(currency -> currency.convertToFigure(currency.getAmount()))
+                .map(currency -> CurrencyUtils.format(currency.getAmount()))
                 .findFirst()
                 .orElse("Invalid Currency");
     }

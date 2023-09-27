@@ -15,7 +15,7 @@ public class CmdCellInfo extends CellCommands {
 
     public CmdCellInfo(){
         this.addAliases("info");
-        this.addParameter((Player) sender, TypePlayer.get(), "player");
+        this.addParameter(TypePlayer.get(), "player");
     }
 
     @Override

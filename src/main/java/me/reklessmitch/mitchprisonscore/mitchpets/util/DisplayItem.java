@@ -34,5 +34,11 @@ public class DisplayItem {
                 .build();
     }
 
+    public ItemStack getGuiItem() {
+        return new ItemBuilder(material).displayname(itemName).lore(itemLore).modelData(customModelData).unbreakable(true)
+                .flag(ItemFlag.HIDE_ATTRIBUTES)
+                .build();
+    }
+
 
 }

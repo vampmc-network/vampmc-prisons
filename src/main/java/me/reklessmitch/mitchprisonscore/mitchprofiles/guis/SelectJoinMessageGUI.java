@@ -10,8 +10,8 @@ import org.bukkit.entity.Player;
 
 public class SelectJoinMessageGUI extends ChestGui{
 
-    ProfilePlayer profilePlayer;
-    Player player;
+    private final ProfilePlayer profilePlayer;
+    private final Player player;
 
     public SelectJoinMessageGUI(Player player) {
         setInventory(Bukkit.createInventory(null, 45, "§aSelect Join Message"));

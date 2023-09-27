@@ -10,7 +10,6 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -28,6 +27,9 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
     private Map<EnchantType, Integer> enchants = setEnchants();
     private Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
     private Map<EnchantType, Boolean> enchantMessages = setEnchantToggle();
+    private Map<EnchantType, Boolean> enchantSoundToggles = setEnchantToggle();
+    private boolean virtualKey = false;
+    private boolean autoRankup = false;
 
     private Map<EnchantType, Boolean> setEnchantToggle() {
         Map<EnchantType, Boolean> enchantTogglesList = new EnumMap<>(EnchantType.class);
@@ -110,6 +112,26 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         boolean toggle = enchantMessages.get(type);
         getPlayer().sendMessage("§aToggled " + type + " messages : " + (toggle ? "§cDISABLED" : "§aENABLED"));
         enchantMessages.replace(type, !toggle);
+        changed();
+    }
+
+    public void toggleVirtualKey() {
+        virtualKey = !virtualKey;
+        getPlayer().sendMessage("§aToggled virtual key: " + (virtualKey ? "§aENABLED" : "§cDISABLED"));
+        changed();
+    }
+
+    public void toggleEnchantSound(EnchantType type) {
+        boolean toggle = enchantSoundToggles.get(type);
+        getPlayer().sendMessage("§aToggled " + type + " sound : " + (toggle ? "§cDISABLED" : "§aENABLED"));
+        enchantSoundToggles.replace(type, !toggle);
+        changed();
+    }
+
+
+    public void toggleAutoRankup() {
+        autoRankup = !autoRankup;
+        getPlayer().sendMessage("§aToggled auto rankup: " + (autoRankup ? "§aENABLED" : "§cDISABLED"));
         changed();
     }
 }

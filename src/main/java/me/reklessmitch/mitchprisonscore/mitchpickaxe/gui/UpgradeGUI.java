@@ -4,6 +4,8 @@ import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
+import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,7 +16,7 @@ public class UpgradeGUI extends ChestGui {
     private final Player player;
 
     public UpgradeGUI(Player player) {
-        this.setInventory(Bukkit.createInventory(null, 45, PickaxeConf.get().getGuiTitle()));
+        this.setInventory(Bukkit.createInventory(null, 45, LangConf.get().getPickaxeMainGuiTitle()));
         this.player = player;
         add();
         createInventory();
@@ -34,6 +36,10 @@ public class UpgradeGUI extends ChestGui {
                 return;
             }
             this.setAction(e.getDisplayItem().getSlot(), event -> {
+                if(e.getLevelRequired() > ProfilePlayer.get(player.getUniqueId()).getRank()){
+                    player.sendMessage("§cYou do not have the required rank to upgrade this enchantment");
+                    return true;
+                }
                 new UpgradeEnchantGUI(e, player).open();
                 return true;
             });
@@ -49,7 +55,7 @@ public class UpgradeGUI extends ChestGui {
         for(int slot : toggleSlots){
             getInventory().setItem(slot, toggleGuiItem);
             this.setAction(slot, event -> {
-                new TogglesGUI(player, false).open();
+                new TogglesMainGUI((Player) event.getWhoClicked()).open();
                 return true;
             });
         }

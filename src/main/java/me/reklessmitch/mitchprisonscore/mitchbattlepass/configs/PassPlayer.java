@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.object.Reward;
 import me.reklessmitch.mitchprisonscore.colls.PassPlayerColl;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.jetbrains.annotations.NotNull;
 
@@ -35,11 +36,13 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
         TreeMap<Integer, List<Reward>> sortedMap = new TreeMap<>(rewards);
         SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(lastClaimedLevel, level + 1);
         if(subMap.isEmpty()) {
-            getPlayer().sendMessage("§cYou have no rewards to claim!");
+            getPlayer().sendMessage(LangConf.get().getBattlePassNoRewards());
         }else{
+            getPlayer().sendMessage(LangConf.get().getBattlePassClaimed());
             subMap.forEach((l, r) -> r.forEach(reward -> reward.getCommands().forEach(
                     command -> Bukkit.getConsoleSender().sendMessage(command.replace("%player%", getPlayer().getName())))));
             lastClaimedLevel = level;
+            changed();
         }
     }
     public void claimFreeRewards() {
@@ -57,5 +60,6 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
 
     public void addLevel() {
         level++;
+        changed();
     }
 }

@@ -10,14 +10,14 @@ import java.util.EnumMap;
 import java.util.Map;
 
 @Getter
-public class PPlayer extends SenderEntity<PPlayer> {
+public class PetPlayer extends SenderEntity<PetPlayer> {
 
-    public static PPlayer get(Object oid) {
+    public static PetPlayer get(Object oid) {
         return PPlayerColl.get().get(oid);
     }
 
     @Override
-    public PPlayer load(@NotNull PPlayer that)
+    public PetPlayer load(@NotNull PetPlayer that)
     {
         super.load(that);
         return this;

@@ -22,8 +22,9 @@ public class Enchant {
     private double procRateIncreasePerLevel;
     private long baseCost;
     private long costIncreasePerLevel;
+    private String enchantMessage;
 
-    public Enchant(EnchantType type, Material material, String name, List<String> description, int customModelData, int slot, int levelRequired, int maxLevel, double baseProcRate, double procRateIncreasePerLevel, long baseCost, long costIncreasePerLevel) {
+    public Enchant(EnchantType type, Material material, String name, List<String> description, int customModelData, int slot, int levelRequired, int maxLevel, double baseProcRate, double procRateIncreasePerLevel, long baseCost, long costIncreasePerLevel, String enchantMessage) {
         this.type = type;
         this.displayItem = new DisplayItem(material, name, description, customModelData, slot);
         this.levelRequired = levelRequired;
@@ -32,7 +33,7 @@ public class Enchant {
         this.procRateIncreasePerLevel = procRateIncreasePerLevel;
         this.baseCost = baseCost;
         this.costIncreasePerLevel = costIncreasePerLevel;
-
+        this.enchantMessage = enchantMessage;
     }
 
     /**

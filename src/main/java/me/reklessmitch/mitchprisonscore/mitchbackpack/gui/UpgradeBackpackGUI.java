@@ -8,6 +8,7 @@ import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class UpgradeBackpackGUI extends ChestGui {
         this.player = player;
         this.backpackPlayer = BackpackPlayer.get(player.getUniqueId());
         this.profilePlayer = ProfilePlayer.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 54, BackpackConf.get().getGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, LangConf.get().getBackpackGuiTitle()));
         setAutoclosing(false);
         setSoundOpen(null);
         setSoundClose(null);

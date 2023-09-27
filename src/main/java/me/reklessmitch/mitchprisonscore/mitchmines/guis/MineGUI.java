@@ -2,10 +2,12 @@ package me.reklessmitch.mitchprisonscore.mitchmines.guis;
 
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.MineConf;
 import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -15,11 +17,12 @@ public class MineGUI extends ChestGui {
 
     private final Player player;
     private final PlayerMine playerMine;
+    private final LangConf langConf = LangConf.get();
 
     public MineGUI(Player player){
         this.player = player;
         this.playerMine = PlayerMine.get(player.getUniqueId());
-        setInventory(Bukkit.createInventory(null, 54, MineConf.get().getGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 54, langConf.getMineGuiTitle()));
         init();
         setAutoclosing(false);
         add();
@@ -29,11 +32,7 @@ public class MineGUI extends ChestGui {
         int[] slots = {0, 1, 2, 9, 10, 11, 18, 19, 20, 27, 28, 29, 36, 37, 38, 45, 46, 47};
         for(int slot: slots) {
             getInventory().setItem(slot, new ItemBuilder(Material.PAPER).displayname("§aMine GO").modelData(10006)
-                    .lore("§cMine Size: §f" + playerMine.getSize(),
-                            "§cMine Block: §f" + playerMine.getBlock().name(),
-                            "§cMine Booster: §f" + playerMine.getBooster(),
-                            "§7",
-                            "§aClick here to teleport to your mine!").build());
+                    .lore(langConf.getMineGoGUIItem()).build());
             this.setAction(slot, event -> {
                 playerMine.teleport();
                 return true;
@@ -44,19 +43,21 @@ public class MineGUI extends ChestGui {
 
     private void addUpgradeBoosterItem(){
         int[] slots = {6, 7, 8, 15, 16, 17, 24, 25, 26, 33, 34, 35, 42, 43, 44, 51, 52, 53};
-        int cost = MineConf.get().getMineBoosterCost();
-        int maxLevel = MineConf.get().getMineBoosterMax();
+        MineConf conf = MineConf.get();
+        int cost = conf.getMineBoosterCost();
+        int maxLevel = conf.getMineBoosterMax();
 
         boolean maxed = playerMine.getBooster() >= maxLevel;
-        ItemStack item = maxed ? new ItemBuilder(Material.PAPER).displayname("§aUpgrade Booster").modelData(10006)
-                .lore("§7Upgrade your mine booster by 1x", "", "§cMax Level Reached").build() :
+        ItemStack item = maxed ?
                 new ItemBuilder(Material.PAPER).displayname("§aUpgrade Booster").modelData(10006)
-                        .lore("§7Upgrade your mine booster by 1x", "§cCost: §f" + cost, "§7", "§cCurrent Multiplier: " + playerMine.getBooster()).build();
+                .lore(PlaceholderAPI.setPlaceholders(player,langConf.getMineBoosterMaxed())).build() :
+                new ItemBuilder(Material.PAPER).displayname("§aUpgrade Booster").modelData(10006)
+                        .lore(PlaceholderAPI.setPlaceholders(player, langConf.getMineBoosterNotMaxed())).build();
         for(int slot: slots) {
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
                 if(maxed) {
-                    event.getWhoClicked().sendMessage("§cYou have reached the max level for your mine booster");
+                    event.getWhoClicked().sendMessage(PlaceholderAPI.setPlaceholders(player, langConf.getMineMaxMineBooster()));
                     return true;
                 }
                 ProfilePlayer profile = ProfilePlayer.get(player.getUniqueId());
@@ -66,7 +67,7 @@ public class MineGUI extends ChestGui {
                     playerMine.addBooster(1);
                     addUpgradeBoosterItem();
                 } else {
-                    player.sendMessage("§cYou do not have enough credits to upgrade your mine booster");
+                    player.sendMessage(langConf.getMineNotEnoughCredits());
                 }
                 return true;
             });

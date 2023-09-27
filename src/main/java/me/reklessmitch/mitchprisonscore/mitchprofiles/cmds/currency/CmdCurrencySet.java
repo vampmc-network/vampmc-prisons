@@ -35,6 +35,6 @@ public class CmdCurrencySet extends CurrencyCommands {
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         pp.getCurrency(currency).set(amountInt);
         pp.changed();
-        this.msg("§aYou have set §c%s §ato §c%s's §cbalance", amountInt, player.getName());
+        msg("§aYou have set §c%s §ato §c%s's §cbalance", amountInt, player.getName());
     }
 }

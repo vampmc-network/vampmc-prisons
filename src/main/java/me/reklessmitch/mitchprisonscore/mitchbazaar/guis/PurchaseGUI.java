@@ -7,6 +7,7 @@ import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.runnables.SignOverGUI;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -23,7 +24,7 @@ public class PurchaseGUI extends ChestGui {
     String itemToBeBrought; // item being brought
 
     public PurchaseGUI(ItemStack item, String itemToBeBrought) {
-        setInventory(Bukkit.createInventory(null, 27, BazaarConf.get().getBazaarGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 27, LangConf.get().getBazaarGuiTitle()));
         this.itemToBeBrought = itemToBeBrought;
         this.item = item;
         this.sellPrices = BazaarConf.get().getSellPrices().get(itemToBeBrought);

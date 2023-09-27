@@ -3,7 +3,7 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.gui;
 import com.massivecraft.massivecore.chestgui.ChestGui;
 import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PickaxeConf;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,7 +13,7 @@ public class PickaxeSkins extends ChestGui {
     private final Player player;
 
     public PickaxeSkins(Player player){
-        setInventory(Bukkit.createInventory(null, 27, PickaxeConf.get().getPickaxeSkinsGuiTitle()));
+        setInventory(Bukkit.createInventory(null, 27, LangConf.get().getPickaxeSkinsGuiTitle()));
         this.player = player;
         setupInventory();
         setAutoclosing(false);
@@ -48,8 +48,8 @@ public class PickaxeSkins extends ChestGui {
 
     private void setupInventory() {
         getPickaxeSkinItem("§aDefault", "§7The default pickaxe skin.", 0, 0);
-        getPickaxeSkinItem("§bPenguin Pickaxe", "§b ", 10000, 1);
-        getPickaxeSkinItem("§bAbyss Pickaxe", "§b ", 10021, 2);
+        getPickaxeSkinItem("§bPenguin Pickaxe", "§7§oAdorned with a charming penguin perched atop,\n" + "§7§oit brings arctic charm and efficiency to your mining expeditions.", 10000, 1);
+        getPickaxeSkinItem("§bAbyss Pickaxe", "§7§oDelve into the abyss with this obsidian-black pickaxe,\n" + "§7§oIts eerie, glowing accents add an otherworldly touch.", 10021, 2);
         getPickaxeSkinItem("§bAngel Pickaxe", "§b ", 10022, 3);
         getPickaxeSkinItem("§bNitro Pickaxe", "§b ", 10001, 4);
         getPickaxeSkinItem("§bLittle Cat Pickaxe", "§b ", 10034, 5);

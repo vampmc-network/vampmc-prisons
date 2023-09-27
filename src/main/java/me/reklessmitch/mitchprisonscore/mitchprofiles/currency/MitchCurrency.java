@@ -6,8 +6,8 @@ import org.bukkit.Bukkit;
 import java.util.UUID;
 
 public class MitchCurrency {
-    String name;
-    long amount;
+    private String name;
+    private long amount;
 
     public MitchCurrency(String name, long amount) {
         this.name = name;
@@ -40,13 +40,4 @@ public class MitchCurrency {
         this.amount = amount;
     }
 
-    public String convertToFigure(long number) {
-        String[] suffixes = {"", "k", "m", "b", "t"};
-        if (number < 1000) {
-            return String.valueOf(number);
-        }
-        int magnitude = (int) (Math.log10(number) / 3);
-        double convertedNumber = number / Math.pow(1000, magnitude);
-        return String.format("%.1f%s", convertedNumber, suffixes[magnitude]);
-    }
 }

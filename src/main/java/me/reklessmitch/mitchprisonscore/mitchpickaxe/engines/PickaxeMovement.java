@@ -2,12 +2,9 @@ package me.reklessmitch.mitchprisonscore.mitchpickaxe.engines;
 
 import com.massivecraft.massivecore.Engine;
 import com.massivecraft.massivecore.util.MUtil;
-import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.gui.UpgradeGUI;
-import me.reklessmitch.mitchprisonscore.mitchprofiles.holograms.PlayerWardrobe;
 import org.bukkit.Material;
-import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -23,13 +20,9 @@ public class PickaxeMovement extends Engine {
     @EventHandler(ignoreCancelled = true)
     public void onFirstLogin(PlayerLoginEvent e) {
         Player player = e.getPlayer();
-        //if(!player.hasPlayedBefore()) return;
         PPickaxe ppickaxe = PPickaxe.get(player.getUniqueId());
         player.getInventory().setItem(0, ppickaxe.getPickaxeGuiItem());
 
-        PlayerWardrobe playerWardrobe = PlayerWardrobe.get(player.getUniqueId());
-        MitchPrisonsCore.get().getPlayerWardrobes().put(player.getUniqueId(), playerWardrobe.spawnWardrobe());
-        playerWardrobe.updateArmourStand();
     }
 
     @EventHandler

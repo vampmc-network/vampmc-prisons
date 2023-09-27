@@ -27,11 +27,11 @@ public class CmdMineIncrease extends MineCommands {
         int maxMineSize = MineConf.get().getMaxMineSize();
         int newSize = playerMine.getSize() + amount;
         if(newSize > maxMineSize){
-            player.sendMessage("§aThis would exceed max mine size of " + maxMineSize + "setting to max mine size");
+            msg("§aThis would exceed max mine size of " + maxMineSize + "setting to max mine size");
             playerMine.upgradeSize(maxMineSize, true);
             return;
         }
         playerMine.upgradeSize(newSize, true);
-        player.sendMessage("§aYou have set your mine size to " + newSize);
+        msg("§aYou have set your mine size to " + newSize);
     }
 }

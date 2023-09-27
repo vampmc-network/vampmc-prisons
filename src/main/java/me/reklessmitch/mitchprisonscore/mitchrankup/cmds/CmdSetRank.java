@@ -27,7 +27,7 @@ public class CmdSetRank extends RankupCommands{
     public void perform() throws MassiveException {
         Player player = this.readArg();
         int rank = this.readArg();
-        sender.sendMessage("§aYou have set " + player.getName() + "'s rank to " + rank);
+        msg("§aYou have set " + player.getName() + "'s rank to " + rank);
         player.sendMessage("§aYour rank has been set to " + rank);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         pp.setRank(rank);

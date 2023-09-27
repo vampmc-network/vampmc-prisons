@@ -41,8 +41,8 @@ public class RankupConf extends Entity<RankupConf> {
         return rewardsMap;
     }
 
-    public int getCost(int rank){
-        return (int) (startCost + (costIncrease * Math.pow(costMultiplier, rank)));
+    public long getCost(int rank){
+        return (long) (startCost + (costIncrease * Math.pow(rank, costMultiplier)));
     }
 
 

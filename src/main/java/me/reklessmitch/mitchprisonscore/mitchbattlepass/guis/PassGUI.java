@@ -5,17 +5,18 @@ import com.massivecraft.massivecore.util.ItemBuilder;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassConf;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.configs.PassPlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
+import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 public class PassGUI extends ChestGui {
 
-    Player player;
+    private final Player player;
 
     public PassGUI(Player player){
         this.player = player;
-        setInventory(Bukkit.createInventory(null, 27, ":offset_-28::pass:"));
+        setInventory(Bukkit.createInventory(null, 27, LangConf.get().getPassGuiTitle()));
         setupInventory();
         add();
     }

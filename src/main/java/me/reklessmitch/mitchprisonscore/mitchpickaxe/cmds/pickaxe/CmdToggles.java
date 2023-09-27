@@ -1,7 +1,8 @@
 package me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe;
 
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.PickaxeCommands;
-import me.reklessmitch.mitchprisonscore.mitchpickaxe.gui.TogglesGUI;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.gui.TogglesMainGUI;
+import org.bukkit.entity.Player;
 
 public class CmdToggles extends PickaxeCommands {
 
@@ -14,7 +15,8 @@ public class CmdToggles extends PickaxeCommands {
 
     @Override
     public void perform() {
-        new TogglesGUI(me, true).open();
+        Player player = (Player) sender;
+        new TogglesMainGUI(player).open();
     }
 
 }

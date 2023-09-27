@@ -10,12 +10,12 @@ import java.util.*;
 @Getter
 public class Cell {
 
-    String name;
-    UUID owner;
-    Set<UUID> officers;
-    Set<UUID> members;
-    long beacons;
-    Set<UUID> invites;
+    private String name;
+    private UUID owner;
+    private Set<UUID> officers;
+    private Set<UUID> members;
+    private long beacons;
+    private Set<UUID> invites;
 
     public Cell(String name, UUID owner){
         this.name = name;
