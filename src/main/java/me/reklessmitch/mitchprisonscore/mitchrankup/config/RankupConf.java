@@ -6,6 +6,7 @@ import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchrankup.object.RankupReward;
 import org.bukkit.Material;
 
+import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,8 +42,8 @@ public class RankupConf extends Entity<RankupConf> {
         return rewardsMap;
     }
 
-    public long getCost(int rank){
-        return (long) (startCost + (costIncrease * Math.pow(rank, costMultiplier)));
+    public BigInteger getCost(int rank){
+        return BigInteger.valueOf((long) (startCost + (costIncrease * Math.pow(rank, costMultiplier))));
     }
 
 

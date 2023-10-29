@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -29,7 +30,8 @@ public class ShopItem {
     }
 
     public ItemStack getGuiItem(){
-        lore.replaceAll(s -> s.replace("%cost%", "" + cost));
-        return new ItemBuilder(material).displayname(name).lore(lore).build();
+        List<String> modifiedLore = new ArrayList<>(lore);
+        modifiedLore.replaceAll(s -> s.replace("%cost%", "" + cost));
+        return new ItemBuilder(material).displayname(name).lore(modifiedLore).build();
     }
 }

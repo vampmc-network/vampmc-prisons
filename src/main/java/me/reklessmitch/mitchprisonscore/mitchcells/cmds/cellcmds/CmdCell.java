@@ -2,6 +2,7 @@ package me.reklessmitch.mitchprisonscore.mitchcells.cmds.cellcmds;
 
 import com.massivecraft.massivecore.command.requirement.RequirementIsPlayer;
 import me.reklessmitch.mitchprisonscore.mitchcells.cmds.CellCommands;
+import me.reklessmitch.mitchprisonscore.mitchcells.guis.CellGUI;
 
 public class CmdCell extends CellCommands {
 
@@ -31,6 +32,11 @@ public class CmdCell extends CellCommands {
         this.addChild(cellKick);
         this.addChild(cellInfo);
         this.addChild(cmdCellTop);
+    }
+
+    @Override
+    public void perform(){
+        new CellGUI().open(me);
     }
 
 }

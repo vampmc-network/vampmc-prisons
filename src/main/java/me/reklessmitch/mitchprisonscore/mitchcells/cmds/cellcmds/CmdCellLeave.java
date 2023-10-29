@@ -13,7 +13,8 @@ public class CmdCellLeave extends CellCommands {
 
     @Override
     public void perform() {
-        Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
+        CellConf conf = CellConf.get();
+        Cell cell = conf.getCellByMember(me.getUniqueId());
         if(cell == null){
             msg("§cYou are not in a cell");
             return;
@@ -23,6 +24,8 @@ public class CmdCellLeave extends CellCommands {
             return;
         }
         msg("§aYou have left your cell");
-        cell.removePlayer(me.getUniqueId());
+        cell.removePlayer(me.getUniqueId(), me);
+        conf.changed();
+
     }
 }

@@ -19,15 +19,17 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.math.BigInteger;
+
 public class SignOverGUI extends BukkitRunnable {
 
     private final Player player;
-    @Getter private long amount = 0;
+    @Getter private BigInteger amount = BigInteger.ZERO;
     @Getter private final String itemToBeBrought;
     @Getter private final String currencyToBuyWith;
-    private final long maxAmount;
+    private final BigInteger maxAmount;
 
-    public SignOverGUI(Player player, String itemToBeBrought, String currencyToBuyWith, long maxAmount) {
+    public SignOverGUI(Player player, String itemToBeBrought, String currencyToBuyWith, BigInteger maxAmount) {
         this.player = player;
         this.itemToBeBrought = itemToBeBrought;
         this.currencyToBuyWith = currencyToBuyWith;
@@ -88,7 +90,7 @@ public class SignOverGUI extends BukkitRunnable {
 
                     if (!lines[0].isEmpty()) {
                         amount = CurrencyUtils.parse(lines[0]);
-                        if(amount > maxAmount){
+                        if(amount.compareTo(maxAmount) > 0){
                             player.sendMessage("§7This item only has §c" + maxAmount + " in stock");
                             return;
                         }

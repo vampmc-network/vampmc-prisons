@@ -13,18 +13,19 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigInteger;
 import java.util.*;
 
 public class FinaliseBazaarPayment extends ChestGui {
 
-    private final long amount;
+    private final BigInteger amount;
     private final String itemToBeBrought;
     private final String currencyToBuyWith;
     private Map<ShopValue, Long> cheapestItems = new HashMap<>();
     private final Player player;
 
 
-    public FinaliseBazaarPayment(Player player, long amount, String itemToBeBrought, String currencyToBuyWith) {
+    public FinaliseBazaarPayment(Player player, BigInteger amount, String itemToBeBrought, String currencyToBuyWith) {
         this.player = player;
         this.itemToBeBrought = itemToBeBrought;
         this.currencyToBuyWith = currencyToBuyWith;
@@ -36,7 +37,7 @@ public class FinaliseBazaarPayment extends ChestGui {
     }
 
     public void perform() {
-        long cost = getCost();
+        BigInteger cost = getCost();
         for(int i = 0; i < 4; i++) {
             getInventory().setItem(i, new ItemBuilder(Material.GREEN_STAINED_GLASS_PANE).displayname("§aConfirm Payment").build());
             setAction(i, event -> {
@@ -60,7 +61,7 @@ public class FinaliseBazaarPayment extends ChestGui {
         cheapestItems.forEach((shopValue, a) -> {
             OfflinePlayer p = IdUtil.getOfflinePlayer(shopValue.getOwner());
             long costOfItem = (long) (a * shopValue.getPricePerItem());
-            ProfilePlayer.get(shopValue.getOwner()).getCurrency(currencyToBuyWith).add(costOfItem);
+            ProfilePlayer.get(shopValue.getOwner()).getCurrency(currencyToBuyWith).add(BigInteger.valueOf(costOfItem));
             if(p.isOnline()){
                 p.getPlayer().sendMessage("§aYour item has been brought from the bazaar! ( "+ costOfItem + " " + currencyToBuyWith + " )");
             }
@@ -76,7 +77,7 @@ public class FinaliseBazaarPayment extends ChestGui {
 
     }
 
-    private ItemStack getGuiItem(long cost) {
+    private ItemStack getGuiItem(BigInteger cost) {
         return new ItemBuilder(BazaarConf.get().getCurrency(itemToBeBrought)).lore(
                 "§7You are about to buy/sell §e" + amount + " " + itemToBeBrought + "§7 for " +
                         CurrencyUtils.format(cost) + "§e" + currencyToBuyWith + "/s§7.",
@@ -84,21 +85,27 @@ public class FinaliseBazaarPayment extends ChestGui {
         ).build();
     }
 
-    private long getCost(){
+    private BigInteger getCost(){
         cheapestItems = new HashMap<>();
         List<ShopValue> shopPrices = BazaarConf.get().getSellPrices().get(itemToBeBrought).get(currencyToBuyWith);
         shopPrices.sort(Comparator.comparing(ShopValue::getPricePerItem));
-        long x = amount;
-        long cost = 0;
+        BigInteger x = amount;
+        BigInteger cost = BigInteger.ZERO;
+
         for (ShopValue item : shopPrices) {
-            long quantityToAdd = Math.min(x, item.getAmount());
-            cost += quantityToAdd * item.getPricePerItem();
-            cheapestItems.put(item, quantityToAdd);
-            x -= quantityToAdd;
-            if (x <= 0) {
+            BigInteger quantityToAdd = x.min(BigInteger.valueOf(item.getAmount())); // Use min with BigIntegers
+            BigInteger itemCost = quantityToAdd.multiply(BigInteger.valueOf(item.getPricePerItem().longValue())); // Use multiply for BigInteger
+
+            cost = cost.add(itemCost); // Use add for BigInteger
+
+            cheapestItems.put(item, quantityToAdd.longValue()); // Assuming cheapestItems is a Map<ShopValue, Long>
+            x = x.subtract(quantityToAdd);
+
+            if (x.compareTo(BigInteger.ZERO) <= 0) {
                 break;
             }
         }
+
         return cost;
     }
 

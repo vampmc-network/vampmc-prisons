@@ -42,8 +42,8 @@ public class TogglesGUI extends ChestGui {
 
                 switch (toggle) {
                     case 0 -> pickaxe.toggleEnchant(type);
-                    case 1 -> pickaxe.toggleEnchantMessage(type);
-                    case 2 -> pickaxe.toggleEnchantSound(type);
+                    case 2 -> pickaxe.toggleEnchantMessage(type);
+                    case 1 -> pickaxe.toggleEnchantSound(type);
                     default -> {
                     }
                 }

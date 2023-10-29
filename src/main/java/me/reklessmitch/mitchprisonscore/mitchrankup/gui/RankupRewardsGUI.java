@@ -25,8 +25,16 @@ public class RankupRewardsGUI extends ChestGui {
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         if(pp.getClaimedRewards().contains(levelRequired)){
             getInventory().setItem(item.getSlot(), item.getRewardItem(Material.RED_WOOL));
+            setAction(item.getSlot(), event -> {
+                player.sendMessage("§cYou have already claimed this reward!");
+                return true;
+            });
         } else if (pp.getRank() < levelRequired) {
             getInventory().setItem(item.getSlot(), item.getRewardItem(Material.RED_STAINED_GLASS_PANE));
+            setAction(item.getSlot(), event -> {
+                player.sendMessage("§cYou have not unlocked this reward yet!");
+                return true;
+            });
         }else {
             getInventory().setItem(item.getSlot(), item.getRewardItem());
             setAction(item.getSlot(), event -> {

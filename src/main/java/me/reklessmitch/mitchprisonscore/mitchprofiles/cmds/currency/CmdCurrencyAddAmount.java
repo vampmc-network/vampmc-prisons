@@ -10,6 +10,8 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.entity.Player;
 
+import java.math.BigInteger;
+
 public class CmdCurrencyAddAmount extends CurrencyCommands {
 
     private static CmdCurrencyAddAmount i = new CmdCurrencyAddAmount();
@@ -29,7 +31,7 @@ public class CmdCurrencyAddAmount extends CurrencyCommands {
         Player player = this.readArg();
         String currency = this.readArg();
         String amount = this.readArg();
-        long amountLong = CurrencyUtils.parse(amount);
+        BigInteger amountLong = CurrencyUtils.parse(amount);
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         pp.getCurrency(currency).add(amountLong);
         pp.changed();

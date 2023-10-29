@@ -4,6 +4,8 @@ import com.massivecraft.massivecore.command.editor.annotation.EditorName;
 import com.massivecraft.massivecore.store.Entity;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
+import me.reklessmitch.mitchprisonscore.mitchcells.object.DisplayItemCommand;
+import org.bukkit.Material;
 
 import java.util.*;
 
@@ -16,6 +18,12 @@ public class CellConf extends Entity<CellConf> {
 
     int maxCellSize = 10;
     private Map<String, Cell> cells = new HashMap<>();
+    private int size = 36;
+    private List<DisplayItemCommand> guiItems = List.of(new DisplayItemCommand(
+            Material.BEACON, "&aCreate Cell", List.of("&7Click to create a cell using /cell create {name}"), 1, 0,
+            ""
+    ));
+
 
     public List<String> getCellNames(){
         return new ArrayList<>(cells.keySet());
@@ -34,5 +42,9 @@ public class CellConf extends Entity<CellConf> {
         Set<UUID> players = new HashSet<>();
         cells.values().forEach(cell -> players.addAll(cell.getAllMembers()));
         return players;
+    }
+
+    public Cell getCellByName(String cellName) {
+        return cells.get(cellName.toUpperCase());
     }
 }

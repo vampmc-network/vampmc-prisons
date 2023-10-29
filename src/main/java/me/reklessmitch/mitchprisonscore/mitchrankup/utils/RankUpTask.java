@@ -8,12 +8,15 @@ import me.reklessmitch.mitchprisonscore.utils.LangConf;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import java.math.BigInteger;
+
 public class RankUpTask extends BukkitRunnable {
     private final Player player;
     private final ProfilePlayer pp;
     private final MitchCurrency money;
     private final RankupConf rankupConf;
     private int rank;
+    private int ranksIncreased = 0;
 
     public RankUpTask(Player player, ProfilePlayer pp, MitchCurrency money, RankupConf rankupConf) {
         this.player = player;
@@ -29,16 +32,21 @@ public class RankUpTask extends BukkitRunnable {
     }
 
     private void repeat(){
-        long cost = rankupConf.getCost(rank);
-        if (money.getAmount() >= cost){
+        BigInteger cost = rankupConf.getCost(rank);
+        if (money.getAmount().compareTo(cost) >= 0) {
             money.take(cost);
             rank++;
+            ranksIncreased++;
             repeat();
         } else {
-            pp.setRank(rank);
-            pp.changed();
-            player.sendMessage(PlaceholderAPI.setPlaceholders(player, LangConf.get().getRankUp()));
-            super.cancel();
+            if (ranksIncreased == 0) {
+                super.cancel();
+            } else {
+                pp.setRank(rank);
+                pp.changed();
+                player.sendMessage(PlaceholderAPI.setPlaceholders(player, LangConf.get().getRankUp()));
+                super.cancel();
+            }
         }
     }
 }

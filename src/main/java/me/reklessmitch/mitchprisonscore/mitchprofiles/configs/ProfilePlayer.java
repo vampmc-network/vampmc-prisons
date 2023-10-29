@@ -5,11 +5,14 @@ import lombok.Getter;
 import lombok.Setter;
 import me.reklessmitch.mitchprisonscore.MitchPrisonsCore;
 import me.reklessmitch.mitchprisonscore.colls.ProfilePlayerColl;
+import me.reklessmitch.mitchprisonscore.mitchbackpack.config.BackpackPlayer;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.currency.MitchCurrency;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
 import me.reklessmitch.mitchprisonscore.mitchrankup.utils.RankUpTask;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -21,11 +24,12 @@ public class ProfilePlayer extends SenderEntity<ProfilePlayer> {
     }
 
     private List<MitchCurrency> currencyList = ProfilesConf.get().getCurrencyList().stream()
-            .collect(ArrayList::new, (list, str) -> list.add(new MitchCurrency(str, 0)), ArrayList::addAll);
+            .collect(ArrayList::new, (list, str) -> list.add(new MitchCurrency(str, BigInteger.ZERO)), ArrayList::addAll);
     private List<UUID> friends = new ArrayList<>();
     @Setter private String joinMessage = "";
     private List<Integer> claimedRewards = new ArrayList<>();
     @Setter private int rank = 0;
+
 
     @Override
     public ProfilePlayer load(@NotNull ProfilePlayer that)

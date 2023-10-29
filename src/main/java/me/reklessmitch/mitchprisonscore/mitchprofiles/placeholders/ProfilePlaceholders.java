@@ -9,7 +9,7 @@ public class ProfilePlaceholders extends PlaceholderExpansion {
 
     @Override
     public @NotNull String getIdentifier() {
-        return "mitchprofile";
+        return "mitchprofiles";
     }
 
     @Override

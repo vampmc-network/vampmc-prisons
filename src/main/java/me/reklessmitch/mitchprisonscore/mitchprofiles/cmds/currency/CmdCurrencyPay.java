@@ -9,6 +9,8 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilesConf;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.entity.Player;
 
+import java.math.BigInteger;
+
 public class CmdCurrencyPay extends CurrencyCommands {
 
     private static CmdCurrencyPay i = new CmdCurrencyPay();
@@ -40,16 +42,16 @@ public class CmdCurrencyPay extends CurrencyCommands {
         }
 
         String amount = this.readArg();
-        long amountInt = CurrencyUtils.parse(amount);
-        if(amountInt == -1){
+        BigInteger amountInt = CurrencyUtils.parse(amount);
+        if(amountInt.longValue() == -1){
             msg("§cInvalid amount / character (k, m, b)");
             return;
         }
-        if(amountInt <= 0){
+        if(amountInt.longValue() <= 0){
             msg("§cAmount must be greater than 0");
             return;
         }
-        if(sender.getCurrency(currency).getAmount() < amountInt){
+        if (sender.getCurrency(currency).getAmount().compareTo(amountInt) < 0) {
             msg("§bYou do not have enough " + currency + "/s");
         }else{
             sender.getCurrency(currency).take(amountInt);

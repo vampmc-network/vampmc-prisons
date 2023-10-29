@@ -11,6 +11,8 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import org.bukkit.entity.Player;
 
+import java.math.BigInteger;
+
 public class CmdCurrencySet extends CurrencyCommands {
 
     public CmdCurrencySet() {
@@ -27,8 +29,8 @@ public class CmdCurrencySet extends CurrencyCommands {
         Player player = this.readArg();
         String currency = this.readArg();
         String amount = this.readArg();
-        long amountInt = CurrencyUtils.parse(amount);
-        if(amountInt == -1){
+        BigInteger amountInt = CurrencyUtils.parse(amount);
+        if(amountInt.equals(BigInteger.valueOf(-1))){
             msg("§cInvalid amount / character (k, m, b)");
             return;
         }

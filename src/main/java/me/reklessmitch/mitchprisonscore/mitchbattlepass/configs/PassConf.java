@@ -18,5 +18,6 @@ public class PassConf extends Entity<PassConf> {
     private int creditsToBuyPremium = 5000;
     Map<Integer, List<Reward>> freeRewards = Map.of(1, List.of(new Reward("test", List.of("bc %player% reward"))));
     Map<Integer, List<Reward>> paidRewards = Map.of(1, List.of(new Reward("test", List.of("bc %player% reward"))));
-    Map<Integer, Long> blocksPerLevel = Map.of(1, 500L, 2, 2500L, 3, 10000L, 4, 50000L);
+    Map<Integer, Long> blocksPerLevel =
+            Map.of(1, 500L, 2, 2500L, 3, 10000L, 4, 50000L);
 }

@@ -13,7 +13,8 @@ public class CmdCellDisband extends CellCommands {
 
     @Override
     public void perform() {
-        Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
+        CellConf conf = CellConf.get();
+        Cell cell = conf.getCellByMember(me.getUniqueId());
         if(cell == null){
             msg("§bYou are not in a cell");
             return;
@@ -23,6 +24,5 @@ public class CmdCellDisband extends CellCommands {
             return;
         }
         cell.disband();
-        msg("§bYou have disbanded your cell");
     }
 }

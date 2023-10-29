@@ -20,6 +20,7 @@ import me.reklessmitch.mitchprisonscore.mitchmines.placeholders.MinePlaceholders
 import me.reklessmitch.mitchprisonscore.mitchmines.utils.PMineWorldGen;
 import me.reklessmitch.mitchprisonscore.mitchpets.cmd.CmdPet;
 import me.reklessmitch.mitchprisonscore.mitchpets.placeholders.PetPlaceholders;
+import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdAutoRankup;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdBlocks;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdToggles;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.cmds.pickaxe.CmdUpgradeGUI;
@@ -118,7 +119,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Pets
                 CmdPet.class,
                 // Pickaxe
-                CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class,
+                CmdUpgradeGUI.class, CmdToggles.class, CmdBlocks.class, CmdAutoRankup.class,
                 // Profiles
                 CmdChangeJoinMessage.class, CmdCurrency.class, CmdBal.class,
                 CmdCurrencyPay.class, CmdCurrencyAddAmount.class, CmdCurrencyAddPercent.class,

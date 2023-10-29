@@ -6,6 +6,8 @@ import me.reklessmitch.mitchprisonscore.mitchprofiles.utils.CurrencyUtils;
 import me.reklessmitch.mitchprisonscore.mitchrankup.config.RankupConf;
 import org.bukkit.entity.Player;
 
+import java.math.BigInteger;
+
 public class CmdRankup extends RankupCommands{
 
     private static final CmdRankup i = new CmdRankup();
@@ -20,10 +22,10 @@ public class CmdRankup extends RankupCommands{
         Player player = (Player) sender;
         ProfilePlayer pp = ProfilePlayer.get(player.getUniqueId());
         MitchCurrency money = pp.getCurrency("money");
-        long cost = RankupConf.get().getCost(pp.getRank());
-        if(money.getAmount() < cost){
+        BigInteger cost = RankupConf.get().getCost(pp.getRank());
+        if(money.getAmount().compareTo(cost) < 0){
             msg("§cYou do not have enough money to rankup!" + "§e You need " +
-                    CurrencyUtils.format(cost - money.getAmount()) + " more money to rankup.");
+                    CurrencyUtils.format(cost.subtract(money.getAmount())) + " more money to rankup.");
             return;
         }
         money.take(cost);

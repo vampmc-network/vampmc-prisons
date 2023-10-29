@@ -17,12 +17,13 @@ public class CmdCellJoin extends CellCommands {
     @Override
     public void perform() throws MassiveException {
         String cellName = this.readArg();
+        cellName = cellName.toLowerCase();
         CellConf conf = CellConf.get();
         if(conf.getAllPlayersInCells().contains(me.getUniqueId())){
             msg("§cYou are already in a cell");
             return;
         }
-        Cell cell = conf.getCells().get(cellName);
+        Cell cell = conf.getCellByName(cellName);
         if(cell == null){
             msg("§cCell does not exist");
             return;
@@ -35,6 +36,7 @@ public class CmdCellJoin extends CellCommands {
             cell.getMembers().add(me.getUniqueId());
             msg("§aJoined cell " + cellName);
             cell.getInvites().remove(me.getUniqueId());
+            conf.changed();
         }else{
             msg("§cYou are not invited to this cell");
         }

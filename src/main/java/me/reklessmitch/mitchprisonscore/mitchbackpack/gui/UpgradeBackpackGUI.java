@@ -14,6 +14,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigInteger;
+
 public class UpgradeBackpackGUI extends ChestGui {
 
     private final Player player;
@@ -32,7 +34,7 @@ public class UpgradeBackpackGUI extends ChestGui {
         add();
     }
 
-    private void getUpgradeItem(int[] slots, long amount, long cost){
+    private void getUpgradeItem(int[] slots, BigInteger amount, BigInteger cost){
         MitchCurrency currency = profilePlayer.getCurrency("token");
         ItemStack item = new ItemBuilder(Material.PAPER)
                 .displayname("§aUpgrade §c§l" + amount + " §aslots")
@@ -42,7 +44,7 @@ public class UpgradeBackpackGUI extends ChestGui {
         for(int slot : slots) {
             getInventory().setItem(slot, item);
             this.setAction(slot, event -> {
-                if (currency.getAmount() - cost >= 0) {
+                if (currency.getAmount().compareTo(cost) >= 0) { // Use compareTo for BigInteger comparison
                     backpackPlayer.addSlot(amount);
                     currency.take(cost);
                     refresh();
@@ -54,13 +56,15 @@ public class UpgradeBackpackGUI extends ChestGui {
             });
         }
     }
+
     public void refresh(){
-        getUpgradeItem(new int[]{0,1,2,9,10,11}, 1, backpackPlayer.getCost(1));
-        getUpgradeItem(new int[]{3,4,5,12,13,14}, 5, backpackPlayer.getCost(10));
-        getUpgradeItem(new int[]{6,7,8,15,16,17}, 50, backpackPlayer.getCost(50));
-        getUpgradeItem(new int[]{18,19,20,27,28,29}, 500, backpackPlayer.getCost(500));
-        getUpgradeItem(new int[]{21,22,23,30,31,32}, 1000, backpackPlayer.getCost(5000));
-        getUpgradeItem(new int[]{24,25,26,33,34,35}, backpackPlayer.getMaxPurchasable(), backpackPlayer.getCost(backpackPlayer.getMaxPurchasable()));
+        getUpgradeItem(new int[]{0,1,2,9,10,11}, BigInteger.valueOf(1), backpackPlayer.getCost(BigInteger.valueOf(1)));
+        getUpgradeItem(new int[]{3,4,5,12,13,14}, BigInteger.valueOf(5), backpackPlayer.getCost(BigInteger.valueOf(10)));
+        getUpgradeItem(new int[]{6,7,8,15,16,17}, BigInteger.valueOf(50), backpackPlayer.getCost(BigInteger.valueOf(50)));
+        getUpgradeItem(new int[]{18,19,20,27,28,29}, BigInteger.valueOf(500), backpackPlayer.getCost(BigInteger.valueOf(500)));
+        getUpgradeItem(new int[]{21,22,23,30,31,32}, BigInteger.valueOf(1000), backpackPlayer.getCost(BigInteger.valueOf(5000)));
+        BigInteger maxPurchasable = backpackPlayer.getMaxPurchasable();
+        getUpgradeItem(new int[]{24,25,26,33,34,35}, maxPurchasable, backpackPlayer.getCost(maxPurchasable));
         getBackpackSkinItem();
         getAutoSellItem();
         togglesButton();
@@ -110,7 +114,7 @@ public class UpgradeBackpackGUI extends ChestGui {
                     player.sendMessage("§cYou already have auto sell!");
                     return false;
                 }
-                if(token.getAmount() < cost){
+                if (token.getAmount().compareTo(BigInteger.valueOf(cost)) < 0) {
                     player.sendMessage("§cYou do not have enough tokens to purchase auto sell");
                     return false;
                 }

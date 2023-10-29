@@ -34,13 +34,13 @@ public class PassPlayer extends SenderEntity<PassPlayer> {
 
     private void claimRewards(Map<Integer, List<Reward>> rewards) {
         TreeMap<Integer, List<Reward>> sortedMap = new TreeMap<>(rewards);
-        SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(lastClaimedLevel, level + 1);
+        SortedMap<Integer, List<Reward>> subMap = sortedMap.subMap(lastClaimedLevel + 1, level + 1);
         if(subMap.isEmpty()) {
             getPlayer().sendMessage(LangConf.get().getBattlePassNoRewards());
         }else{
             getPlayer().sendMessage(LangConf.get().getBattlePassClaimed());
             subMap.forEach((l, r) -> r.forEach(reward -> reward.getCommands().forEach(
-                    command -> Bukkit.getConsoleSender().sendMessage(command.replace("%player%", getPlayer().getName())))));
+                    command -> Bukkit.dispatchCommand(Bukkit.getConsoleSender(), command.replace("%player%", getPlayer().getName())))));
             lastClaimedLevel = level;
             changed();
         }

@@ -36,8 +36,13 @@ public class BoosterInteract extends Engine {
             BoosterType type = BoosterType.valueOf(id);
             double multiplier = pdc.get(MitchPrisonsCore.get().getMultiKey(), PersistentDataType.DOUBLE);
             long time = pdc.get(MitchPrisonsCore.get().getDurationKey(), PersistentDataType.LONG);
+            BoosterPlayer boosterPlayer = BoosterPlayer.get(event.getPlayer().getUniqueId());
+            if(boosterPlayer.getBoosters().size() >= 35){
+                event.getPlayer().sendMessage("§cYou can't have more than 35 boosters! (Combine them!)");
+                return;
+            }
             event.getPlayer().sendMessage("§aAdded booster with " + multiplier + "x to /boosters");
-            BoosterPlayer.get(event.getPlayer().getUniqueId()).getBoosters().add(new Booster(type, multiplier, time));
+            boosterPlayer.getBoosters().add(new Booster(type, multiplier, time));
             event.getPlayer().getInventory().getItemInMainHand().setAmount(event.getPlayer().getInventory().getItemInMainHand().getAmount() - 1);
         }
     }

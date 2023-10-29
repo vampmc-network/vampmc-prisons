@@ -19,14 +19,16 @@ public class ProfilesConf extends Entity<ProfilesConf> {
     private List<String> currencyList = List.of("token", "beacon", "money", "credits");
     private List<String> joinMessages = List.of("%player% joined", "%player% is here");
 
-    List<ShopItem> defaultShopItem = List.of(new ShopItem(1, 10, Material.DIAMOND, "§aRank1",
+
+    private final transient List<ShopItem> defaultShopItem = List.of(new ShopItem(1, 10, Material.DIAMOND, "§aRank1",
             "§aRank1", List.of("aa %player% 1"), List.of("§aCost: %cost%")));
-    DisplayItem defaultDisplayItem = new DisplayItem(Material.DIAMOND, "§aRank1", List.of("aa %player% 1"), 0, 1);
-    Map<DisplayItem, List<ShopItem>> defaultShop = Map.of(defaultDisplayItem, defaultShopItem);
-    // Map<ShopDisplay, Map<ShopItem, List<String>>>
-    Map<String, Map<DisplayItem, List<ShopItem>>> shops = Map.of(
-            "ranks", defaultShop,
-            "gkits", defaultShop,
-            "crates", defaultShop);
+    private final transient DisplayItem defaultDisplayItem = new DisplayItem(Material.DIAMOND, "§aRank1", List.of("aa %player% 1"), 0, 1);
+
+    Map<String, DisplayItem> storeCategories = Map.of("ranks", defaultDisplayItem,
+            "gkits", defaultDisplayItem,
+            "crates", defaultDisplayItem);
+    Map<String, List<ShopItem>> storeItems = Map.of("ranks", defaultShopItem,
+            "gkits", defaultShopItem,
+            "crates", defaultShopItem);
 
 }

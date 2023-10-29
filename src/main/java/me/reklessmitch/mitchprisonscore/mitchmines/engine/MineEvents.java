@@ -44,9 +44,6 @@ public class MineEvents extends Engine {
             return;
         }
         block.setType(Material.AIR);
-        if(block.getType().equals(Material.ENDER_CHEST)){
-            Bukkit.broadcastMessage("DO SUPPLY DROP DROPS");
-        }
         BlockInPmineBrokeEvent event = new BlockInPmineBrokeEvent(e.getPlayer(), playerMine, e.getBlock());
         Bukkit.getServer().getPluginManager().callEvent(event);
     }

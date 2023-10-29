@@ -6,6 +6,7 @@ import com.massivecraft.massivecore.util.IdUtil;
 import com.sk89q.worldedit.EditSession;
 import com.sk89q.worldedit.WorldEdit;
 import com.sk89q.worldedit.extent.clipboard.Clipboard;
+import com.sk89q.worldedit.function.pattern.RandomPattern;
 import com.sk89q.worldedit.math.BlockVector3;
 import com.sk89q.worldedit.math.Vector3;
 import com.sk89q.worldedit.regions.CuboidRegion;
@@ -29,6 +30,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigInteger;
 import java.util.Random;
 
 @Getter
@@ -50,8 +52,14 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         Location l = getPlayer().getLocation();
         try(EditSession editSession = WorldEdit.getInstance().newEditSession(FaweAPI.getWorld("privatemines"))){
             Region cub = new CuboidRegion(min.toBlockVector3(), max.toBlockVector3());
-            editSession.setBlocks(cub, BlockTypes.get(block.name().toLowerCase()));
+            RandomPattern randomPattern = new RandomPattern();
+            BlockType normalBlock = BlockTypes.get(this.block.name().toLowerCase());
+            BlockType beacon = BlockTypes.get(Material.BEACON.name().toLowerCase());
+            randomPattern.add(beacon, 0.02);
+            randomPattern.add(normalBlock, 0.98);
+            editSession.setBlocks(cub, randomPattern);
         }
+
         if(isInMine(BlockVector3.at(l.getX(), l.getY(), l.getZ()))){
             getPlayer().teleport(middleLocation.toLocation().add(0, 1, 0));
             getPlayer().sendMessage(LangConf.get().getMineReset());
@@ -106,12 +114,12 @@ public class PlayerMine extends SenderEntity<PlayerMine> {
         return getBeaconsAndBlocksInRegion(new EllipsoidRegion(world, BlockVector3.at(location.getX(), location.getY(), location.getZ()), Vector3.at(radius, radius, radius)));
     }
 
-    private int multiplyBeaconBooster(int beacons){
+    private BigInteger multiplyBeaconBooster(int beacons){
         Booster beaconBooster = BoosterPlayer.get(getPlayer()).getActiveBeaconBooster();
         if(beaconBooster != null){
             beacons *= beaconBooster.getMultiplier();
         }
-        return beacons;
+        return BigInteger.valueOf(beacons);
     }
     private void volumeMinedCheck(){
         if(volumeMined >= volume * 0.7){

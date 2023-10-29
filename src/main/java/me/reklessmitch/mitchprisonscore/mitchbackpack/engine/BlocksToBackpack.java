@@ -7,6 +7,8 @@ import me.reklessmitch.mitchprisonscore.mitchpickaxe.configs.PPickaxe;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
 import org.bukkit.event.EventHandler;
 
+import java.math.BigInteger;
+
 public class BlocksToBackpack extends Engine {
 
     private static BlocksToBackpack i = new BlocksToBackpack();
@@ -21,6 +23,6 @@ public class BlocksToBackpack extends Engine {
         if(fortuneLevel > 0) {
             startAmount *= 1 + fortuneMulti;
         }
-        BackpackPlayer.get(e.getPlayer().getUniqueId()).add(startAmount);
+        BackpackPlayer.get(e.getPlayer().getUniqueId()).add(BigInteger.valueOf(startAmount));
     }
 }

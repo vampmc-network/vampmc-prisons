@@ -16,7 +16,9 @@ public class CmdCellInvite extends CellCommands {
 
     @Override
     public void perform() throws MassiveException {
-        Cell cell = CellConf.get().getCellByMember(me.getUniqueId());
+        CellConf conf = CellConf.get();
+        Cell cell = conf.getCellByMember(me.getUniqueId());
+
         if(cell == null){
             msg("§cYou are not in a cell");
             return;
@@ -32,6 +34,8 @@ public class CmdCellInvite extends CellCommands {
         }
         cell.getInvites().add(player.getUniqueId());
         msg("§aInvited §c" + player.getName() + "§a to your cell");
+        player.sendMessage("§aYou have been invited to §c" + cell.getName() + "§a's cell");
+        conf.changed();
     }
 
 }

@@ -10,6 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.math.BigInteger;
+
 public class PassGUI extends ChestGui {
 
     private final Player player;
@@ -25,7 +27,7 @@ public class PassGUI extends ChestGui {
         getInventory().setItem(15, new ItemBuilder(Material.BARRIER).displayname("§aBuy Battle Pass")
                 .lore("§7Click to buy the battle pass", "", "§aCost: §f" + cost).build());
         setAction(15, event -> {
-            if(profile.getCurrency("credits").getAmount() < cost){
+            if (profile.getCurrency("credits").getAmount().compareTo(BigInteger.valueOf(cost)) < 0) {
                 player.sendMessage("§cYou do not have enough credits to buy the battle pass");
                 return true;
             }

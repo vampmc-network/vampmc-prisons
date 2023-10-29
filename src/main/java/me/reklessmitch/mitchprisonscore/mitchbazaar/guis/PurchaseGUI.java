@@ -13,15 +13,16 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.math.BigInteger;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
 public class PurchaseGUI extends ChestGui {
 
-    ItemStack item; // item being sold
-    Map<String, List<ShopValue>> sellPrices; // prices for item being sold
-    String itemToBeBrought; // item being brought
+    private final ItemStack item; // item being sold
+    private final Map<String, List<ShopValue>> sellPrices; // prices for item being sold
+    private final String itemToBeBrought; // item being brought
 
     public PurchaseGUI(ItemStack item, String itemToBeBrought) {
         setInventory(Bukkit.createInventory(null, 27, LangConf.get().getBazaarGuiTitle()));
@@ -47,7 +48,10 @@ public class PurchaseGUI extends ChestGui {
                 continue;
             }
             sorted.sort(Comparator.comparing(ShopValue::getPricePerItem));
-            long totalStock = sorted.stream().mapToLong(ShopValue::getAmount).sum();
+            BigInteger totalStock = sorted.stream()
+                    .map(ShopValue::getAmount)
+                    .map(BigInteger::valueOf) // Convert long to BigInteger
+                    .reduce(BigInteger.ZERO, BigInteger::add); // Sum all values
             getInventory().setItem(10 + i * 2, new ItemBuilder(BazaarConf.get().getCurrency(currency))
                     .displayname("§e" + currencies.get(i).toUpperCase())
                     .lore("§7Total Stock: §c" + totalStock,

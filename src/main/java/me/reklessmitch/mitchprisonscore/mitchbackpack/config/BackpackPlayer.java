@@ -20,6 +20,7 @@ import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
 import java.security.SecureRandom;
 
 @Getter
@@ -38,8 +39,8 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
 
     private boolean messages = true;
     private int skinID = 0;
-    private long currentLoad = 0;
-    private long capacity = 100;
+    private BigInteger currentLoad = BigInteger.ZERO;
+    private BigInteger capacity = BigInteger.valueOf(100);
     private boolean autoSell = false;
 
     public void set() {
@@ -59,22 +60,22 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         this.changed();
     }
 
-    public void add(long amount) {
-        if(capacity <= amount + currentLoad){
+    public void add(BigInteger amount) {
+        if (capacity.compareTo(amount.add(currentLoad)) <= 0) { // Use compareTo for BigInteger comparison
             currentLoad = capacity;
-            if(autoSell){
+            if (autoSell) {
                 sell();
                 return;
             }
             MixinTitle.get().sendTitleMsg(getPlayer(), 0, 20, 0, "§cBackpack is full!", "§7Sell your items with §e/sell");
-        }else{
-            currentLoad += amount;
+        } else {
+            currentLoad = currentLoad.add(amount); // Use add for BigInteger
         }
         changed();
     }
 
-    public void addSlot(long amount){
-        capacity += amount;
+    public void addSlot(BigInteger amount){
+        capacity = capacity.add(amount);
         getPlayer().sendMessage("§aYou have upgraded your backpack by " + amount + " slots!");
         changed();
         set();
@@ -87,29 +88,29 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
 
     public void sell() {
         boolean boostActivated = false;
-        long startAmount = currentLoad;
+        BigInteger startAmount = currentLoad; // Convert currentLoad to a BigInteger
         PPickaxe ppickaxe = PPickaxe.get(getId());
         double greedMulti = ppickaxe.getEnchants().get(EnchantType.GREED) / 1000.0;
         if(greedMulti != 0) {
-            startAmount *= 1 + greedMulti;
+            startAmount = startAmount.multiply(BigInteger.valueOf((long)(1 + greedMulti))); // Use multiply for BigInteger
         }
         int boostLevel = ppickaxe.getEnchants().get(EnchantType.BOOST);
         if(boostLevel != 0 &&
-                new SecureRandom().nextDouble(1) < PickaxeConf.get().getEnchantByType(EnchantType.BOOST).getProcChance(boostLevel)){
-            startAmount *= 2;
+                new SecureRandom().nextDouble() < PickaxeConf.get().getEnchantByType(EnchantType.BOOST).getProcChance(boostLevel)){
+            startAmount = startAmount.multiply(BigInteger.valueOf(2)); // Use multiply for BigInteger
             boostActivated = true;
         }
         double petBooster = getPetBooster();
         if(petBooster > 0){
-            startAmount *= 1 + petBooster;
+            startAmount = startAmount.multiply(BigInteger.valueOf((long)(1 + petBooster))); // Use multiply for BigInteger
         }
 
         Booster booster = BoosterPlayer.get(getId()).getActiveMoneyBooster();
         if(booster != null){
-            startAmount *= booster.getMultiplier();
+            startAmount = startAmount.multiply(BigInteger.valueOf((long)(booster.getMultiplier()))); // Use multiply for BigInteger
         }
-        int rank = ProfilePlayer.get(getId()).getRank();
-        startAmount *= rank;
+        int rank = ProfilePlayer.get(getId()).getRank() + 1;
+        startAmount = startAmount.multiply(BigInteger.valueOf(rank)); // Use multiply for BigInteger
         ProfilePlayer.get(getId()).getCurrency("money").add(startAmount);
         if(messages) {
             getPlayer().sendMessage("§a-------------------------" +
@@ -125,22 +126,20 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         if(ppickaxe.isAutoRankup()){
             ProfilePlayer.get(getId()).rankUpMax();
         }
-        currentLoad = 0;
+        currentLoad = BigInteger.ZERO;
         changed();
         set();
     }
 
-    public long getCost(int amountToBuy) { // @REDO THIS
-        BackpackConf conf = BackpackConf.get();
-        long costPerSlot = conf.getSlotPriceIncreasePerSize();
-        return amountToBuy * costPerSlot;
+    public BigInteger getCost(BigInteger amountToBuy) {
+        return amountToBuy.multiply(BigInteger.valueOf(BackpackConf.get().getSlotPriceIncreasePerSize()));
     }
 
-    public int getMaxPurchasable() {
-        long tokens = ProfilePlayer.get(getId()).getCurrency("token").getAmount();
+    public BigInteger getMaxPurchasable() {
+        BigInteger tokens = ProfilePlayer.get(getId()).getCurrency("token").getAmount();
         BackpackConf conf = BackpackConf.get();
         int costPerSlot = conf.getSlotPriceIncreasePerSize();
-        return (int) (tokens / costPerSlot);
+        return tokens.divide(BigInteger.valueOf(costPerSlot));
     }
 
     private String getSkinName(){

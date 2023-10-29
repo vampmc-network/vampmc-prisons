@@ -11,6 +11,8 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class PickaxeMovement extends Engine {
 
@@ -22,7 +24,7 @@ public class PickaxeMovement extends Engine {
         Player player = e.getPlayer();
         PPickaxe ppickaxe = PPickaxe.get(player.getUniqueId());
         player.getInventory().setItem(0, ppickaxe.getPickaxeGuiItem());
-
+        player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1, false, false));
     }
 
     @EventHandler

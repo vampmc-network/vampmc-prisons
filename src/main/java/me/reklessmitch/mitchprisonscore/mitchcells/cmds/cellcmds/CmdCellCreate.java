@@ -27,5 +27,6 @@ public class CmdCellCreate extends CellCommands {
         }
         conf.getCells().put(cellName.toUpperCase(), new Cell(cellName, me.getUniqueId()));
         msg("§aCell created " + cellName);
+        conf.changed();
     }
 }

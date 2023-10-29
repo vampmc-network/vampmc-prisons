@@ -7,6 +7,8 @@ import me.reklessmitch.mitchprisonscore.mitchcells.configs.CellConf;
 import me.reklessmitch.mitchprisonscore.mitchcells.object.Cell;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 
+import java.math.BigInteger;
+
 public class CmdAddBeacons extends CellCommands {
 
     public CmdAddBeacons(){
@@ -21,14 +23,17 @@ public class CmdAddBeacons extends CellCommands {
             msg("§cYou are not in a cell");
             return;
         }
-        long amount = this.readArg();
+        BigInteger amount = BigInteger.valueOf(this.readArg());
         ProfilePlayer profile = ProfilePlayer.get(me.getUniqueId());
-        if(amount > 0 && profile.getCurrency("beacon").getAmount() > amount){
-            profile.getCurrency("beacon").take(amount);
+
+        BigInteger beaconAmount = profile.getCurrency("beacon").getAmount(); // Assuming getAmount() returns a BigInteger
+
+        if (amount.compareTo(BigInteger.ZERO) > 0 && beaconAmount.compareTo(amount) > 0) {
+            profile.getCurrency("beacon").take(amount); // Assuming subtract() is a method to subtract a BigInteger
             profile.changed();
             cell.addBeacons(amount);
             msg("§aAdded " + amount + " beacons to your cell");
-        }else{
+        } else {
             msg("§cYou do not have enough beacons");
         }
     }

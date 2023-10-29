@@ -4,6 +4,7 @@ import com.massivecraft.massivecore.store.SenderEntity;
 import lombok.Getter;
 import me.reklessmitch.mitchprisonscore.colls.PPickaxeColl;
 import me.reklessmitch.mitchprisonscore.mitchbattlepass.events.BlocksMinedEvent;
+import me.reklessmitch.mitchprisonscore.mitchmines.configs.PlayerMine;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.enchants.Enchant;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.DisplayItem;
 import me.reklessmitch.mitchprisonscore.mitchpickaxe.utils.EnchantType;
@@ -42,6 +43,11 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
     }
 
     public void addBlockBroken(long amount){
+        PlayerMine mine = PlayerMine.get(getPlayer());
+        int booster = mine.getBooster();
+        if(booster > 0){
+            amount = amount * booster;
+        }
         blocksBroken += amount;
         BlocksMinedEvent e = new BlocksMinedEvent(getPlayer(), amount);
         Bukkit.getPluginManager().callEvent(e);

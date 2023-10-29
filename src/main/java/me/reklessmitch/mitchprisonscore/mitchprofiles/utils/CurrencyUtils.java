@@ -1,30 +1,33 @@
 package me.reklessmitch.mitchprisonscore.mitchprofiles.utils;
 
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
+
 public class CurrencyUtils {
 
-    public static String format(long number) {
-        String[] suffixes = {"", "k", "m", "b", "t"};
-        if (number < 1000) {
+    public static String format(BigInteger number) {
+        String[] suffixes = {"", "k", "m", "b", "t", "q", "a", "c", "d", "e", "f", "g", "h", "i", "j"};
+        if (number.longValue() < 1000) {
             return String.valueOf(number);
         }
-        int magnitude = (int) (Math.log10(number) / 3);
-        double convertedNumber = number / Math.pow(1000, magnitude);
+        int magnitude = (int) (Math.log10(number.longValue()) / 3);
+        double convertedNumber = number.longValue() / Math.pow(1000, magnitude);
         return String.format("%.1f%s", convertedNumber, suffixes[magnitude]);
     }
 
 
-    public static long parse(String amount){
-        long amountInt;
+    public static BigInteger parse(String amount){
+        BigInteger amountInt;
         char letter;
 
         char lastChar = amount.charAt(amount.length() - 1);
 
         if (Character.isDigit(lastChar)) {
             try{
-                amountInt = Long.parseLong(amount);
+                amountInt = BigInteger.valueOf(Long.parseLong(amount));
             }catch (NumberFormatException e){
-                return -1; // Cannot pay in doubles
+                return BigInteger.valueOf(-1);
             }
         } else {
             letter = amount.substring(amount.length() - 1).toLowerCase().charAt(0);
@@ -35,16 +38,27 @@ public class CurrencyUtils {
         return amountInt;
     }
 
-    private static long change(char letter, double amountInt){
-        double result;
+    private static BigInteger change(char letter, double amountInt){
+        BigInteger result;
+        BigDecimal amountDecimal = BigDecimal.valueOf(amountInt);
+
         switch (letter) {
-            case 'k' -> result = amountInt * 1000L;
-            case 'm' -> result = amountInt * 1000000L;
-            case 'b' -> result = amountInt * 1000000000L;
-            case 't' -> result = amountInt * 1000000000000L;
-            case 'q' -> result = amountInt * 1000000000000000L;
-            default -> result = -1;
+            case 'k' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000)).toBigInteger();
+            case 'm' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000000)).toBigInteger();
+            case 'b' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000000000)).toBigInteger();
+            case 't' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000000000000L)).toBigInteger();
+            case 'q' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000000000000000L)).toBigInteger();
+            case 'a' -> result = amountDecimal.multiply(BigDecimal.valueOf(1000000000000000000L)).toBigInteger();
+            case 'c' -> result = amountDecimal.multiply(new BigDecimal("1e21")).toBigInteger();
+            case 'd' -> result = amountDecimal.multiply(new BigDecimal("1e24")).toBigInteger();
+            case 'e' -> result = amountDecimal.multiply(new BigDecimal("1e27")).toBigInteger();
+            case 'f' -> result = amountDecimal.multiply(new BigDecimal("1e30")).toBigInteger();
+            case 'g' -> result = amountDecimal.multiply(new BigDecimal("1e33")).toBigInteger();
+            case 'h' -> result = amountDecimal.multiply(new BigDecimal("1e36")).toBigInteger();
+            case 'i' -> result = amountDecimal.multiply(new BigDecimal("1e39")).toBigInteger();
+            case 'j' -> result = amountDecimal.multiply(new BigDecimal("1e42")).toBigInteger();
+            default -> result = BigInteger.valueOf(-1);
         }
-        return (long) result;
+        return result;
     }
 }

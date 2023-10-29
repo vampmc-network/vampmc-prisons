@@ -14,6 +14,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
+import java.math.BigInteger;
+
 
 public class UpgradeEnchantGUI extends ChestGui {
 
@@ -36,18 +38,23 @@ public class UpgradeEnchantGUI extends ChestGui {
         add();
     }
 
-    private void getPane(int[] slots, int amount, int level){
+    private void getPane(int[] slots, int amount){
+        int level = p.getEnchants().get(enchant.getType());
         long cost = enchant.getCost(level, amount);
         MitchCurrency currency = profilePlayer.getCurrency("token");
         for (int slot : slots) {
             getInventory().setItem(slot, new ItemBuilder(Material.PAPER)
                 .displayname("§cUpgrade: §f" + amount)
                 .modelData(10006)
-                .lore("§cCost: §f" + CurrencyUtils.format(cost))
+                .lore("§cCost: §f" + CurrencyUtils.format(BigInteger.valueOf(cost)))
                 .build());
             setAction(slot, event -> {
                 event.setCancelled(true);
-                if(currency.getAmount() - cost > 0){
+                if(level + amount > enchant.getMaxLevel()){
+                    player.sendMessage("§cYou would exceed the max level of this enchantment");
+                    return true;
+                }
+                if (currency.getAmount().subtract(BigInteger.valueOf(cost)).compareTo(BigInteger.ZERO) > 0) {
                     currency.take(cost);
                     profilePlayer.changed();
                     p.getEnchants().replace(enchant.getType(), amount + p.getEnchants().get(enchant.getType()));
@@ -64,15 +71,15 @@ public class UpgradeEnchantGUI extends ChestGui {
 
 
     public void refresh(){
-        int currentLevel = p.getEnchants().get(enchant.getType());
         getInventory().setItem(4, enchant.getEnchantGuiItem(p));
-        getPane(new int[]{9, 10, 11, 18, 19, 20}, 1, currentLevel);
-        getPane(new int[]{12, 13, 14, 21, 22, 23},5, currentLevel);
-        getPane(new int[]{15, 16, 17, 24, 25, 26}, 50, currentLevel);
-        getPane(new int[]{27, 28, 29, 36, 37, 38}, 500, currentLevel);
-        getPane(new int[]{30, 31, 32, 39, 40, 41}, 5000, currentLevel);
-        int maxLevels = enchant.getMaxAmount(currentLevel, profilePlayer.getCurrency("token").getAmount(), enchant.getMaxLevel());
-        getPane(new int[]{33, 34, 35, 42, 43, 44}, maxLevels, currentLevel);
+        getPane(new int[]{9, 10, 11, 18, 19, 20}, 1);
+        getPane(new int[]{12, 13, 14, 21, 22, 23},5);
+        getPane(new int[]{15, 16, 17, 24, 25, 26}, 50);
+        getPane(new int[]{27, 28, 29, 36, 37, 38}, 500);
+        getPane(new int[]{30, 31, 32, 39, 40, 41}, 5000);
+        int currentLevel = p.getEnchants().get(enchant.getType());
+        int maxLevels = enchant.getMaxAmount(currentLevel, profilePlayer.getCurrency("token").getAmount().longValue(), enchant.getMaxLevel());
+        getPane(new int[]{33, 34, 35, 42, 43, 44}, maxLevels);
     }
 
     public void open(){

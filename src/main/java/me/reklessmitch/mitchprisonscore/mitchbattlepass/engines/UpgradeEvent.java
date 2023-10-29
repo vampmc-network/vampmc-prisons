@@ -19,7 +19,9 @@ public class UpgradeEvent extends Engine {
         PassPlayer pp = PassPlayer.get(e.getPlayer().getUniqueId());
         if(pp.getLevel() == PassConf.get().getMaxLevel()) return;
         long blocksBroken = PPickaxe.get(e.getPlayer().getUniqueId()).getBlocksBroken();
-        if(PassConf.get().getBlocksPerLevel().get(pp.getLevel() + 1) <= blocksBroken){
+        if(pp.getLevel() == PassConf.get().getMaxLevel()) return;
+        long blocksPerLevel = PassConf.get().getBlocksPerLevel().get(pp.getLevel() + 1);
+        if(blocksPerLevel <= blocksBroken){
             pp.addLevel();
             e.getPlayer().sendMessage("§aYou have upgraded your battlepass to level " + pp.getLevel());
         }

@@ -7,6 +7,8 @@ import me.reklessmitch.mitchprisonscore.mitchbazaar.config.BazaarConf;
 import me.reklessmitch.mitchprisonscore.mitchbazaar.object.ShopValue;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.configs.ProfilePlayer;
 
+import java.math.BigInteger;
+
 public class CmdBazaarSell extends BazaarCommands{
 
     public CmdBazaarSell(){
@@ -26,7 +28,7 @@ public class CmdBazaarSell extends BazaarCommands{
 
         BazaarConf conf = BazaarConf.get();
         ProfilePlayer pp = ProfilePlayer.get(me.getUniqueId());
-        if(pp.getCurrency(sell).getAmount() < amount){
+        if (pp.getCurrency(sell).getAmount().compareTo(BigInteger.valueOf(amount)) < 0) {
             msg("§cYou do not have enough %s", sell);
             return;
         }
