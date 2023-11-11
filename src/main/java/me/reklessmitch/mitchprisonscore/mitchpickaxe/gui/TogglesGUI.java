@@ -18,6 +18,10 @@ public class TogglesGUI extends ChestGui {
     private final PPickaxe pickaxe;
     private final int toggle;// true = Enchant Toggles, false = Enchant Message Toggles
 
+    //- Message Toggles :red_circle: - 0
+    //- Enchant Toggles :red_circle: - 1
+    //- Enchant Sounds :red_circle: - 2
+
     public TogglesGUI(@NotNull Player player, int toggle) {
         this.toggle = toggle;
         this.player = player;
@@ -40,10 +44,14 @@ public class TogglesGUI extends ChestGui {
             this.setAction(startSlot, event -> {
                 event.setCancelled(true);
 
+                //- Message Toggles :red_circle: - 0
+                //- Enchant Toggles :red_circle: - 1
+                //- Enchant Sounds :red_circle: - 2
+
                 switch (toggle) {
-                    case 0 -> pickaxe.toggleEnchant(type);
-                    case 2 -> pickaxe.toggleEnchantMessage(type);
-                    case 1 -> pickaxe.toggleEnchantSound(type);
+                    case 1 -> pickaxe.toggleEnchant(type);
+                    case 0 -> pickaxe.toggleEnchantMessage(type);
+                    case 2 -> pickaxe.toggleEnchantSound(type);
                     default -> {
                     }
                 }

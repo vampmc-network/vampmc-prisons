@@ -25,7 +25,8 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
             List.of("§eEnchants"), 0, 4);
     private long rawBlocksBroken = 0;
     private long blocksBroken = 0;
-    private Map<EnchantType, Integer> enchants = setEnchants();
+    private Map<EnchantType, Integer> enchants = setEnchants(false);
+    private Map<EnchantType, Integer> enchantPrestiges = setEnchants(true);
     private Map<EnchantType, Boolean> enchantToggle = setEnchantToggle();
     private Map<EnchantType, Boolean> enchantMessages = setEnchantToggle();
     private Map<EnchantType, Boolean> enchantSoundToggles = setEnchantToggle();
@@ -71,8 +72,13 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         enchants.forEach((enchantType, level) -> {
             if(level == 0) return;
             Enchant e = PickaxeConf.get().getEnchantByType(enchantType);
+            int prestige = enchantPrestiges.get(enchantType);
             if (e == null) return;
-            lore.add("§b| §3" + e.getDisplayItem().getItemName() + "§f: " + level);
+            String enchantmentLore = "§b| §3" + e.getDisplayItem().getItemName() + "§f: " + level;
+            if(prestige > 0){
+                enchantmentLore += " §7( P" + prestige + " )";
+            }
+            lore.add(enchantmentLore);
         });
         pickaxe.setItemLore(lore);
         givePickaxe();
@@ -83,10 +89,15 @@ public class PPickaxe extends SenderEntity<PPickaxe> {
         return pickaxe.getGuiItem(enchants.get(EnchantType.EFFICIENCY));
     }
 
-    private Map<EnchantType, Integer> setEnchants(){
+    /**
+     *
+     * @param prestige, pass through true if u want to set up prestige enchants
+     * @return Map<EnchantType, Integer>
+     */
+    private Map<EnchantType, Integer> setEnchants(boolean prestige){
         Map<EnchantType, Integer> enchantList = new EnumMap<>(EnchantType.class);
         PickaxeConf.get().enchants.keySet().forEach(enchant -> {
-            if(enchant == EnchantType.EFFICIENCY){
+            if(enchant == EnchantType.EFFICIENCY && !prestige){
                 enchantList.put(enchant, 10);
                 return;
             }

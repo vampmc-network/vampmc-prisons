@@ -20,9 +20,9 @@ public class TogglesMainGUI extends ChestGui {
 
     private void addItems(){
         // - Loot and Key finder for Virtualkey or in inventory  :red_circle:
-        //- Message Toggles :red_circle:
-        //- Enchant Toggles :red_circle:
-        //- Enchant Sounds :red_circle:
+        //- Message Toggles :red_circle: - 0
+        //- Enchant Toggles :red_circle: - 1
+        //- Enchant Sounds :red_circle: - 2
 
         getInventory().setItem(10, new ItemBuilder(Material.TRIPWIRE_HOOK).displayname("&cToggle Virtual Key").build());
         setAction(10, event -> {

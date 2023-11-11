@@ -25,6 +25,12 @@ public class CrateReward {
         return commands;
     }
 
+    public List<String> getCommands(Player player, int amount) {
+        commands.forEach(command -> PlaceholderAPI.setPlaceholders(player, command));
+        commands.replaceAll(command -> command.replace("%amount%", String.valueOf(amount)));
+        return commands;
+    }
+
     public String getMessage(Player player) {
         message = PlaceholderAPI.setPlaceholders(player, ChatColor.translateAlternateColorCodes('&', message));
         return message;

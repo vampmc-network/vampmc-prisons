@@ -92,7 +92,8 @@ public class BackpackPlayer extends SenderEntity<BackpackPlayer> {
         PPickaxe ppickaxe = PPickaxe.get(getId());
         double greedMulti = ppickaxe.getEnchants().get(EnchantType.GREED) / 1000.0;
         if(greedMulti != 0) {
-            startAmount = startAmount.multiply(BigInteger.valueOf((long)(1 + greedMulti))); // Use multiply for BigInteger
+            int greedPrestigeMulti = ppickaxe.getEnchantPrestiges().get(EnchantType.GREED);
+            startAmount = startAmount.multiply(BigInteger.valueOf((long)((1 + greedMulti) * greedPrestigeMulti))); // Use multiply for BigInteger
         }
         int boostLevel = ppickaxe.getEnchants().get(EnchantType.BOOST);
         if(boostLevel != 0 &&

@@ -23,6 +23,9 @@ public class Enchant {
     private long baseCost;
     private long costIncreasePerLevel;
     private String enchantMessage;
+    private double procChanceIncreasePerPrestige;
+    private double priceIncreasePerPrestige;
+    private int maxPrestige;
 
     public Enchant(EnchantType type, Material material, String name, List<String> description, int customModelData, int slot, int levelRequired, int maxLevel, double baseProcRate, double procRateIncreasePerLevel, long baseCost, long costIncreasePerLevel, String enchantMessage) {
         this.type = type;
@@ -34,12 +37,15 @@ public class Enchant {
         this.baseCost = baseCost;
         this.costIncreasePerLevel = costIncreasePerLevel;
         this.enchantMessage = enchantMessage;
+        this.procChanceIncreasePerPrestige = 0.1;
+        this.priceIncreasePerPrestige = 0.1;
+        this.maxPrestige = 1;
     }
 
     /**
-     * @deprecated use {@link #getCost(int, int)} instead
+     * @deprecated use {@link #getCost(int, int, int)} instead
      */
-    @Deprecated(since="1.1", forRemoval=true)
+    @Deprecated(since = "1.1", forRemoval = true)
     public int getCostOld(int currentLevel, int amountToBuy) {
         int cost = 0;
         for (int i = 0; i < amountToBuy; i++) {
@@ -49,28 +55,29 @@ public class Enchant {
         return cost;
     }
 
-    public long getCost(int currentLevel, int amountToBuy) {
+    public long getCost(int currentLevel, int amountToBuy, int prestige) {
         long firstTerm = baseCost + (currentLevel * costIncreasePerLevel);
         long lastTerm = baseCost + ((currentLevel + amountToBuy - 1) * costIncreasePerLevel);
-        return (amountToBuy * (firstTerm + lastTerm)) / 2;
+        long cost = (amountToBuy * (firstTerm + lastTerm)) / 2;
+        return (long) (cost * Math.pow(1 + priceIncreasePerPrestige, prestige));
     }
 
-    private int recursiveCost(int currentLevel, long maxBudget, int amount, long cost, int maxLevel) {
+    private int recursiveCost(int currentLevel, long maxBudget, int amount, long cost, int maxLevel, int prestige) {
         if (currentLevel >= maxLevel) {
             return amount;
         }
-        cost += getCost(currentLevel, 1);
+        cost += getCost(currentLevel, 1, prestige);
         amount++;
         currentLevel++;
-        if(cost > maxBudget) {
+        if (cost > maxBudget) {
             return amount - 1;
         }
-        return recursiveCost(currentLevel, maxBudget, amount, cost, maxLevel);
+        return recursiveCost(currentLevel, maxBudget, amount, cost, maxLevel, prestige);
     }
 
 
-    public int getMaxAmount(int currentLevel, long maxBudget, int maxLevel) {
-        return recursiveCost(currentLevel, maxBudget, 0, 0, maxLevel);
+    public final int getMaxAmount(int currentLevel, long maxBudget, int maxLevel, int prestige) {
+        return recursiveCost(currentLevel, maxBudget, 0, 0, maxLevel, prestige);
     }
 
     public double getProcChance(int currentLevel) {
@@ -84,7 +91,8 @@ public class Enchant {
                     if (s == null) return "";
                     s = s.replace("{level}", String.valueOf(pickaxe.getEnchants().get(type)));
                     s = s.replace("{maxlevel}", String.valueOf(maxLevel));
-                    s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1)));
+                    s = s.replace("{cost}", String.valueOf(getCost(pickaxe.getEnchants().get(type), 1, pickaxe.getEnchantPrestiges().get(type))));
+                    s = s.replace("{proc_chance}", getProcChance(pickaxe.getEnchants().get(type)) + "%");
                     s = s.replace("{levelRequired}", ProfilePlayer.get(pickaxe.getPlayer()).getRank() >= levelRequired
                             ? "" : "§7Rank Required: §c" + levelRequired);
                     return s;

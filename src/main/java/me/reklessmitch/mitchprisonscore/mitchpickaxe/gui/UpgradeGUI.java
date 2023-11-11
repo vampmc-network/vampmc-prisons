@@ -30,7 +30,11 @@ public class UpgradeGUI extends ChestGui {
             getInventory().setItem(e.getDisplayItem().getSlot(), e.getEnchantGuiItem(pPickaxe));
             if(e.getMaxLevel() == pPickaxe.getEnchants().get(enchant)){
                 this.setAction(e.getDisplayItem().getSlot(), event -> {
-                    player.sendMessage("§cYou have already maxed out this enchantment");
+                    if(e.getMaxPrestige() == pPickaxe.getEnchants().get(enchant)) {
+                        player.sendMessage("§cYou have already maxed out this enchantment");
+                    }else{
+                        new PrestigeEnchantGUI(e, player).open();
+                    }
                     return true;
                 });
                 return;

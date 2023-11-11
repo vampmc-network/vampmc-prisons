@@ -33,10 +33,7 @@ import me.reklessmitch.mitchprisonscore.colls.ProfilesConfColl;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.engines.PlayerEvents;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.CurrencyPlaceholders;
 import me.reklessmitch.mitchprisonscore.mitchprofiles.placeholders.ProfilePlaceholders;
-import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdRankup;
-import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdRankupGUI;
-import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdRankupMax;
-import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.CmdSetRank;
+import me.reklessmitch.mitchprisonscore.mitchrankup.cmds.*;
 import org.bukkit.Bukkit;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.ArmorStand;
@@ -127,7 +124,7 @@ public final class MitchPrisonsCore extends MassivePlugin {
                 // Bazaar
                 CmdBazaar.class,
                 // Rankup
-                CmdRankup.class, CmdSetRank.class, CmdRankupMax.class, CmdRankupGUI.class,
+                CmdRankup.class, CmdSetRank.class, CmdRankupMax.class, CmdRankupGUI.class, CmdRankTop.class,
 
                 // --- Listeners ---
                 // Backpack

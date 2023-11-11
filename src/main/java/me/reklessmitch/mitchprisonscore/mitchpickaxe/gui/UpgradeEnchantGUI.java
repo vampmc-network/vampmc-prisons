@@ -40,7 +40,8 @@ public class UpgradeEnchantGUI extends ChestGui {
 
     private void getPane(int[] slots, int amount){
         int level = p.getEnchants().get(enchant.getType());
-        long cost = enchant.getCost(level, amount);
+        int prestige = p.getEnchantPrestiges().get(enchant.getType());
+        long cost = enchant.getCost(level, amount, prestige);
         MitchCurrency currency = profilePlayer.getCurrency("token");
         for (int slot : slots) {
             getInventory().setItem(slot, new ItemBuilder(Material.PAPER)
@@ -78,7 +79,8 @@ public class UpgradeEnchantGUI extends ChestGui {
         getPane(new int[]{27, 28, 29, 36, 37, 38}, 500);
         getPane(new int[]{30, 31, 32, 39, 40, 41}, 5000);
         int currentLevel = p.getEnchants().get(enchant.getType());
-        int maxLevels = enchant.getMaxAmount(currentLevel, profilePlayer.getCurrency("token").getAmount().longValue(), enchant.getMaxLevel());
+        int maxLevels = enchant.getMaxAmount(currentLevel,
+                profilePlayer.getCurrency("token").getAmount().longValue(), enchant.getMaxLevel(), p.getEnchantPrestiges().get(enchant.getType()));
         getPane(new int[]{33, 34, 35, 42, 43, 44}, maxLevels);
     }
 
